@@ -1,23 +1,20 @@
 package dev.knureview.Fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
-import dev.knureview.Holder.HeaderHolder;
+import dev.knureview.Holder.DepartmentHolder;
 import dev.knureview.Holder.IconTreeItemHolder;
 import dev.knureview.Holder.PlaceHolderHolder;
-import dev.knureview.Holder.ProfileHolder;
-import dev.knureview.Holder.SocialViewHolder;
+import dev.knureview.Holder.CollegeHolder;
+import dev.knureview.Holder.DetailViewHolder;
 import dev.knureview.R;
 
 /**
@@ -35,16 +32,32 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
         final TreeNode root = TreeNode.root();
 
-        TreeNode myProfile = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "My Profile")).setViewHolder(new ProfileHolder(getActivity()));
-        TreeNode bruce = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Bruce Wayne")).setViewHolder(new ProfileHolder(getActivity()));
-        TreeNode clark = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Clark Kent")).setViewHolder(new ProfileHolder(getActivity()));
-        TreeNode barry = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Barry Allen")).setViewHolder(new ProfileHolder(getActivity()));
-        addProfileData(myProfile);
-        addProfileData(clark);
-        addProfileData(bruce);
-        addProfileData(barry);
+        TreeNode cNode1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "교양선택")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "부총장직속학부")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "인문대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode4 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "국제학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode5 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "중국학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode6 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사범대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode7 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회과학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode8 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회복지대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode9 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "경영대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode10 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "공과대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode11 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "예·체능대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode12 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "미래인재개발대학")).setViewHolder(new CollegeHolder(getActivity()));
+        addCollegeData(cNode1);
+        addCollegeData(cNode2);
+        addCollegeData(cNode3);
+        addCollegeData(cNode4);
+        addCollegeData(cNode5);
+        addCollegeData(cNode6);
+        addCollegeData(cNode7);
+        addCollegeData(cNode8);
+        addCollegeData(cNode9);
+        addCollegeData(cNode10);
+        addCollegeData(cNode11);
+        addCollegeData(cNode12);
 
-        root.addChildren(myProfile, bruce, barry, clark);
+        root.addChildren(cNode1, cNode2, cNode3, cNode4, cNode5, cNode6, cNode7, cNode8, cNode9, cNode10, cNode11, cNode12);
 
         tView = new AndroidTreeView(getActivity(), root);
         tView.setDefaultAnimation(true);
@@ -61,27 +74,41 @@ public class PageFragment extends android.support.v4.app.Fragment {
         return rootView;
     }
 
-    private void addProfileData(TreeNode profile) {
-        TreeNode socialNetworks = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_people, "Social")).setViewHolder(new HeaderHolder(getActivity()));
-        TreeNode places = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_place, "Places")).setViewHolder(new HeaderHolder(getActivity()));
+    private void addCollegeData(TreeNode parentNode) {
+        TreeNode cNode1_child1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_bookmark_outline, "교양선택(주)")).setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode cNode1_child2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_bookmark_outline, "교양선택(야)")).setViewHolder(new DepartmentHolder(getActivity()));
+        addCultureData(cNode1_child1);
+        addCultureData(cNode1_child2);
+        //TreeNode lake = new TreeNode(new IconTreeItemHolder.IconTreeItem("교양선택(주)")).setViewHolder(new PlaceHolderHolder(getActivity()));
+        //TreeNode mountains = new TreeNode(new PlaceHolderHolder.PlaceItem("The white house")).setViewHolder(new PlaceHolderHolder(getActivity()));
 
-        TreeNode facebook = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_facebook)).setViewHolder(new SocialViewHolder(getActivity()));
-        TreeNode linkedin = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_linkedin)).setViewHolder(new SocialViewHolder(getActivity()));
-        TreeNode google = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_gplus)).setViewHolder(new SocialViewHolder(getActivity()));
-        TreeNode twitter = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_twitter)).setViewHolder(new SocialViewHolder(getActivity()));
+        //cNode1_child1.addChildren(lake, mountains);
+        // cNode1_child1.addChildren(lake);
+        // cNode1_child2.addChildren(lake);
+        parentNode.addChildren(cNode1_child1, cNode1_child2);
+    }
 
-        TreeNode lake = new TreeNode(new PlaceHolderHolder.PlaceItem("A rose garden")).setViewHolder(new PlaceHolderHolder(getActivity()));
-        TreeNode mountains = new TreeNode(new PlaceHolderHolder.PlaceItem("The white house")).setViewHolder(new PlaceHolderHolder(getActivity()));
+    private void addGradeData(TreeNode parentNode) {
 
-        places.addChildren(lake, mountains);
-        socialNetworks.addChildren(facebook, google, twitter, linkedin);
-        profile.addChildren(socialNetworks, places);
+    }
+
+    private void addCultureData(TreeNode parentNode) {
+
+        TreeNode cultureChildNode1 = new TreeNode(new DetailViewHolder.SocialItem("제 1영역(인문학)")).setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode cultureChildNode2 = new TreeNode(new DetailViewHolder.SocialItem("제 2영역(사회과학)")).setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode cultureChildNode3 = new TreeNode(new DetailViewHolder.SocialItem("제 3영역(자연과학)")).setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode cultureChildNode4 = new TreeNode(new DetailViewHolder.SocialItem("제 4영역(생활과예술)")).setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode cultureChildNode5 = new TreeNode(new DetailViewHolder.SocialItem("제 5영역(리더십과봉사)")).setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode cultureChildNode6 = new TreeNode(new DetailViewHolder.SocialItem("제 6영역(국제화)")).setViewHolder(new DetailViewHolder(getActivity()));
+        parentNode.addChildren(cultureChildNode1, cultureChildNode2,
+                cultureChildNode3, cultureChildNode4,
+                cultureChildNode5, cultureChildNode6);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // int position = FragmentPagerItem.getPosition(getArguments());
+        // int position = FragmentPagerItem.getPosition(getArguments());
         // TextView title = (TextView) view.findViewById(R.id.item_title);
         //title.setText(String.valueOf(position));
     }
