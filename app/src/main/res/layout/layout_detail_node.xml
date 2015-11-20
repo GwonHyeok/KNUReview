@@ -4,17 +4,25 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:minHeight="38dp"
-    android:paddingTop="10dp"
     android:paddingLeft="16dp"
-    android:paddingRight="10dp"
->
-
+    android:paddingRight="16dp"
+    android:paddingTop="10dp">
 
     <TextView
-        android:id="@+id/username"
-        android:layout_width="match_parent"
+        android:id="@+id/gradeName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
+        android:text="1학년"
+        android:textColor="@color/text_lgray"
+        android:textSize="12sp" />
+    <TextView
+        android:id="@+id/deptName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/gradeName"
+        android:text="학과이름"
         android:textColor="@color/text_lgray"
         android:textSize="12sp" />
 

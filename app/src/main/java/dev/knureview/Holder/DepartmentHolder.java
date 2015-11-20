@@ -24,7 +24,7 @@ public class DepartmentHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHo
     @Override
     public View createNodeView(TreeNode node, IconTreeItemHolder.IconTreeItem value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.layout_header_node, null, false);
+        final View view = inflater.inflate(R.layout.layout_department_node, null, false);
         TextView tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 

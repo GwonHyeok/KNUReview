@@ -12,8 +12,7 @@ import dev.knureview.R;
 /**
  * Created by DavidHa on 2015. 11. 16..
  */
-public class DetailViewHolder extends TreeNode.BaseNodeViewHolder<DetailViewHolder.SocialItem> {
-
+public class DetailViewHolder extends TreeNode.BaseNodeViewHolder<DetailViewHolder.DetailViewItem> {
 
 
     public DetailViewHolder(Context context) {
@@ -21,15 +20,14 @@ public class DetailViewHolder extends TreeNode.BaseNodeViewHolder<DetailViewHold
     }
 
     @Override
-    public View createNodeView(TreeNode node, SocialItem value) {
+    public View createNodeView(TreeNode node, DetailViewItem value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.layout_detail_node, null, false);
 
-
-        TextView userNameLabel = (TextView) view.findViewById(R.id.username);
-        userNameLabel.setText(value.text);
-
-
+        TextView gradeName = (TextView) view.findViewById(R.id.gradeName);
+        gradeName.setText(value.gradeName);
+        TextView deptName = (TextView) view.findViewById(R.id.deptName);
+        deptName.setText(value.deptName);
         return view;
     }
 
@@ -38,11 +36,16 @@ public class DetailViewHolder extends TreeNode.BaseNodeViewHolder<DetailViewHold
     }
 
 
-    public static class SocialItem {
-        public String text;
+    public static class DetailViewItem {
+        public String gradeName;
+        public String deptName;
 
-        public SocialItem(String text) {
-            this.text = text;
+        public DetailViewItem(String gradeName) {
+            this.gradeName = gradeName;
+        }
+        public DetailViewItem(String gradeName, String deptName) {
+            this.gradeName = gradeName;
+            this.deptName = deptName;
         }
     }
 

@@ -112,11 +112,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "영문학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        addGradeData(childNode3);
-        addGradeData(childNode4);
-        addGradeData(childNode5);
+        addGradeData(childNode1, "(신학과)");
+        addGradeData(childNode2, "(철학과)");
+        addGradeData(childNode3, "(국어국문학과)");
+        addGradeData(childNode4, "(문헌정보학과)");
+        addGradeData(childNode5, "(영문학과)");
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5);
     }
 
@@ -126,16 +126,43 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "국제학대학 1학년 교양필수"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "국제지역학부"))
+                .IconTreeItem(R.string.ic_bookmark, "국제지역학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "국제통상학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        parentNode.addChildren(childNode0, childNode1, childNode2);
+        // addDetailOfInternationalStudies(childNode1);
+        addGradeData(childNode2, "(국제통상학과)");
+        //국제지역학부 제외
+        parentNode.addChildren(childNode0, childNode2);
+    }
+
+    private void addDetailOfInternationalStudies(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "캐나다학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "카자흐스탄학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "국제관계학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode childNode4 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "영미학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode childNode5 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "중앙아시아학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        addGradeData(childNode1, "(캐나다학전공)");
+        addGradeData(childNode2, "(카자흐스탄학전공)");
+        addGradeData(childNode3, "(국제관계학전공)");
+        addGradeData(childNode4, "(영미학전공)");
+        addGradeData(childNode5, "(중앙아시아학전공)");
+
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4, childNode5);
+
     }
 
     //중국학대학
@@ -151,8 +178,8 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "중국실용지역학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
+        addGradeData(childNode1, "(중국어문화학과)");
+        addGradeData(childNode2, "(중국실용지역학과)");
         parentNode.addChildren(childNode0, childNode1, childNode2);
     }
 
@@ -178,10 +205,10 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "중등특수교육"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        addGradeData(childNode3);
-        addGradeData(childNode4);
+        addGradeData(childNode1, "(교육학과)");
+        addGradeData(childNode2, "(유아교육과)");
+        addGradeData(childNode3, "(초등특수교육)");
+        addGradeData(childNode4, "(중등특수교육)");
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4);
     }
 
@@ -211,11 +238,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "세무학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        addGradeData(childNode3);
-        addGradeData(childNode4);
-        addGradeData(childNode5);
+        addGradeData(childNode1, "(경제학과)");
+        addGradeData(childNode2, "(법학과)");
+        addGradeData(childNode3, "(행정학과)");
+        addGradeData(childNode4, "(부동산학과)");
+        addGradeData(childNode5, "(세무학과)");
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5);
     }
 
@@ -226,11 +253,32 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "사회복지학부"))
+                .IconTreeItem(R.string.ic_bookmark, "사회복지학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
+        addDetailOfSocialWelfare(childNode1);
         parentNode.addChildren(childNode0, childNode1);
+    }
+
+    //사회복지학부
+    private void addDetailOfSocialWelfare(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "(사회복지학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode childNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", "(사회복지학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+
+        TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "사회사업학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+
+        TreeNode childNode4 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "노인복지학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+        addGradeData(childNode3, "(사회사업학전공)", 2);
+        addGradeData(childNode4, "(노인복지학전공)", 2);
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4);
     }
 
     //경영대학
@@ -243,8 +291,18 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "경영학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
+        addDetailOfManagement(childNode1);
         parentNode.addChildren(childNode0, childNode1);
+    }
+
+    //경영학부
+    private void addDetailOfManagement(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "(경영학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode childNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", "(경영학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        parentNode.addChildren(childNode1, childNode2);
+        addGradeData(parentNode, "(경영학전공)", 2);
     }
 
     //공과대학
@@ -254,7 +312,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "컴퓨터미디어정보공학부"))
+                .IconTreeItem(R.string.ic_bookmark, "컴퓨터미디어정보공학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
@@ -277,13 +335,35 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "건축공학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        addGradeData(childNode3);
-        addGradeData(childNode4);
-        addGradeData(childNode5);
-        addGradeData(childNode6);
+        addDetailOfComputerEngineering(childNode1);
+        addGradeData(childNode2, "(전자공학과)");
+        addGradeData(childNode3, "(산업시스템공학과)");
+        addGradeData(childNode4, "(응용수학과)");
+        addGradeData(childNode5, "(도시공학과)");
+        addGradeData(childNode6, "(건축공학과)");
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5, childNode6);
+    }
+
+    //컴퓨터미디어정보공학부
+    private void addDetailOfComputerEngineering(TreeNode parentNode) {
+
+        TreeNode childNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "(컴퓨터미디어정보공학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode childNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", "(컴퓨터미디어정보공학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+
+        TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "컴퓨터공학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+
+        TreeNode childNode4 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "미디어정보공학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+        addGradeData(childNode3, "(컴퓨터공학전공)", 2);
+        addGradeData(childNode4, "(미디어정보공학전공)", 2);
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4);
     }
 
     //예체능 대학
@@ -293,7 +373,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "회화·디자인학부"))
+                .IconTreeItem(R.string.ic_bookmark, "회화·디자인학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
@@ -304,10 +384,27 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .IconTreeItem(R.string.ic_bookmark_outline, "사회체육학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
-        addGradeData(childNode1);
-        addGradeData(childNode2);
-        addGradeData(childNode3);
+        addDetailOfArtsAndDesign(childNode1);
+        addGradeData(childNode2, "(음악학과)");
+        addGradeData(childNode3, "(사회체육학과)");
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3);
+    }
+
+    //회화 디자인학부
+    private void addDetailOfArtsAndDesign(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "(회화·디자인학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+
+        TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "회화전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+        TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "산업디자인학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        addGradeData(childNode1, "(회화전공)", 1);
+        addGradeData(childNode2, "(산업디자인학전공)", 1);
+        parentNode.addChildren(childNode1, childNode2, childNode3);
     }
 
     //미래인재개발대학
@@ -331,28 +428,29 @@ public class PageFragment extends android.support.v4.app.Fragment {
         TreeNode childNode4 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "금융정보학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
-
+        /*
         addGradeData(childNode1);
         addGradeData(childNode2);
         addGradeData(childNode3);
         addGradeData(childNode4);
+        */
         parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4);
     }
 
     //교양 과목 표시
     private void addCultureData(TreeNode parentNode) {
 
-        TreeNode cultureChildNode1 = new TreeNode(new DetailViewHolder.SocialItem("제 1영역(인문학)"))
+        TreeNode cultureChildNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("제 1영역(인문학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode2 = new TreeNode(new DetailViewHolder.SocialItem("제 2영역(사회과학)"))
+        TreeNode cultureChildNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("제 2영역(사회과학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode3 = new TreeNode(new DetailViewHolder.SocialItem("제 3영역(자연과학)"))
+        TreeNode cultureChildNode3 = new TreeNode(new DetailViewHolder.DetailViewItem("제 3영역(자연과학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode4 = new TreeNode(new DetailViewHolder.SocialItem("제 4영역(생활과예술)"))
+        TreeNode cultureChildNode4 = new TreeNode(new DetailViewHolder.DetailViewItem("제 4영역(생활과예술)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode5 = new TreeNode(new DetailViewHolder.SocialItem("제 5영역(리더십과봉사)"))
+        TreeNode cultureChildNode5 = new TreeNode(new DetailViewHolder.DetailViewItem("제 5영역(리더십과봉사)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode6 = new TreeNode(new DetailViewHolder.SocialItem("제 6영역(국제화)"))
+        TreeNode cultureChildNode6 = new TreeNode(new DetailViewHolder.DetailViewItem("제 6영역(국제화)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
         parentNode.addChildren(cultureChildNode1, cultureChildNode2,
                 cultureChildNode3, cultureChildNode4,
@@ -360,18 +458,34 @@ public class PageFragment extends android.support.v4.app.Fragment {
     }
 
     //학년 표시
-    private void addGradeData(TreeNode parentNode) {
+    private void addGradeData(TreeNode parentNode, String deptName) {
 
-        TreeNode gradeChildNode1 = new TreeNode(new DetailViewHolder.SocialItem("1학년"))
+        TreeNode gradeChildNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", deptName))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode gradeChildNode2 = new TreeNode(new DetailViewHolder.SocialItem("2학년"))
+        TreeNode gradeChildNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", deptName))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode gradeChildNode3 = new TreeNode(new DetailViewHolder.SocialItem("3학년"))
+        TreeNode gradeChildNode3 = new TreeNode(new DetailViewHolder.DetailViewItem("3학년", deptName))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode gradeChildNode4 = new TreeNode(new DetailViewHolder.SocialItem("4학년"))
+        TreeNode gradeChildNode4 = new TreeNode(new DetailViewHolder.DetailViewItem("4학년", deptName))
                 .setViewHolder(new DetailViewHolder(getActivity()));
 
         parentNode.addChildren(gradeChildNode1, gradeChildNode2, gradeChildNode3, gradeChildNode4);
+    }
+
+    private void addGradeData(TreeNode parentNode, String majorName, int grade) {
+
+        TreeNode gradeChildNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", majorName))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode gradeChildNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("3학년", majorName))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        TreeNode gradeChildNode3 = new TreeNode(new DetailViewHolder.DetailViewItem("4학년", majorName))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+
+        if (grade == 2) {
+            parentNode.addChildren(gradeChildNode2, gradeChildNode3);
+        } else {
+            parentNode.addChildren(gradeChildNode1, gradeChildNode2, gradeChildNode3);
+        }
     }
 
     @Override
