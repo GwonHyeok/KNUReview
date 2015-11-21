@@ -29,7 +29,7 @@ public class CollegeHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolde
 
         final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
         iconView.setIconText(context.getResources().getString(value.icon));
-
+        iconView.setIconColor(context.getResources().getColor(R.color.folder_color));
         return view;
     }
 

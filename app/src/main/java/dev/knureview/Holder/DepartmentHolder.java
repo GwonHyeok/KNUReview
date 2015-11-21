@@ -30,6 +30,7 @@ public class DepartmentHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHo
 
         final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
         iconView.setIconText(context.getResources().getString(value.icon));
+        iconView.setIconColor(context.getResources().getColor(R.color.colorPrimary));
 
         arrowView = (PrintView) view.findViewById(R.id.arrow_icon);
         if (node.isLeaf()) {

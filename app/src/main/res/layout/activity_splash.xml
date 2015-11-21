@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:id="@+id/speechBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@drawable/speech_box"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/appTitleEng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="KNU Review"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30dp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@id/speechBox"
+        android:layout_alignLeft="@id/speechBox"
+        android:background="@drawable/down_arrow"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/appCopyRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="ⓒ강남대 리뷰 Corp."
+        android:textColor="@color/white"
+        android:textSize="12dp"/>
+
+</RelativeLayout>
