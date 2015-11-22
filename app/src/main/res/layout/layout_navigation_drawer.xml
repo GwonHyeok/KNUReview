@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="140dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/colorPrimaryLight"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/navTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="@color/rowColor" />
+
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MENU"
+            android:textColor="@color/rowColor"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="@color/rowColor" />
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/leftDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="16"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/navBottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="1dp"
+            android:layout_margin="12dp"
+            android:background="@color/rowColor" />
+
+        <TextView
+            android:id="@+id/bottomText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문의하기"
+            android:textColor="@color/rowColor"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="1dp"
+            android:layout_margin="12dp"
+            android:background="@color/rowColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_rectangular"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/app_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="개발자 문의"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
