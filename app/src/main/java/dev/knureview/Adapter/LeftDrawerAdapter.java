@@ -1,6 +1,8 @@
 package dev.knureview.Adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import dev.knureview.Activity.MainActivity;
+import dev.knureview.Activity.MyProfile;
 import dev.knureview.R;
 
 /**
@@ -85,6 +89,7 @@ public class LeftDrawerAdapter extends BaseAdapter {
             //selected
             vh.rowLayout.setBackgroundColor(activity.getResources()
                     .getColor(R.color.colorPrimary));
+
         } else {
             //un selected
             vh.rowLayout.setBackgroundColor(unSelectedColor);

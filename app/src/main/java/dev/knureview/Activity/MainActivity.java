@@ -50,8 +50,8 @@ public class MainActivity extends ActionBarActivity {
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
-        headerTxt = (TextView)findViewById(R.id.headerTxt);
-        bottomTxt = (TextView)findViewById(R.id.bottomTxt);
+        headerTxt = (TextView) findViewById(R.id.headerTxt);
+        bottomTxt = (TextView) findViewById(R.id.bottomTxt);
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(toogle);
 
         //adapter
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         listViewAdapter = new LeftDrawerAdapter(this, R.layout.layout_left_drawer_row);
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener(listViewListener);
@@ -86,15 +86,15 @@ public class MainActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             listViewAdapter.setSelectedIndex(position);
             Activity activity;
-            if(position==0){
-                Toast.makeText(MainActivity.this,"0번",0).show();
+            if (position == 0) {
+                Toast.makeText(MainActivity.this, "0번", 0).show();
 
-               // Intent intent = new Intent(activity,MainActivity.class);
-               // startActivity(intent);
+                // Intent intent = new Intent(activity,MainActivity.class);
+                // startActivity(intent);
 
-            }else if(position==1){
-
-                Toast.makeText(MainActivity.this,"1번",0).show();
+            } else if (position == 1) {
+                Intent intent = new Intent(MainActivity.this, MyProfile.class);
+                startActivity(intent);
             }
         }
     };
@@ -130,5 +130,10 @@ public class MainActivity extends ActionBarActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toogle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

@@ -22,6 +22,8 @@
             android:name=".Activity.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name=".Activity.SearchActivity"/>
+        <activity android:name=".Activity.MyProfile"
+            android:label="내프로필"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
