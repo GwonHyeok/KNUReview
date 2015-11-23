@@ -1,6 +1,5 @@
 package dev.knureview.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dev.knureview.Adapter.LeftDrawerAdapter;
 import dev.knureview.R;
@@ -29,7 +27,7 @@ public class MyProfile extends ActionBarActivity {
     private LeftDrawerAdapter listViewAdapter;
 
     private Typeface nanumFont;
-    private Typeface archiveFont;
+    private Typeface bmFont;
     private TextView toolbarTxt;
     private TextView headerTxt;
     private TextView bottomTxt;
@@ -46,11 +44,12 @@ public class MyProfile extends ActionBarActivity {
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
-        archiveFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/Archive.otf");
+        bmFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/bm.TTF");
         toolbarTxt = (TextView)findViewById(R.id.toolbarTxt);
         headerTxt = (TextView) findViewById(R.id.headerTxt);
         bottomTxt = (TextView) findViewById(R.id.bottomTxt);
-        toolbarTxt.setTypeface(archiveFont);
+        toolbarTxt.setText("내 프로필");
+        toolbarTxt.setTypeface(bmFont);
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 

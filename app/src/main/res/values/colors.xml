@@ -16,4 +16,5 @@
     <color name="text_gray">#323232</color>
     <color name="folder_color">#FBC02D</color>
     <color name="rowColor">#EAEAEA</color>
+    <color name="transparent_black">#aa000000</color>
 </resources>
