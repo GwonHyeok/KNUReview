@@ -35,14 +35,14 @@ public class LeftDrawerAdapter extends BaseAdapter {
         private TextView rowTxt;
     }
 
-    public LeftDrawerAdapter(Activity activity, int resource) {
+    public LeftDrawerAdapter(Activity activity, int resource, int currentPosition) {
         this.activity = activity;
         this.resource = resource;
         font = Typeface.createFromAsset(activity.getResources()
                 .getAssets(), "fonts/NanumGothic.ttf");
         unSelectedColor = activity.getResources()
                 .getColor(R.color.colorPrimaryLight);
-        selectedIndex = 0;
+        selectedIndex = currentPosition;
     }
 
     public void setSelectedIndex(int index) {

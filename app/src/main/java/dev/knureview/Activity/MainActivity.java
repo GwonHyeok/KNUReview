@@ -32,11 +32,15 @@ import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
 
 public class MainActivity extends ActionBarActivity {
+    private static final int CUR_POSITION = 0;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toogle;
     private ListView listView;
     private LeftDrawerAdapter listViewAdapter;
+
     private Typeface nanumFont;
+    private Typeface archiveFont;
+    private TextView toolbarTxt;
     private TextView headerTxt;
     private TextView bottomTxt;
 
@@ -44,14 +48,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
+        archiveFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/Archive.otf");
+        toolbarTxt = (TextView)findViewById(R.id.toolbarTxt);
         headerTxt = (TextView) findViewById(R.id.headerTxt);
         bottomTxt = (TextView) findViewById(R.id.bottomTxt);
+        toolbarTxt.setTypeface(archiveFont);
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
@@ -63,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 
         //adapter
         listView = (ListView) findViewById(R.id.listView);
-        listViewAdapter = new LeftDrawerAdapter(this, R.layout.layout_left_drawer_row);
+        listViewAdapter = new LeftDrawerAdapter(this, R.layout.layout_left_drawer_row, CUR_POSITION);
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener(listViewListener);
 
@@ -85,16 +95,14 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             listViewAdapter.setSelectedIndex(position);
-            Activity activity;
-            if (position == 0) {
-                Toast.makeText(MainActivity.this, "0번", 0).show();
 
-                // Intent intent = new Intent(activity,MainActivity.class);
-                // startActivity(intent);
+            if (id == 0) {
 
-            } else if (position == 1) {
+            } else if (id == 1) {
                 Intent intent = new Intent(MainActivity.this, MyProfile.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+                finish();
             }
         }
     };
