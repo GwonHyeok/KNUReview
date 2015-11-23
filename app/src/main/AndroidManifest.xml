@@ -21,6 +21,7 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name=".Activity.SearchActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

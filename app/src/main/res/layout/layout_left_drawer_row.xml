@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rowLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryLight"
+    android:padding="8dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/rowImg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/course_review"/>
+
+    <TextView
+        android:id="@+id/rowTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="수강리뷰"
+        android:textSize="14dp"
+        android:textColor="@color/white"/>
+</LinearLayout>
