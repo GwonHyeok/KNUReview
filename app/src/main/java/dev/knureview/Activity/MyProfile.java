@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import dev.knureview.Adapter.LeftDrawerAdapter;
 import dev.knureview.R;
+import dev.knureview.Util.SharedPreferencesActivity;
 
 /**
  * Created by DavidHa on 2015. 11. 23..
  */
 public class MyProfile extends ActionBarActivity {
+
+    private static final String LOGIN_RESULT = "loginResult";
     private static final int CUR_POSITION = 1;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toogle;
@@ -27,11 +30,12 @@ public class MyProfile extends ActionBarActivity {
     private LeftDrawerAdapter listViewAdapter;
 
     private Typeface nanumFont;
-    private Typeface bmFont;
+
     private TextView toolbarTxt;
     private TextView headerTxt;
     private TextView bottomTxt;
 
+    private SharedPreferencesActivity pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +48,12 @@ public class MyProfile extends ActionBarActivity {
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
-        bmFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/bm.TTF");
-        toolbarTxt = (TextView)findViewById(R.id.toolbarTxt);
+
+        toolbarTxt = (TextView) findViewById(R.id.toolbarTxt);
         headerTxt = (TextView) findViewById(R.id.headerTxt);
         bottomTxt = (TextView) findViewById(R.id.bottomTxt);
         toolbarTxt.setText("내 프로필");
-        toolbarTxt.setTypeface(bmFont);
+
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
@@ -64,6 +68,9 @@ public class MyProfile extends ActionBarActivity {
         listViewAdapter = new LeftDrawerAdapter(this, R.layout.layout_left_drawer_row, CUR_POSITION);
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener(listViewListener);
+
+        //pref
+        pref = new SharedPreferencesActivity(this);
     }
 
     AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
@@ -82,6 +89,15 @@ public class MyProfile extends ActionBarActivity {
             }
         }
     };
+
+    public void mOnClick(View view) {
+        if (view.getId() == R.id.logoutBtn) {
+            pref.savePreferences(LOGIN_RESULT,true);
+            startActivity(new Intent(MyProfile.this, LoginActivity.class));
+            overridePendingTransition(R.anim.out_to_up,R.anim.stay);
+            finish();
+        }
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

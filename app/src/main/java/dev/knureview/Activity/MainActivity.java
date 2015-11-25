@@ -57,12 +57,10 @@ public class MainActivity extends ActionBarActivity {
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
-        bmFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/bm.TTF");
         toolbarTxt = (TextView)findViewById(R.id.toolbarTxt);
         headerTxt = (TextView) findViewById(R.id.headerTxt);
         bottomTxt = (TextView) findViewById(R.id.bottomTxt);
         toolbarTxt.setText("수강 리뷰");
-        toolbarTxt.setTypeface(bmFont);
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
