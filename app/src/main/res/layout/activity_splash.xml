@@ -5,21 +5,23 @@
     android:background="@color/colorPrimary">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true">
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="200dp"
+        android:id="@+id/splashImg"
+        android:layout_width="280dp"
+        android:layout_height="260dp"
         android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splash_img" />
+        android:scaleType="fitXY"
+        android:src="@drawable/splash" />
 
     <TextView
         android:id="@+id/appTitleEng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="95dp"
+        android:layout_alignTop="@id/splashImg"
         android:layout_centerHorizontal="true"
         android:text="KNU Review"
         android:textColor="@color/colorPrimaryDark"

@@ -4,47 +4,52 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
-
+import java.util.ArrayList;
 
 import dev.knureview.Adapter.NavigationDrawerAdapter;
-import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
+import dev.knureview.Util.NetworkUtil;
+import dev.knureview.Util.SharedPreferencesActivity;
+import dev.knureview.VO.Cookie;
+import dev.knureview.VO.GradeVO;
 
-public class MainActivity extends ActionBarActivity {
-    private static final int CUR_POSITION = 0;
+/**
+ * Created by DavidHa on 2015. 11. 23..
+ */
+public class MyProfileActivity extends ActionBarActivity {
+
+    private static final String LOGIN_RESULT = "loginResult";
+    private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toogle;
     private ListView listView;
     private NavigationDrawerAdapter listViewAdapter;
 
     private Typeface nanumFont;
+
     private TextView headerTxt;
     private TextView bottomTxt;
+
+    private SharedPreferencesActivity pref;
+    private Cookie cookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,22 +75,24 @@ public class MainActivity extends ActionBarActivity {
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
         headerTxt = (TextView) listHeader.findViewById(R.id.headerTxt);
-        bottomTxt = (TextView)findViewById(R.id.bottomTxt);
+        bottomTxt = (TextView) findViewById(R.id.bottomTxt);
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
-        //fragment
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("1학기", PageFragment.class)
-                .add("2학기", PageFragment.class)
-                .create());
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(adapter);
+        //pref
+        pref = new SharedPreferencesActivity(this);
+        cookie = new Cookie();
+        cookie.setIdno(pref.getPreferences("idno", null));
+        cookie.setGubn(pref.getPreferences("gubn", null));
+        cookie.setName(pref.getPreferences("name", null));
+        cookie.setPass(pref.getPreferences("pass", null));
+        cookie.setAuto(pref.getPreferences("auto", null));
+        cookie.setMjco(pref.getPreferences("mjco", null));
+        cookie.setName_e(pref.getPreferences("name_e", null));
+        cookie.setJsession(pref.getPreferences("jsession", null));
+        new SchoolGrade().execute(cookie);
 
-        SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-        viewPagerTab.setViewPager(viewPager);
     }
 
     AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
@@ -94,40 +101,29 @@ public class MainActivity extends ActionBarActivity {
             listViewAdapter.setSelectedIndex(position);
 
             if (id == 0) {
-                //MainActivity
+                Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+                finish();
+
             } else if (id == 1) {
-                Intent intent = new Intent(MainActivity.this, MyStoryActivity.class);
+                Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
             } else if (id == 2) {
-                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
-                finish();
+                //MyProfileActivity
             }
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toogle.onOptionsItemSelected(item)) {
-            return true;
-        } else if (item.getItemId() == R.id.search) {
-            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
-
+    public void mOnClick(View view) {
+        if (view.getId() == R.id.logoutBtn) {
+            pref.savePreferences(LOGIN_RESULT, true);
+            startActivity(new Intent(MyProfileActivity.this, LoginActivity.class));
+            overridePendingTransition(R.anim.stay, R.anim.out_to_up);
+            finish();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -146,4 +142,23 @@ public class MainActivity extends ActionBarActivity {
     public void onBackPressed() {
 
     }
+
+    private class SchoolGrade extends AsyncTask<Cookie, Void, ArrayList<GradeVO>> {
+        @Override
+        protected ArrayList<GradeVO> doInBackground(Cookie... params) {
+            try{
+                return new NetworkUtil().getSchoolGrade(params[0]);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<GradeVO> list) {
+            super.onPostExecute(list);
+            Toast.makeText(MyProfileActivity.this, "" + list.get(0).getSchlYear(), 0).show();
+        }
+    }
+
 }

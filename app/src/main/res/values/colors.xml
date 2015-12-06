@@ -17,4 +17,6 @@
     <color name="folder_color">#FBC02D</color>
     <color name="rowColor">#EAEAEA</color>
     <color name="transparent_black">#aa000000</color>
+    <color name="bg_color">#99000000</color>
+
 </resources>

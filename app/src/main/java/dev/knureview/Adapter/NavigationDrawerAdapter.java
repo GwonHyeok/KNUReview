@@ -1,8 +1,6 @@
 package dev.knureview.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import dev.knureview.Activity.MainActivity;
-import dev.knureview.Activity.MyProfile;
 import dev.knureview.R;
 
 /**
  * Created by DavidHa on 2015. 11. 22..
  */
-public class LeftDrawerAdapter extends BaseAdapter {
+public class NavigationDrawerAdapter extends BaseAdapter {
 
-    private String mTitles[] = {"수강 리뷰", "나"};
-    private int mIcons[] = {R.drawable.course_review, R.drawable.my_profile};
+    private String mTitles[] = {"수강리뷰", "소곤소곤", "내프로필"};
+    private int mIcons[] = {R.drawable.course_review, R.drawable.my_profile, R.drawable.my_profile};
     private Activity activity;
     private int resource;
     private Typeface font;
@@ -35,7 +31,7 @@ public class LeftDrawerAdapter extends BaseAdapter {
         private TextView rowTxt;
     }
 
-    public LeftDrawerAdapter(Activity activity, int resource, int currentPosition) {
+    public NavigationDrawerAdapter(Activity activity, int resource, int currentPosition) {
         this.activity = activity;
         this.resource = resource;
         font = Typeface.createFromAsset(activity.getResources()
@@ -46,7 +42,7 @@ public class LeftDrawerAdapter extends BaseAdapter {
     }
 
     public void setSelectedIndex(int index) {
-        selectedIndex = index;
+        selectedIndex = index-1;
         notifyDataSetChanged();
     }
 
