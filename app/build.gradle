@@ -31,4 +31,5 @@ dependencies {
         transitive = true
     }
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

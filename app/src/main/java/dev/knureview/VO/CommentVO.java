@@ -4,10 +4,19 @@ package dev.knureview.VO;
  * Created by DavidHa on 2015. 11. 26..
  */
 public class CommentVO {
+    private int imageResource;
     private String description;
     private int commentCnt;
     private int likeCnt;
     private String writeTime;
+
+    public int getImageResource() {
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
 
     public String getDescription() {
         return description;

@@ -76,20 +76,34 @@ public class MyStoryActivity extends ActionBarActivity {
         bottomTxt.setTypeface(nanumFont);
 
 
-
         data = new ArrayList<CommentVO>();
-        for(int i=0; i<1200; i++){
-            String str="";
-            if(i%5==0){
-                str = "\n몇글자 까지 가능한지 확인해볼까요 25자가 넘어야하니깐 맘대로 쓰겠습니다.\nㅋㅋㅋㅋㅋ";
-            }
-            CommentVO vo = new CommentVO();
-            vo.setDescription("소곤소곤 테스트 입니다. "+i+"번째"+str);
-            data.add(vo);
-        }
+
+        CommentVO vo = new CommentVO();
+        vo.setImageResource(R.drawable.sample1);
+        vo.setDescription("살 빼면 하고싶은것들 모두 다\n적어봐");
+        vo.setWriteTime("2시간 전");
+        vo.setLikeCnt(13);
+        vo.setCommentCnt(9);
+        data.add(vo);
+
+        vo = new CommentVO();
+        vo.setImageResource(R.drawable.sample2);
+        vo.setDescription("설레고 싶다");
+        vo.setWriteTime("10시간 전");
+        vo.setLikeCnt(32);
+        vo.setCommentCnt(17);
+        data.add(vo);
+
+        vo = new CommentVO();
+        vo.setImageResource(R.drawable.sample3);
+        vo.setDescription("내일 드디어 시험!!\n다들 시험 잘 보세요");
+        vo.setWriteTime("4시간 전");
+        vo.setLikeCnt(4);
+        vo.setCommentCnt(1);
+        data.add(vo);
 
 
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
         listView.setAdapter(adapter);
     }
@@ -107,7 +121,7 @@ public class MyStoryActivity extends ActionBarActivity {
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
             } else if (id == 1) {
-               //MyStoryActivity
+                //MyStoryActivity
             } else if (id == 2) {
                 Intent intent = new Intent(MyStoryActivity.this, MyProfileActivity.class);
                 startActivity(intent);

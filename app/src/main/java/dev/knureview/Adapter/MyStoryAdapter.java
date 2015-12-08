@@ -1,6 +1,7 @@
 package dev.knureview.Adapter;
 
 import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,14 +46,13 @@ public class MyStoryAdapter extends ArrayAdapter<CommentVO> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder vh;
-        LinearLayout dynamicArea = null;
 
         if (convertView == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(layout, parent, false);
             vh = new ViewHolder();
             vh.backgroundImg = (ImageView) convertView.findViewById(R.id.backgroundImg);
-
+            vh.dynamicArea = (LinearLayout) convertView.findViewById(R.id.dynamicArea);
             vh.commentCnt = (TextView) convertView.findViewById(R.id.commentCnt);
             vh.likeCnt = (TextView) convertView.findViewById(R.id.likeCnt);
             vh.writeTime = (TextView) convertView.findViewById(R.id.writeTime);
@@ -60,12 +62,17 @@ public class MyStoryAdapter extends ArrayAdapter<CommentVO> {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        dynamicArea = (LinearLayout) convertView.findViewById(R.id.dynamicArea);
-        if (dynamicArea.getChildCount() > 0) {
-            dynamicArea.removeAllViews();
+        if (vh.dynamicArea.getChildCount() > 0) {
+            vh.dynamicArea.removeAllViews();
         }
-        setDescription(data.get(position).getDescription(), dynamicArea);
-
+        setDescription(data.get(position).getDescription(), vh.dynamicArea);
+        Picasso.with(activity)
+                .load(data.get(position).getImageResource())
+                .into(vh.backgroundImg);
+        vh.backgroundImg.setColorFilter(activity.getResources().getColor(R.color.dim_color), PorterDuff.Mode.DST_OVER);
+        vh.writeTime.setText(data.get(position).getWriteTime());
+        vh.commentCnt.setText("" + data.get(position).getCommentCnt());
+        vh.likeCnt.setText("" + data.get(position).getLikeCnt());
 
         return convertView;
     }
@@ -92,8 +99,8 @@ public class MyStoryAdapter extends ArrayAdapter<CommentVO> {
                 count = 0;
             }
         }
-        if (findPosition == 0) {
-            makeTextView(description, dynamicArea);
+        if (findPosition == 0 || (count + findPosition + 1) == description.length()) {
+            makeTextView(description.substring(findPosition).trim(), dynamicArea);
         }
     }
 
@@ -108,7 +115,7 @@ public class MyStoryAdapter extends ArrayAdapter<CommentVO> {
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = space40;
         text.setLayoutParams(params);
-        text.setBackgroundColor(activity.getResources().getColor(R.color.bg_color));
+        text.setBackgroundColor(activity.getResources().getColor(R.color.transparent_black));
         text.setSingleLine(true);
 
         text.setPadding(space100, space14, space100, space14);
