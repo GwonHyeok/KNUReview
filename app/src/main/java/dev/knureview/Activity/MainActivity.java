@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
@@ -33,9 +32,9 @@ import dev.knureview.R;
 public class MainActivity extends ActionBarActivity {
     private static final int CUR_POSITION = 0;
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toogle;
-    private ListView listView;
-    private NavigationDrawerAdapter listViewAdapter;
+    private ActionBarDrawerToggle toggle;
+    private ListView drawer;
+    private NavigationDrawerAdapter drawerAdapter;
 
     private Typeface nanumFont;
     private TextView headerTxt;
@@ -52,20 +51,20 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        //toogle
+        //toggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        toogle.setDrawerIndicatorEnabled(true);
-        drawerLayout.setDrawerListener(toogle);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        toggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(toggle);
 
-        //adapter
-        listView = (ListView) findViewById(R.id.listView);
-        listViewAdapter = new NavigationDrawerAdapter(this, R.layout.layout_drawer_row, CUR_POSITION);
+        //drawer adapter
+        drawer = (ListView) findViewById(R.id.drawer);
+        drawerAdapter = new NavigationDrawerAdapter(this, R.layout.layout_drawer_row, CUR_POSITION);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View listHeader = inflater.inflate(R.layout.layout_drawer_header, null);
-        listView.addHeaderView(listHeader);
-        listView.setAdapter(listViewAdapter);
-        listView.setOnItemClickListener(listViewListener);
+        drawer.addHeaderView(listHeader);
+        drawer.setAdapter(drawerAdapter);
+        drawer.setOnItemClickListener(drawerListener);
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
@@ -88,10 +87,10 @@ public class MainActivity extends ActionBarActivity {
         viewPagerTab.setViewPager(viewPager);
     }
 
-    AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
+    AdapterView.OnItemClickListener drawerListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            listViewAdapter.setSelectedIndex(position);
+            drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
                 //MainActivity
@@ -116,9 +115,11 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+    //toggle
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (toogle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         } else if (item.getItemId() == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
@@ -133,13 +134,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toogle.syncState();
+        toggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        toogle.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
     }
 
     @Override

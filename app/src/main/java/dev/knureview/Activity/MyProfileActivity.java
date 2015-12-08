@@ -34,9 +34,9 @@ public class MyProfileActivity extends ActionBarActivity {
     private static final String LOGIN_RESULT = "loginResult";
     private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toogle;
-    private ListView listView;
-    private NavigationDrawerAdapter listViewAdapter;
+    private ActionBarDrawerToggle toggle;
+    private ListView drawer;
+    private NavigationDrawerAdapter drawerAdapter;
 
     private Typeface nanumFont;
 
@@ -57,20 +57,20 @@ public class MyProfileActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        //toogle
+        //toggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        toogle.setDrawerIndicatorEnabled(true);
-        drawerLayout.setDrawerListener(toogle);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        toggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(toggle);
 
         //adapter
-        listView = (ListView) findViewById(R.id.listView);
-        listViewAdapter = new NavigationDrawerAdapter(this, R.layout.layout_drawer_row, CUR_POSITION);
+        drawer = (ListView) findViewById(R.id.drawer);
+        drawerAdapter = new NavigationDrawerAdapter(this, R.layout.layout_drawer_row, CUR_POSITION);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View listHeader = inflater.inflate(R.layout.layout_drawer_header, null);
-        listView.addHeaderView(listHeader);
-        listView.setAdapter(listViewAdapter);
-        listView.setOnItemClickListener(listViewListener);
+        drawer.addHeaderView(listHeader);
+        drawer.setAdapter(drawerAdapter);
+        drawer.setOnItemClickListener(listViewListener);
 
         //font
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
@@ -98,7 +98,7 @@ public class MyProfileActivity extends ActionBarActivity {
     AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            listViewAdapter.setSelectedIndex(position);
+            drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
                 Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
@@ -126,16 +126,18 @@ public class MyProfileActivity extends ActionBarActivity {
         }
     }
 
+    //toggle
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toogle.syncState();
+        toggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        toogle.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
     }
 
     @Override

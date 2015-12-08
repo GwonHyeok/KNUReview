@@ -16,9 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ListView
-                android:id="@+id/list"
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:divider="#ffffff"
+                android:dividerHeight="0px" />
         </RelativeLayout>
 
         <include layout="@layout/layout_navigation_drawer" />
