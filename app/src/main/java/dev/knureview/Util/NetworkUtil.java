@@ -9,12 +9,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 import dev.knureview.VO.Cookie;
-import dev.knureview.VO.GradeVO;
+import dev.knureview.VO.StudentVO;
 
 /**
  * Created by DavidHa on 2015. 11. 21..
@@ -24,29 +22,152 @@ public class NetworkUtil {
     private String query;
     private Cookie cookie;
 
-
+    //학교 서버에서 쿠키값 가져오기
     public Cookie loginSchoolServer(String id, String pw) {
         url = "https://m.kangnam.ac.kr/knusmart/c/c001.do?";
         query = "user_id" + "=" + id + "&" + "user_pwd" + "=" + pw;
         return getCookie(url, query);
     }
 
+    public StudentVO getStudentInfo(Cookie cookie) throws Exception {
+        StudentVO vo = new StudentVO();
+        url = "https://m.kangnam.ac.kr/knusmart/s/s258.do";
+        this.cookie = cookie;
+        String data = setCookie(url, null);
+        JSONObject stdObject = (JSONObject) new JSONParser().parse(data);
+        JSONObject dataObject = (JSONObject) stdObject.get("data");
 
-    public ArrayList<GradeVO> getSchoolGrade(Cookie cookie) throws Exception {
-        ArrayList<GradeVO> schlGradeList = new ArrayList<GradeVO>();
+        //소속
+        vo.setBelong(dataObject.get("mast_unko").toString());
+        //전공
+        vo.setMajor(dataObject.get("mast_mjor").toString());
+        return vo;
+    }
+
+    public StudentVO getExistMemberInfo(String stdNo) throws Exception {
+        StudentVO vo = new StudentVO();
+        url = "http://kureview.cafe24.com/mobileLookupMember.jsp";
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        String result = mainObject.get("member").toString();
+        JSONObject memberObject = (JSONObject) mainObject.get("member");
+        if (result != null) {
+            vo.setBelong(memberObject.get("belong").toString());
+            vo.setMajor(memberObject.get("major").toString());
+            /*
+            vo.setReviewCnt(Integer.parseInt(memberObject.get("reviewCnt").toString()));
+            vo.setReviewAuth(Integer.parseInt(memberObject.get("reviewAuth").toString()));
+            vo.setTalkCnt(Integer.parseInt(memberObject.get("talkCnt").toString()));
+            vo.setTalkWarning(Integer.parseInt(memberObject.get("talkWarning").toString()));
+            */
+            vo.setIsExist(true);
+        } else {
+            vo.setIsExist(false);
+        }
+        return vo;
+    }
+
+    public void updateMemberInfo(StudentVO vo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
+        query = "stdNo" + "=" + vo.getStdNo() + "&" + "belong" + "=" + vo.getBelong()
+                + "&" + "major" + "=" + vo.getMajor();
+        sendQuery(url, query);
+    }
+
+    public void setMemberInfo(StudentVO vo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertMember.jsp";
+        query = "stdNo" + "=" + vo.getStdNo() + "&" + "belong" + "=" + vo.getBelong()
+                + "&" + "major" + "=" + vo.getMajor()
+                + "&" + "reviewAuth" + "=" + vo.getReviewAuth();
+        sendQuery(url, query);
+    }
+
+
+    public void setStudentLecture(Cookie cookie, String stdNo) throws Exception {
+        //기존에 저장된 lecture 삭제 및 초기화
+        url = "http://kureview.cafe24.com/mobileDeleteLecture.jsp";
+        query = "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+
         url = "https://m.kangnam.ac.kr/knusmart/s/s252l.do";
         this.cookie = cookie;
         String data = setCookie(url, null);
-        JSONObject gradeObject = (JSONObject) new JSONParser().parse(data);
-        JSONArray array = (JSONArray) gradeObject.get("data");
-        for(int i=0; i<array.size(); i++){
-            GradeVO vo = new GradeVO();
-            JSONObject object = (JSONObject)array.get(i);
-            vo.setSchlYear(object.get("schl_year").toString());
-            vo.setSchlSmst(object.get("schl_smst").toString());
-            schlGradeList.add(vo);
+        JSONObject schlObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray schlArray = (JSONArray) schlObject.get("data");
+
+        //수강했던 학년 & 학기 가져옴
+        for (int i = 0; i < schlArray.size(); i++) {
+            JSONObject object = (JSONObject) schlArray.get(i);
+            String schlYear = object.get("schl_year").toString();
+            String schlSmst = object.get("schl_smst").toString();
+
+            //1, 2학기 수강 데이터만 가져옴
+            if (Integer.parseInt(schlSmst) < 3) {
+                url = "https://m.kangnam.ac.kr/knusmart/s/s252.do?";
+                query = "schl_year" + "=" + schlYear + "&" + "schl_smst" + "=" + schlSmst;
+                data = setCookie(url, query);
+                JSONObject lectObject = (JSONObject) new JSONParser().parse(data);
+                JSONArray lectArray = (JSONArray) lectObject.get("data2");
+
+                for (int j = 0; j < lectArray.size(); j++) {
+                    JSONObject innerObject = (JSONObject) lectArray.get(j);
+                    //수강했던 과목 Lecture Table Insert
+                    url = "http://kureview.cafe24.com/mobileInsertLecture.jsp";
+                    query = "stdNo" + "=" + stdNo + "&" + "year" + "=" + schlYear
+                            + "&" + "term" + "=" + schlSmst
+                            + "&" + "subjName" + "=" + innerObject.get("subj_knam").toString();
+                    sendQuery(url, query);
+                }
+            }
         }
-        return schlGradeList;
+
+
+    }
+
+    private void sendQuery(String url, String query) throws Exception {
+
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setReadTimeout(15000);
+        conn.setConnectTimeout(15000);
+        conn.setRequestMethod("POST");
+
+        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+        wr.write(query);
+        wr.flush();
+        conn.connect();
+        conn.getInputStream();
+    }
+
+    private String getJSON(String url, String query) {
+        try {
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.connect();
+
+            if (query != null) {
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(query);
+                wr.flush();
+                conn.connect();
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line + "\n");
+            }
+            reader.close();
+            return builder.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String setCookie(String url, String query) {
@@ -85,7 +206,7 @@ public class NetworkUtil {
 
     private Cookie getCookie(String url, String query) {
         Cookie vo = new Cookie();
-        url += query;
+        // url += query;
         try {
             HttpURLConnection request = (HttpURLConnection) new URL(url).openConnection();
             request.setUseCaches(false);

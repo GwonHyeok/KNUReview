@@ -17,7 +17,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
+import dev.knureview.Util.TimeUtil;
 import dev.knureview.VO.Cookie;
+import dev.knureview.VO.StudentVO;
 
 /**
  * Created by DavidHa on 2015. 11. 21..
@@ -34,6 +36,10 @@ public class LoginActivity extends Activity {
     private EditText inputPW;
     private Button loginBtn;
     private TextView loginInfo;
+    private String stdNo;
+    private StudentVO vo;
+    private Cookie cookie;
+    boolean isFreshMan = false;
 
 
     private MaterialDialog progressDialog;
@@ -63,6 +69,9 @@ public class LoginActivity extends Activity {
         //pref
         pref = new SharedPreferencesActivity(this);
 
+        //StudentVO
+        vo = new StudentVO();
+
         inputPW.addTextChangedListener(textChangeListener);
     }
 
@@ -89,15 +98,17 @@ public class LoginActivity extends Activity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.loginBtn) {
-            String id = inputID.getText().toString();
+            stdNo = inputID.getText().toString();
             String pw = inputPW.getText().toString();
-            if (!id.equals("") && !pw.equals("")) {
-                new getSchoolCookie().execute(id, pw);
+            if (!stdNo.equals("") && !pw.equals("")) {
+                new SchoolCookie().execute(stdNo, pw);
             }
         }
     }
 
-    private class getSchoolCookie extends AsyncTask<String, Void, Cookie> {
+
+    //학교 서버에서 쿠키값 가져오기
+    private class SchoolCookie extends AsyncTask<String, Void, Cookie> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -120,24 +131,17 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Cookie cookie) {
-            progressDialog.dismiss();
-            if (cookie.getLoginResult().equals("success")) {
-                pref.savePreferences("idno", cookie.getIdno());
-                pref.savePreferences("gubn", cookie.getGubn());
-                pref.savePreferences("name", cookie.getName());
-                pref.savePreferences("pass", cookie.getPass());
-                pref.savePreferences("auto", cookie.getAuto());
-                pref.savePreferences("mjco", cookie.getMjco());
-                pref.savePreferences("name_e", cookie.getName_e());
-                pref.savePreferences("jsession", cookie.getJsession());
-                pref.savePreferences(LOGIN_RESULT,true);
+        protected void onPostExecute(Cookie result) {
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+            //학교 서버 로그인 성공했을 경우
+            if (result.getLoginResult().equals("success")) {
+
+                //학생 소속, 전공 정보 가져오기 (쿠키값 전달)
+                cookie = result;
+                new StudentInfo().execute(cookie);
+
             } else {
+                progressDialog.dismiss();
                 new MaterialDialog.Builder(LoginActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))
                         .title("잘못된 비밀번호")
@@ -150,4 +154,160 @@ public class LoginActivity extends Activity {
             }
         }
     }
+
+    //학교 서버로부터 학생 소속, 전공 정보 가져오는 클래스
+    private class StudentInfo extends AsyncTask<Cookie, Void, StudentVO> {
+        @Override
+        protected StudentVO doInBackground(Cookie... params) {
+            try {
+                return new NetworkUtil().getStudentInfo(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StudentVO result) {
+            super.onPostExecute(result);
+
+            //소속, 전공 초기화
+            vo.setBelong(result.getBelong());
+            vo.setMajor(result.getMajor());
+
+            String year = stdNo.substring(0, 4);
+            TimeUtil timeUtil = new TimeUtil();
+
+            //2월 ~ 7월 14일까지
+            if (year.equals(timeUtil.getYear())
+                    && (timeUtil.getMonth() >= 2
+                    && ((timeUtil.getMonth() <= 7) && timeUtil.getDay() < 15))) {
+                //신입생 1학기 일 경우
+                isFreshMan = true;
+            } else {
+                isFreshMan = false;
+            }
+            new LookupMember().execute();
+        }
+    }
+
+    //기존 KNU REVIEW 사용자인지 확인 하는 클래스
+    private class LookupMember extends AsyncTask<Void, Void, StudentVO> {
+        @Override
+        protected StudentVO doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getExistMemberInfo(stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StudentVO result) {
+            super.onPostExecute(result);
+            if (result.isExist() && isFreshMan) {
+                //신입생 1학기 기존 사용자인 경우
+                setAutoLogin();
+
+            } else if (result.isExist() && !isFreshMan) {
+                //재학생 기존 사용자인 경우
+                if (!result.getMajor().equals(vo.getMajor())) {
+                    //전공이 바뀌었으면 update
+                    vo.setStdNo(Integer.parseInt(stdNo));
+                    new UpdateMemberInfo().execute(vo);
+                } else {
+                    new StudentLecture().execute(cookie);
+                }
+
+            } else if (!result.isExist() && isFreshMan) {
+                //신입생 1학기 새로운 사용자인 경우
+                vo.setReviewAuth(1);
+                new RegisterMember().execute(vo);
+
+            } else if (!result.isExist() && !isFreshMan) {
+                //재학생 새로운 사용자인 경우
+                vo.setReviewAuth(0);
+                new RegisterMember().execute(vo);
+            }
+
+        }
+    }
+
+    //기존 사용자 Update Info 클래스
+    private class UpdateMemberInfo extends AsyncTask<StudentVO, Void, Void> {
+        @Override
+        protected Void doInBackground(StudentVO... params) {
+            try {
+                new NetworkUtil().updateMemberInfo(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new StudentLecture().execute(cookie);
+        }
+    }
+
+    //새로운 사용자 등록 클래스
+    private class RegisterMember extends AsyncTask<StudentVO, Void, Void> {
+        @Override
+        protected Void doInBackground(StudentVO... params) {
+            try {
+                new NetworkUtil().setMemberInfo(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (isFreshMan) {
+                //신입생 1학기 새로운 사용자인 경우
+                setAutoLogin();
+            } else {
+                //재학생 새로운 사용자인 경우
+                new StudentLecture().execute(cookie);
+            }
+        }
+    }
+
+
+    private class StudentLecture extends AsyncTask<Cookie, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Cookie[] params) {
+            try {
+                new NetworkUtil().setStudentLecture(params[0], stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            setAutoLogin();
+        }
+    }
+
+    private void setAutoLogin() {
+        //자동로그인 설정
+        progressDialog.dismiss();
+        pref.savePreferences(LOGIN_RESULT, true);
+
+        //Main 페이지 이동
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
+    }
+
 }

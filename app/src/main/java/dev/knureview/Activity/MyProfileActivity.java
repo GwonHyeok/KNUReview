@@ -82,17 +82,6 @@ public class MyProfileActivity extends ActionBarActivity {
 
         //pref
         pref = new SharedPreferencesActivity(this);
-        cookie = new Cookie();
-        cookie.setIdno(pref.getPreferences("idno", null));
-        cookie.setGubn(pref.getPreferences("gubn", null));
-        cookie.setName(pref.getPreferences("name", null));
-        cookie.setPass(pref.getPreferences("pass", null));
-        cookie.setAuto(pref.getPreferences("auto", null));
-        cookie.setMjco(pref.getPreferences("mjco", null));
-        cookie.setName_e(pref.getPreferences("name_e", null));
-        cookie.setJsession(pref.getPreferences("jsession", null));
-        new SchoolGrade().execute(cookie);
-
     }
 
     AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
@@ -119,7 +108,7 @@ public class MyProfileActivity extends ActionBarActivity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.logoutBtn) {
-            pref.savePreferences(LOGIN_RESULT, true);
+            pref.savePreferences(LOGIN_RESULT, false);
             startActivity(new Intent(MyProfileActivity.this, LoginActivity.class));
             overridePendingTransition(R.anim.stay, R.anim.out_to_up);
             finish();
@@ -143,24 +132,6 @@ public class MyProfileActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 
-    }
-
-    private class SchoolGrade extends AsyncTask<Cookie, Void, ArrayList<GradeVO>> {
-        @Override
-        protected ArrayList<GradeVO> doInBackground(Cookie... params) {
-            try{
-                return new NetworkUtil().getSchoolGrade(params[0]);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<GradeVO> list) {
-            super.onPostExecute(list);
-            Toast.makeText(MyProfileActivity.this, "" + list.get(0).getSchlYear(), 0).show();
-        }
     }
 
 }

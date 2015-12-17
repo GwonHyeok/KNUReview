@@ -5,28 +5,29 @@ package dev.knureview.VO;
  */
 public class StudentVO {
 
-    private int id;
-    private String dept;
+    private int stdNo;
+    private String belong;
     private String major;
     private int reviewCnt;
     private int reviewAuth;
     private int talkCnt;
     private int talkWarning;
+    private boolean isExist;
 
-    public int getId() {
-        return id;
+    public int getStdNo() {
+        return stdNo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStdNo(int stdNo) {
+        this.stdNo = stdNo;
     }
 
-    public String getDept() {
-        return dept;
+    public String getBelong() {
+        return belong;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public void setBelong(String belong) {
+        this.belong = belong;
     }
 
     public String getMajor() {
@@ -67,5 +68,13 @@ public class StudentVO {
 
     public void setTalkWarning(int talkWarning) {
         this.talkWarning = talkWarning;
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setIsExist(boolean isExist) {
+        this.isExist = isExist;
     }
 }
