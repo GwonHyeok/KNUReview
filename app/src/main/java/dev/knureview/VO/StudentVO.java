@@ -12,6 +12,8 @@ public class StudentVO {
     private int reviewAuth;
     private int talkCnt;
     private int talkWarning;
+    private int talkAuth;
+    private int talkTicket;
     private boolean isExist;
 
     public int getStdNo() {
@@ -68,6 +70,22 @@ public class StudentVO {
 
     public void setTalkWarning(int talkWarning) {
         this.talkWarning = talkWarning;
+    }
+
+    public int getTalkAuth() {
+        return talkAuth;
+    }
+
+    public void setTalkAuth(int talkAuth) {
+        this.talkAuth = talkAuth;
+    }
+
+    public int getTalkTicket() {
+        return talkTicket;
+    }
+
+    public void setTalkTicket(int talkTicket) {
+        this.talkTicket = talkTicket;
     }
 
     public boolean isExist() {

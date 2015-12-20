@@ -3,19 +3,37 @@ package dev.knureview.VO;
 /**
  * Created by DavidHa on 2015. 11. 26..
  */
-public class CommentVO {
-    private int imageResource;
+public class TalkVO {
+    private String pictureURL;
+    private int tNo;
+    private int stdNo;
     private String description;
     private int commentCnt;
     private int likeCnt;
     private String writeTime;
 
-    public int getImageResource() {
-        return imageResource;
+    public String getPictureURL() {
+        return pictureURL;
     }
 
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
+    }
+
+    public int gettNo() {
+        return tNo;
+    }
+
+    public void settNo(int tNo) {
+        this.tNo = tNo;
+    }
+
+    public int getStdNo() {
+        return stdNo;
+    }
+
+    public void setStdNo(int stdNo) {
+        this.stdNo = stdNo;
     }
 
     public String getDescription() {

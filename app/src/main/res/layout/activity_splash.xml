@@ -10,8 +10,8 @@
         android:layout_centerInParent="true">
     <ImageView
         android:id="@+id/splashImg"
-        android:layout_width="280dp"
-        android:layout_height="260dp"
+        android:layout_width="220dp"
+        android:layout_height="240dp"
         android:layout_centerInParent="true"
         android:scaleType="fitXY"
         android:src="@drawable/splash" />
@@ -20,12 +20,12 @@
         android:id="@+id/appTitleEng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="95dp"
+        android:layout_marginTop="88dp"
         android:layout_alignTop="@id/splashImg"
         android:layout_centerHorizontal="true"
         android:text="KNU Review"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="30dp" />
+        android:textSize="24dp" />
     </RelativeLayout>
 
     <TextView

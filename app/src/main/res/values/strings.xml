@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">강남대 리뷰</string>
+    <string name="version">1.0.0</string>
 
     <string name="ic_access_alarms">&#xe000;</string>
     <string name="ic_access_time">&#xe001;</string>

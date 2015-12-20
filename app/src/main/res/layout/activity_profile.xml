@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,27 +14,23 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <include
-                layout="@layout/layout_profile_top"/>
-
-           <include
-               layout="@layout/layout_profile_middle"/>
-            <Button
-                android:id="@+id/logoutBtn"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom"
-                android:layout_margin="12dp"
-                android:background="@drawable/logout_btn"
-                android:text="로그아웃"
-                android:textColor="@color/white"
-                android:onClick="mOnClick"/>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/layout_profile_top" />
+
+                <include layout="@layout/layout_profile_middle" />
+
+                <include layout="@layout/layout_profile_bottom" />
+
+            </LinearLayout>
+        </ScrollView>
 
         <include layout="@layout/layout_navigation_drawer" />
     </android.support.v4.widget.DrawerLayout>

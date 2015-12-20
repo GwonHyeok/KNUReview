@@ -9,10 +9,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.knureview.VO.Cookie;
+import dev.knureview.VO.LectureVO;
 import dev.knureview.VO.StudentVO;
+import dev.knureview.VO.TalkVO;
 
 /**
  * Created by DavidHa on 2015. 11. 21..
@@ -29,6 +32,7 @@ public class NetworkUtil {
         return getCookie(url, query);
     }
 
+    //학교 서버에서 학생 정보 가져오기
     public StudentVO getStudentInfo(Cookie cookie) throws Exception {
         StudentVO vo = new StudentVO();
         url = "https://m.kangnam.ac.kr/knusmart/s/s258.do";
@@ -44,29 +48,33 @@ public class NetworkUtil {
         return vo;
     }
 
+    // Member 정보 가져오기
     public StudentVO getExistMemberInfo(String stdNo) throws Exception {
         StudentVO vo = new StudentVO();
         url = "http://kureview.cafe24.com/mobileLookupMember.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         String result = mainObject.get("member").toString();
         JSONObject memberObject = (JSONObject) mainObject.get("member");
         if (result != null) {
+            vo.setStdNo(Integer.parseInt(memberObject.get("stdNo").toString()));
             vo.setBelong(memberObject.get("belong").toString());
             vo.setMajor(memberObject.get("major").toString());
-            /*
             vo.setReviewCnt(Integer.parseInt(memberObject.get("reviewCnt").toString()));
             vo.setReviewAuth(Integer.parseInt(memberObject.get("reviewAuth").toString()));
             vo.setTalkCnt(Integer.parseInt(memberObject.get("talkCnt").toString()));
             vo.setTalkWarning(Integer.parseInt(memberObject.get("talkWarning").toString()));
-            */
+            vo.setTalkAuth(Integer.parseInt(memberObject.get("talkAuth").toString()));
+            vo.setTalkTicket(Integer.parseInt(memberObject.get("talkTicket").toString()));
             vo.setIsExist(true);
         } else {
             vo.setIsExist(false);
         }
         return vo;
     }
+
 
     public void updateMemberInfo(StudentVO vo) throws Exception {
         url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
@@ -83,7 +91,7 @@ public class NetworkUtil {
         sendQuery(url, query);
     }
 
-
+    // lecture 에 수강했던 과목 가져오기
     public void setStudentLecture(Cookie cookie, String stdNo) throws Exception {
         //기존에 저장된 lecture 삭제 및 초기화
         url = "http://kureview.cafe24.com/mobileDeleteLecture.jsp";
@@ -113,18 +121,52 @@ public class NetworkUtil {
                 for (int j = 0; j < lectArray.size(); j++) {
                     JSONObject innerObject = (JSONObject) lectArray.get(j);
                     //수강했던 과목 Lecture Table Insert
+                    String subjName = innerObject.get("subj_knam").toString().replace('&', '0');
+
                     url = "http://kureview.cafe24.com/mobileInsertLecture.jsp";
                     query = "stdNo" + "=" + stdNo + "&" + "year" + "=" + schlYear
                             + "&" + "term" + "=" + schlSmst
-                            + "&" + "subjName" + "=" + innerObject.get("subj_knam").toString();
+                            + "&" + "subjName" + "=" + subjName;
                     sendQuery(url, query);
                 }
             }
         }
-
-
     }
 
+    public ArrayList<LectureVO> getStudentLecture(String stdNo) throws Exception {
+        ArrayList<LectureVO> lectureArray = new ArrayList<LectureVO>();
+        url = "http://kureview.cafe24.com/mobileGetLecture.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        //json parsing
+
+        return lectureArray;
+    }
+
+    public ArrayList<TalkVO> getAllTalkList() throws Exception {
+        ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
+        url = "http://kureview.cafe24.com/mobileTalkList.jsp";
+        String data = getJSON(url, null);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray talkArray = (JSONArray) mainObject.get("talk");
+        for (int i = 0; i < talkArray.size(); i++) {
+            JSONObject object = (JSONObject) talkArray.get(i);
+            TalkVO vo = new TalkVO();
+            vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+            vo.setPictureURL(object.get("pictureURL").toString());
+            vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+            vo.setDescription(object.get("description").toString());
+            vo.setWriteTime(object.get("writeTime").toString());
+            vo.setLikeCnt(Integer.parseInt(object.get("likeCnt").toString()));
+            vo.setCommentCnt(Integer.parseInt(object.get("commentCnt").toString()));
+            talkList.add(vo);
+        }
+        return talkList;
+    }
+
+    // NetWork Util Method
     private void sendQuery(String url, String query) throws Exception {
 
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();

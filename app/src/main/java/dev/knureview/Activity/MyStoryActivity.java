@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -21,7 +22,8 @@ import java.util.ArrayList;
 import dev.knureview.Adapter.MyStoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
-import dev.knureview.VO.CommentVO;
+import dev.knureview.Util.NetworkUtil;
+import dev.knureview.VO.TalkVO;
 
 /**
  * Created by DavidHa on 2015. 11. 26..
@@ -41,7 +43,8 @@ public class MyStoryActivity extends ActionBarActivity {
     private MyStoryAdapter adapter;
     private ListView listView;
 
-    private ArrayList<CommentVO> data;
+    private ArrayList<TalkVO> talkList;
+    private int listPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,39 +78,33 @@ public class MyStoryActivity extends ActionBarActivity {
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
-
-        data = new ArrayList<CommentVO>();
-
-        CommentVO vo = new CommentVO();
-        vo.setImageResource(R.drawable.sample1);
-        vo.setDescription("살 빼면 하고싶은것들 모두 다\n적어봐");
-        vo.setWriteTime("2시간 전");
-        vo.setLikeCnt(13);
-        vo.setCommentCnt(9);
-        data.add(vo);
-
-        vo = new CommentVO();
-        vo.setImageResource(R.drawable.sample2);
-        vo.setDescription("설레고 싶다");
-        vo.setWriteTime("10시간 전");
-        vo.setLikeCnt(32);
-        vo.setCommentCnt(17);
-        data.add(vo);
-
-        vo = new CommentVO();
-        vo.setImageResource(R.drawable.sample3);
-        vo.setDescription("내일 드디어 시험!!\n다들 시험 잘 보세요");
-        vo.setWriteTime("4시간 전");
-        vo.setLikeCnt(4);
-        vo.setCommentCnt(1);
-        data.add(vo);
-
-
         listView = (ListView) findViewById(R.id.listView);
-        adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
-        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(listItemListener);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new TalkList().execute();
+    }
+
+    AdapterView.OnItemClickListener listItemListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listPosition = position;
+            Intent intent = new Intent(MyStoryActivity.this, MyStoryDetailActivity.class);
+            intent.putExtra("tNo", talkList.get(position).gettNo());
+            intent.putExtra("pictureURL", talkList.get(position).getPictureURL());
+            intent.putExtra("stdNo", talkList.get(position).getStdNo());
+            intent.putExtra("description", talkList.get(position).getDescription());
+            intent.putExtra("writeTime",talkList.get(position).getWriteTime());
+            intent.putExtra("likeCnt", talkList.get(position).getLikeCnt());
+            intent.putExtra("commentCnt", talkList.get(position).getCommentCnt());
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }
+    };
 
     AdapterView.OnItemClickListener drawerListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -143,6 +140,27 @@ public class MyStoryActivity extends ActionBarActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
+    }
+
+    private class TalkList extends AsyncTask<Void, Void, ArrayList<TalkVO>> {
+        @Override
+        protected ArrayList<TalkVO> doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getAllTalkList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<TalkVO> data) {
+            super.onPostExecute(data);
+            talkList = data;
+            adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
+            listView.setAdapter(adapter);
+            listView.setSelection(listPosition);
+        }
     }
 
 

@@ -23,7 +23,7 @@ public class CollegeHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolde
     @Override
     public View createNodeView(TreeNode node, IconTreeItemHolder.IconTreeItem value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.layout_profile_node, null, false);
+        final View view = inflater.inflate(R.layout.layout_college_node, null, false);
         TextView tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 

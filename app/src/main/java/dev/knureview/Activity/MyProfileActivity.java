@@ -3,6 +3,7 @@ package dev.knureview.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
 import dev.knureview.VO.Cookie;
 import dev.knureview.VO.GradeVO;
+import dev.knureview.VO.StudentVO;
 
 /**
  * Created by DavidHa on 2015. 11. 23..
@@ -32,6 +35,7 @@ import dev.knureview.VO.GradeVO;
 public class MyProfileActivity extends ActionBarActivity {
 
     private static final String LOGIN_RESULT = "loginResult";
+    private static final String STUDENT_NUMBER="studentNumber";
     private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -43,8 +47,18 @@ public class MyProfileActivity extends ActionBarActivity {
     private TextView headerTxt;
     private TextView bottomTxt;
 
+    private ImageView backgroundImg;
+
+    private TextView stdNoTxt;
+    private TextView belongTxt;
+    private TextView majorTxt;
+    private TextView reviewCntTxt;
+    private TextView reviewAuthTxt;
+    private TextView talkCntTxt;
+    private TextView talkWarningTxt;
+
     private SharedPreferencesActivity pref;
-    private Cookie cookie;
+    private String stdNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +96,20 @@ public class MyProfileActivity extends ActionBarActivity {
 
         //pref
         pref = new SharedPreferencesActivity(this);
+        stdNo = pref.getPreferences(STUDENT_NUMBER,"");
+
+        backgroundImg = (ImageView)findViewById(R.id.backgroundImg);
+        stdNoTxt = (TextView)findViewById(R.id.stdNo);
+        belongTxt = (TextView)findViewById(R.id.belong);
+        majorTxt = (TextView)findViewById(R.id.major);
+        reviewCntTxt = (TextView)findViewById(R.id.reviewCnt);
+        reviewAuthTxt = (TextView)findViewById(R.id.reviewAuth);
+        talkCntTxt = (TextView)findViewById(R.id.talkCnt);
+        talkWarningTxt = (TextView)findViewById(R.id.talkWarning);
+
+        new MemberInfo().execute(stdNo);
     }
+
 
     AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -107,12 +134,7 @@ public class MyProfileActivity extends ActionBarActivity {
     };
 
     public void mOnClick(View view) {
-        if (view.getId() == R.id.logoutBtn) {
-            pref.savePreferences(LOGIN_RESULT, false);
-            startActivity(new Intent(MyProfileActivity.this, LoginActivity.class));
-            overridePendingTransition(R.anim.stay, R.anim.out_to_up);
-            finish();
-        }
+
     }
 
     //toggle
@@ -132,6 +154,34 @@ public class MyProfileActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
 
+    }
+    private class MemberInfo extends AsyncTask<String, Void, StudentVO>{
+        @Override
+        protected StudentVO doInBackground(String... params) {
+            try{
+               return new NetworkUtil().getExistMemberInfo(params[0]);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StudentVO result) {
+            super.onPostExecute(result);
+            stdNoTxt.setText("" + result.getStdNo());
+            belongTxt.setText(result.getBelong());
+            majorTxt.setText(result.getMajor());
+            reviewCntTxt.setText(""+result.getReviewCnt());
+            int reviewAuth =result.getReviewAuth();
+            if(reviewAuth==0){
+                reviewAuthTxt.setText("없음");
+            }else{
+                reviewAuthTxt.setText("있음");
+            }
+            talkCntTxt.setText(""+result.getTalkCnt());
+            talkWarningTxt.setText(""+result.getTalkWarning());
+        }
     }
 
 }

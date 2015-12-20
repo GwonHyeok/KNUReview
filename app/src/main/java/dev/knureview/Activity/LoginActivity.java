@@ -27,7 +27,7 @@ import dev.knureview.VO.StudentVO;
 public class LoginActivity extends Activity {
 
     private static final String LOGIN_RESULT = "loginResult";
-
+    private static final String STUDENT_NUMBER="studentNumber";
     private Typeface archiveFont;
     private Typeface nanumFont;
 
@@ -223,11 +223,15 @@ public class LoginActivity extends Activity {
             } else if (!result.isExist() && isFreshMan) {
                 //신입생 1학기 새로운 사용자인 경우
                 vo.setReviewAuth(1);
+                vo.setTalkTicket(1);
+                vo.setTalkAuth(1);
                 new RegisterMember().execute(vo);
 
             } else if (!result.isExist() && !isFreshMan) {
                 //재학생 새로운 사용자인 경우
                 vo.setReviewAuth(0);
+                vo.setTalkTicket(0);
+                vo.setTalkTicket(0);
                 new RegisterMember().execute(vo);
             }
 
@@ -302,6 +306,7 @@ public class LoginActivity extends Activity {
         //자동로그인 설정
         progressDialog.dismiss();
         pref.savePreferences(LOGIN_RESULT, true);
+        pref.savePreferences(STUDENT_NUMBER, stdNo);
 
         //Main 페이지 이동
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

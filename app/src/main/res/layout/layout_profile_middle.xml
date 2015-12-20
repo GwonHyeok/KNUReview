@@ -2,16 +2,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="35dp"
-    android:layout_marginRight="35dp"
-    android:layout_marginTop="25dp"
-    android:layout_weight="1"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="12dp"
     android:orientation="horizontal"
     >
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
         card_view:cardCornerRadius="2dp">
@@ -19,13 +20,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical"
             android:padding="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="수강 후기"
+                android:text="수강리뷰"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -89,7 +91,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/viewAuthority"
+                    android:id="@+id/reviewAuth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -103,9 +105,11 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         card_view:cardCornerRadius="2dp">
@@ -114,12 +118,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/white"
             android:padding="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프리톡"
+                android:text="소곤소곤"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -185,7 +190,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/warningCnt"
+                    android:id="@+id/talkWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
