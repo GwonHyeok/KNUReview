@@ -13,12 +13,18 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.poliveira.apps.parallaxlistview.ParallaxListView;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dev.knureview.R;
 import dev.knureview.Util.TalkTextUtil;
@@ -45,18 +51,17 @@ public class MyStoryDetailActivity extends Activity {
     private String writeTime;
     private int likeCnt;
     private int commentCnt;
+    ArrayAdapter<String> mAdapter;
+    private ImageView headerBlurImg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_story_detail);
 
-        blurImg = (ImageView) findViewById(R.id.blurImg);
-        backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
-        dynamicArea = (LinearLayout)findViewById(R.id.dynamicArea);
-        writeTimeTxt = (TextView)findViewById(R.id.writeTime);
-        commentCntTxt = (TextView)findViewById(R.id.commentCnt);
-        likeCntTxt = (TextView)findViewById(R.id.likeCnt);
+        writeTimeTxt = (TextView) findViewById(R.id.writeTime);
+        blurImg = (ImageView)findViewById(R.id.blurImg);
 
         //talkTextUtil
         talkTextUtil = new TalkTextUtil();
@@ -64,39 +69,59 @@ public class MyStoryDetailActivity extends Activity {
         talkTextUtil.setTextSizeUP();
 
         //get intent
-        Intent intent =getIntent();
+        Intent intent = getIntent();
         tNo = intent.getIntExtra("tNo", 0);
         pictureURL = intent.getStringExtra("pictureURL");
         stdNo = intent.getIntExtra("stdNo", 0);
         description = intent.getStringExtra("description");
         writeTime = intent.getStringExtra("writeTime");
         likeCnt = intent.getIntExtra("likeCnt", 0);
-        commentCnt = intent.getIntExtra("commentCnt",0);
+        commentCnt = intent.getIntExtra("commentCnt", 0);
 
-        //
+        List<String> mStrings = new ArrayList<>();
+
+
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mStrings);
+
+        ParallaxListView mListView = (ParallaxListView) findViewById(R.id.view);
+        mListView.setAdapter(mAdapter);
+
+
+        final View headerView = getLayoutInflater().inflate(R.layout.layout_my_story_detail_header, mListView, false);
+
+        backgroundImg = (ImageView) headerView.findViewById(R.id.backgroundImg);
+        dynamicArea = (LinearLayout) headerView.findViewById(R.id.dynamicArea);
+        headerBlurImg = (ImageView) headerView.findViewById(R.id.headerBlurImg);
+        commentCntTxt = (TextView) headerView.findViewById(R.id.commentCnt);
+        likeCntTxt = (TextView) headerView.findViewById(R.id.likeCnt);
+
+
         talkTextUtil.makeTextView(description, dynamicArea);
         writeTimeTxt.setText(TimeFormat.formatTimeString(writeTime));
-        commentCntTxt.setText(""+commentCnt);
-        likeCntTxt.setText(""+likeCnt);
+        commentCntTxt.setText("" + commentCnt);
+        likeCntTxt.setText("" + likeCnt);
         Picasso.with(this)
-                .load("http://kureview.cafe24.com/image/"+pictureURL)
+                .load("http://kureview.cafe24.com/image/" + pictureURL)
                 .into(backgroundImg);
         BitmapDrawable drawable = (BitmapDrawable) backgroundImg.getDrawable();
         blurBitmap = blur(this, drawable.getBitmap(), 22);
         blurImg.setImageBitmap(blurBitmap);
+        headerBlurImg.setImageBitmap(blurBitmap);
 
+
+        mListView.setParallaxView(headerView);
     }
 
 
-    public void mOnClick(View view){
-        if(view.getId() == R.id.plusBtn){
+    public void mOnClick(View view) {
+        if (view.getId() == R.id.plusBtn) {
 
-        }else if(view.getId() == R.id.backBtn){
+        } else if (view.getId() == R.id.backBtn) {
             finish();
         }
     }
 
-    public static Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
+    public Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);

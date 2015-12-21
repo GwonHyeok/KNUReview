@@ -29,6 +29,7 @@
              android:label="소곤소곤"/>
         <activity android:name=".Activity.MyStoryDetailActivity"
            />
+        <activity android:name=".Activity.MyStoryEditActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

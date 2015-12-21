@@ -17,7 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 import dev.knureview.Adapter.MyStoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
@@ -35,6 +38,7 @@ public class MyStoryActivity extends ActionBarActivity {
     private ActionBarDrawerToggle toggle;
     private ListView drawer;
     private NavigationDrawerAdapter drawerAdapter;
+    private FloatingActionButton fab;
 
     private Typeface nanumFont;
     private TextView headerTxt;
@@ -45,6 +49,7 @@ public class MyStoryActivity extends ActionBarActivity {
 
     private ArrayList<TalkVO> talkList;
     private int listPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +86,23 @@ public class MyStoryActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(listItemListener);
 
+        //fab
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.attachToListView(listView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new TalkList().execute();
+    }
+
+    public void mOnClick(View view) {
+        if (view.getId() == R.id.fab) {
+            Intent intent = new Intent(MyStoryActivity.this, MyStoryEditActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }
     }
 
     AdapterView.OnItemClickListener listItemListener = new AdapterView.OnItemClickListener() {
@@ -98,7 +114,7 @@ public class MyStoryActivity extends ActionBarActivity {
             intent.putExtra("pictureURL", talkList.get(position).getPictureURL());
             intent.putExtra("stdNo", talkList.get(position).getStdNo());
             intent.putExtra("description", talkList.get(position).getDescription());
-            intent.putExtra("writeTime",talkList.get(position).getWriteTime());
+            intent.putExtra("writeTime", talkList.get(position).getWriteTime());
             intent.putExtra("likeCnt", talkList.get(position).getLikeCnt());
             intent.putExtra("commentCnt", talkList.get(position).getCommentCnt());
             startActivity(intent);
@@ -160,6 +176,7 @@ public class MyStoryActivity extends ActionBarActivity {
             adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
             listView.setAdapter(adapter);
             listView.setSelection(listPosition);
+            adapter.notifyDataSetChanged();
         }
     }
 
