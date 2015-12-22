@@ -1,0 +1,10 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/accelerate_interpolator">
+    <translate
+        android:startOffset="100"
+        android:duration="200"
+        android:fromYDelta="0%p"
+        android:toYDelta="-35%p"
+        android:repeatCount="1"
+        android:repeatMode="reverse"/>
+</set>

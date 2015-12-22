@@ -2,10 +2,8 @@ package dev.knureview.Activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +13,10 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,16 +31,21 @@ import dev.knureview.R;
 public class MyStoryEditActivity extends Activity {
     private EditText inputEdit;
     private ImageView blurImg;
-    private ImageView backgroundImg;
+    private ImageView cardImage;
     private Bitmap blurBitmap;
     private CircleImageView preImg1;
     private CircleImageView preImg2;
     private CircleImageView preImg3;
+    private ImageView diceBtn;
 
     private int[] randomArray;
-    private int randomSize = 20;
-    private Thread thread;
-    private Runnable task;
+    private int currentImage;
+    private final int IMAGE_COUNT = 20;
+
+    private Animation diceAnim;
+    private Animation preCircle1Anim;
+    private Animation preCircle2Anim;
+    private Animation preCircle3Anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +53,82 @@ public class MyStoryEditActivity extends Activity {
         setContentView(R.layout.activity_mystory_edit);
 
         blurImg = (ImageView) findViewById(R.id.blurImg);
-        backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
+        cardImage = (ImageView) findViewById(R.id.backgroundImg);
         preImg1 = (CircleImageView) findViewById(R.id.preImg1);
         preImg2 = (CircleImageView) findViewById(R.id.preImg2);
         preImg3 = (CircleImageView) findViewById(R.id.preImg3);
 
-        int first = getRandom();
-        updateBackgroundImage(first);
-        updatePreCircleImage(first, preImg1);
-        updatePreCircleImage(getRandom(), preImg2);
-        updatePreCircleImage(getRandom(), preImg3);
+        diceBtn = (ImageView) findViewById(R.id.diceBtn);
 
+
+        //random
+        randomArray = new int[3];
+        setRandomArray();
+        currentImage = randomArray[0];
+        updateCardImage(randomArray[0]);
+        updateBackgroundImage();
+        updatePreCircleImage(randomArray[0], preImg1);
+        updatePreCircleImage(randomArray[1], preImg2);
+        updatePreCircleImage(randomArray[2], preImg3);
+
+        //animation
+        diceAnim = AnimationUtils.loadAnimation(this, R.anim.dice);
+        preCircle1Anim = AnimationUtils.loadAnimation(this, R.anim.pre_circle1);
+        preCircle2Anim = AnimationUtils.loadAnimation(this, R.anim.pre_circle2);
+        preCircle3Anim = AnimationUtils.loadAnimation(this, R.anim.pre_circle3);
+        diceAnim.setAnimationListener(animationListener);
+        preCircle1Anim.setAnimationListener(animationListener);
+        preCircle2Anim.setAnimationListener(animationListener);
+        preCircle3Anim.setAnimationListener(animationListener);
+    }
+
+    Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+            preImg1.setImageResource(R.color.white);
+            preImg2.setImageResource(R.color.white);
+            preImg3.setImageResource(R.color.white);
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            updateCardImage(randomArray[0]);
+            updateBackgroundImage();
+            updatePreCircleImage(randomArray[0], preImg1);
+            updatePreCircleImage(randomArray[1], preImg2);
+            updatePreCircleImage(randomArray[2], preImg3);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
+    public void setRandomArray() {
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            randomArray[i] = random.nextInt(IMAGE_COUNT);
+            for (int j = 0; j < i; j++) {
+                if (randomArray[i] == randomArray[j]) {
+                    i--;
+                }
+            }
+        }
+    }
+
+    public void updateCardImage(int random) {
+        Picasso.with(MyStoryEditActivity.this)
+                .load("http://kureview.cafe24.com/image/" + "sample" + random + ".jpg")
+                .into(cardImage);
+
+    }
+
+    public void updateBackgroundImage() {
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                BitmapDrawable drawable = (BitmapDrawable) backgroundImg.getDrawable();
+                BitmapDrawable drawable = (BitmapDrawable) cardImage.getDrawable();
                 try {
                     blurBitmap = blur(MyStoryEditActivity.this, drawable.getBitmap(), 22);
                     blurImg.setImageBitmap(blurBitmap);
@@ -72,24 +137,7 @@ public class MyStoryEditActivity extends Activity {
                 }
             }
         };
-        handler.sendEmptyMessageDelayed(0, 500);
-
-
-
-
-    }
-
-    public int getRandom() {
-        Random random = new Random();
-        return random.nextInt(randomSize);
-    }
-
-
-    public void updateBackgroundImage(int random) {
-        Picasso.with(MyStoryEditActivity.this)
-                .load("http://kureview.cafe24.com/image/" + "sample" + random + ".jpg")
-                .into(backgroundImg);
-
+        handler.sendEmptyMessageDelayed(0, 200);
     }
 
     public void updatePreCircleImage(int random, CircleImageView targetImageView) {
@@ -119,10 +167,36 @@ public class MyStoryEditActivity extends Activity {
     }
 
     public void mOnClick(View view) {
-        if (view.getId() == R.id.plusBtn) {
+        if (view.getId() == R.id.nextBtn) {
 
         } else if (view.getId() == R.id.backBtn) {
             finish();
+        } else if (view.getId() == R.id.diceBtn) {
+            diceBtn.startAnimation(diceAnim);
+            preImg1.startAnimation(preCircle1Anim);
+            preImg2.startAnimation(preCircle2Anim);
+            preImg3.startAnimation(preCircle3Anim);
+            setRandomArray();
+
+        } else if (view.getId() == R.id.preImg1) {
+            preImg1.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
+            if(currentImage!=randomArray[0]){
+                updateCardImage(randomArray[0]);
+                updateBackgroundImage();
+            }
+        } else if (view.getId() == R.id.preImg2) {
+            preImg2.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
+            if(currentImage!=randomArray[1]){
+                updateCardImage(randomArray[1]);
+                updateBackgroundImage();
+            }
+
+        } else if (view.getId() == R.id.preImg3) {
+            preImg3.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
+            if(currentImage!=randomArray[2]){
+                updateCardImage(randomArray[2]);
+                updateBackgroundImage();
+            }
         }
     }
 
