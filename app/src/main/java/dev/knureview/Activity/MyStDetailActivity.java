@@ -33,7 +33,7 @@ import dev.knureview.Util.TimeFormat;
 /**
  * Created by DavidHa on 2015. 12. 1..
  */
-public class MyStoryDetailActivity extends Activity {
+public class MyStDetailActivity extends Activity {
 
     private ImageView blurImg;
     private ImageView backgroundImg;
@@ -96,7 +96,7 @@ public class MyStoryDetailActivity extends Activity {
         likeCntTxt = (TextView) headerView.findViewById(R.id.likeCnt);
 
 
-        talkTextUtil.makeTextView(description, dynamicArea);
+        talkTextUtil.setDescription(description, dynamicArea);
         writeTimeTxt.setText(TimeFormat.formatTimeString(writeTime));
         commentCntTxt.setText("" + commentCnt);
         likeCntTxt.setText("" + likeCnt);

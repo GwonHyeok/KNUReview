@@ -50,7 +50,7 @@ public class SplashActivity extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 if (isReLogin) {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, MyStoryActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        handler.sendEmptyMessageDelayed(0, 2000);
+        handler.sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override

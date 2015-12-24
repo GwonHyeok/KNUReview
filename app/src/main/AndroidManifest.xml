@@ -27,9 +27,10 @@
             android:label="내 프로필"/>
         <activity android:name=".Activity.MyStoryActivity"
              android:label="소곤소곤"/>
-        <activity android:name=".Activity.MyStoryDetailActivity"
+        <activity android:name=".Activity.MyStDetailActivity"
            />
-        <activity android:name=".Activity.MyStoryEditActivity"/>
+        <activity android:name=".Activity.MyStEditActivity"/>
+        <activity android:name=".Activity.MyStConfirmActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

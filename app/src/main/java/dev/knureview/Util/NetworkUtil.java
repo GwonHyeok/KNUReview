@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +146,8 @@ public class NetworkUtil {
         return lectureArray;
     }
 
+    //소곤소곤
+
     public ArrayList<TalkVO> getAllTalkList() throws Exception {
         ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
         url = "http://kureview.cafe24.com/mobileTalkList.jsp";
@@ -164,6 +167,20 @@ public class NetworkUtil {
             talkList.add(vo);
         }
         return talkList;
+    }
+
+    public boolean insertTalk(String stdNo, String pictureURL, String description) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertTalk.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
+                + "&" + "description" + "=" + description;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        if (mainObject.get("result").toString().equals("success")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // NetWork Util Method

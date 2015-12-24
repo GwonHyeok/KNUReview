@@ -2,6 +2,7 @@ package dev.knureview.Activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -12,11 +13,16 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,9 +34,14 @@ import dev.knureview.R;
 /**
  * Created by DavidHa on 2015. 12. 21..
  */
-public class MyStoryEditActivity extends Activity {
+public class MyStEditActivity extends Activity {
+    public static Activity activity;
     private EditText inputEdit;
-    private ImageView blurImg;
+    private String description;
+    private int[] newLinePosition;
+    private int lineCount = 1;
+    private boolean isEditable = false;
+    private ImageView blurImage;
     private ImageView cardImage;
     private Bitmap blurBitmap;
     private CircleImageView preImg1;
@@ -40,7 +51,7 @@ public class MyStoryEditActivity extends Activity {
 
     private int[] randomArray;
     private int currentImage;
-    private final int IMAGE_COUNT = 20;
+    private final int IMAGE_COUNT = 40;
 
     private Animation diceAnim;
     private Animation preCircle1Anim;
@@ -52,19 +63,20 @@ public class MyStoryEditActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mystory_edit);
 
-        blurImg = (ImageView) findViewById(R.id.blurImg);
-        cardImage = (ImageView) findViewById(R.id.backgroundImg);
+        activity = MyStEditActivity.this;
+
+        inputEdit = (EditText) findViewById(R.id.inputEdit);
+        blurImage = (ImageView) findViewById(R.id.blurImage);
+        cardImage = (ImageView) findViewById(R.id.cardImage);
         preImg1 = (CircleImageView) findViewById(R.id.preImg1);
         preImg2 = (CircleImageView) findViewById(R.id.preImg2);
         preImg3 = (CircleImageView) findViewById(R.id.preImg3);
-
         diceBtn = (ImageView) findViewById(R.id.diceBtn);
 
 
         //random
         randomArray = new int[3];
         setRandomArray();
-        currentImage = randomArray[0];
         updateCardImage(randomArray[0]);
         updateBackgroundImage();
         updatePreCircleImage(randomArray[0], preImg1);
@@ -80,7 +92,14 @@ public class MyStoryEditActivity extends Activity {
         preCircle1Anim.setAnimationListener(animationListener);
         preCircle2Anim.setAnimationListener(animationListener);
         preCircle3Anim.setAnimationListener(animationListener);
+
+        //inputEdit
+        inputEdit.addTextChangedListener(inputListener);
+
+        //newLinePosition
+        newLinePosition = new int[6];
     }
+
 
     Animation.AnimationListener animationListener = new Animation.AnimationListener() {
         @Override
@@ -115,10 +134,12 @@ public class MyStoryEditActivity extends Activity {
                 }
             }
         }
+        currentImage = randomArray[0];
     }
 
     public void updateCardImage(int random) {
-        Picasso.with(MyStoryEditActivity.this)
+        currentImage = random;
+        Picasso.with(MyStEditActivity.this)
                 .load("http://kureview.cafe24.com/image/" + "sample" + random + ".jpg")
                 .into(cardImage);
 
@@ -130,19 +151,20 @@ public class MyStoryEditActivity extends Activity {
             public void handleMessage(Message msg) {
                 BitmapDrawable drawable = (BitmapDrawable) cardImage.getDrawable();
                 try {
-                    blurBitmap = blur(MyStoryEditActivity.this, drawable.getBitmap(), 22);
-                    blurImg.setImageBitmap(blurBitmap);
+                    blurBitmap = blur(MyStEditActivity.this, drawable.getBitmap(), 22);
+                    blurImage.setImageBitmap(blurBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    updateBackgroundImage();
                 }
             }
         };
-        handler.sendEmptyMessageDelayed(0, 200);
+        handler.sendEmptyMessageDelayed(0, 100);
     }
 
     public void updatePreCircleImage(int random, CircleImageView targetImageView) {
         String pictureURL = "sample" + random + ".jpg";
-        Picasso.with(MyStoryEditActivity.this)
+        Picasso.with(MyStEditActivity.this)
                 .load("http://kureview.cafe24.com/image_small/" + pictureURL)
                 .into(targetImageView);
     }
@@ -168,6 +190,15 @@ public class MyStoryEditActivity extends Activity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.nextBtn) {
+            if (!inputEdit.getText().toString().equals("")) {
+                Intent intent = new Intent(MyStEditActivity.this, MyStConfirmActivity.class);
+                intent.putExtra("pictureURL", "sample" + currentImage + ".jpg");
+                intent.putExtra("description", description);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+            } else {
+                Toast.makeText(MyStEditActivity.this, "텅빈 생각은 안돼안돼", Toast.LENGTH_SHORT).show();
+            }
 
         } else if (view.getId() == R.id.backBtn) {
             finish();
@@ -180,25 +211,47 @@ public class MyStoryEditActivity extends Activity {
 
         } else if (view.getId() == R.id.preImg1) {
             preImg1.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
-            if(currentImage!=randomArray[0]){
+            if (currentImage != randomArray[0]) {
                 updateCardImage(randomArray[0]);
                 updateBackgroundImage();
             }
         } else if (view.getId() == R.id.preImg2) {
             preImg2.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
-            if(currentImage!=randomArray[1]){
+            if (currentImage != randomArray[1]) {
                 updateCardImage(randomArray[1]);
                 updateBackgroundImage();
             }
 
         } else if (view.getId() == R.id.preImg3) {
             preImg3.startAnimation(AnimationUtils.loadAnimation(this, R.anim.dice));
-            if(currentImage!=randomArray[2]){
+            if (currentImage != randomArray[2]) {
                 updateCardImage(randomArray[2]);
                 updateBackgroundImage();
             }
         }
     }
+
+    TextWatcher inputListener = new TextWatcher() {
+        String previousString = "";
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            previousString = s.toString();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            description = s.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (inputEdit.getLineCount() > 6) {
+                inputEdit.setText(previousString);
+                inputEdit.setSelection(inputEdit.length());
+            }
+        }
+    };
 
     @Override
     public void finish() {

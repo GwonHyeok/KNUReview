@@ -1,5 +1,6 @@
 package dev.knureview.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,12 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import dev.knureview.Adapter.MyStoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
@@ -33,6 +33,7 @@ import dev.knureview.VO.TalkVO;
  */
 public class MyStoryActivity extends ActionBarActivity {
 
+    public static Activity activity;
     private static final int CUR_POSITION = 1;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -55,6 +56,8 @@ public class MyStoryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_story);
+
+        activity = MyStoryActivity.this;
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,9 +102,11 @@ public class MyStoryActivity extends ActionBarActivity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.fab) {
-            Intent intent = new Intent(MyStoryActivity.this, MyStoryEditActivity.class);
+            Intent intent = new Intent(MyStoryActivity.this, MyStEditActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }else if(view.getId() == R.id.devLayout){
+
         }
     }
 
@@ -109,7 +114,7 @@ public class MyStoryActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             listPosition = position;
-            Intent intent = new Intent(MyStoryActivity.this, MyStoryDetailActivity.class);
+            Intent intent = new Intent(MyStoryActivity.this, MyStDetailActivity.class);
             intent.putExtra("tNo", talkList.get(position).gettNo());
             intent.putExtra("pictureURL", talkList.get(position).getPictureURL());
             intent.putExtra("stdNo", talkList.get(position).getStdNo());
@@ -128,11 +133,19 @@ public class MyStoryActivity extends ActionBarActivity {
             drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
-
+                /*
                 Intent intent = new Intent(MyStoryActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
+                */
+                new MaterialDialog.Builder(MyStoryActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("아직 준비중이에요 1월 17일에 봬요~")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
             } else if (id == 1) {
                 //MyStoryActivity
             } else if (id == 2) {
@@ -175,8 +188,8 @@ public class MyStoryActivity extends ActionBarActivity {
             talkList = data;
             adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
             listView.setAdapter(adapter);
-            listView.setSelection(listPosition);
             adapter.notifyDataSetChanged();
+            listView.setSelection(listPosition);
         }
     }
 

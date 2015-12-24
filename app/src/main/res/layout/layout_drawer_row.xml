@@ -12,7 +12,7 @@
         android:id="@+id/rowImg"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/course_review"/>
+        />
 
     <TextView
         android:id="@+id/rowTxt"

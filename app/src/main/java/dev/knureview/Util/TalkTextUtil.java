@@ -3,6 +3,7 @@ package dev.knureview.Util;
 import android.app.Activity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dev.knureview.R;
 
@@ -19,15 +20,15 @@ public class TalkTextUtil {
     }
 
     public void setTextSizeUP() {
-        this.textSize = 14;
+        this.textSize = 10;
     }
 
 
-    public void makeTextView(String description, LinearLayout dynamicArea) {
-        final int space100 = (int) PixelUtil.convertPixelsToDp(100+textSize, activity);
-        final int space40 = (int) PixelUtil.convertPixelsToDp(40+textSize, activity);
-        final int space14 = (int) PixelUtil.convertPixelsToDp(14+textSize, activity);
-        final int txtSize = (int) PixelUtil.convertPixelsToDp(40+textSize, activity);
+    private void makeTextView(String description, LinearLayout dynamicArea) {
+        final int space100 = (int) PixelUtil.convertPixelsToDp(100 + textSize, activity);
+        final int space40 = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
+        final int space14 = (int) PixelUtil.convertPixelsToDp(14 + textSize, activity);
+        final int txtSize = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
 
         TextView text = new TextView(activity);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
@@ -45,30 +46,24 @@ public class TalkTextUtil {
         dynamicArea.addView(text);
     }
 
-    public void setDescription(String description, LinearLayout dynamicArea) {
+    public void setDescription(String description, LinearLayout dynamaicArea) {
         int count = 0;
         int findPosition = 0;
-        String remainStr = "";
         for (int i = 0; i < description.length(); i++) {
             count++;
             char ch = description.charAt(i);
-            if (ch == '\n' || count > 25) {
-                String tempStr = description.substring(findPosition, i).replace("\n", "").trim();
 
-                if (ch != ' ' && ch != '\n') {
-                    int tempPosition = tempStr.lastIndexOf(' ');
-                    makeTextView(tempStr.substring(0, tempPosition).trim(), dynamicArea);
-                    remainStr = tempStr.substring(tempPosition).trim();
-                } else {
-                    makeTextView(remainStr + tempStr, dynamicArea);
-                    remainStr = "";
-                }
+            if (ch == '\n' || count > 21) {
+                String tempStr = description.substring(findPosition, i).replace("\n", "").trim();
+                makeTextView(tempStr, dynamaicArea);
                 findPosition = i;
-                count = 0;
+                count = 1;
             }
         }
-        if (findPosition == 0 || (count + findPosition + 1) == description.length()) {
-            makeTextView(description.substring(findPosition).trim(), dynamicArea);
+
+        if (findPosition == 0 || findPosition + count == description.length()) {
+            makeTextView(description.substring(findPosition).trim(), dynamaicArea);
         }
     }
+
 }
