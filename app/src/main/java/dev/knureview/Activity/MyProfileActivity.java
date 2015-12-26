@@ -155,7 +155,7 @@ public class MyProfileActivity extends ActionBarActivity {
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .show();
             } else if (id == 1) {
-                Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
+                Intent intent = new Intent(MyProfileActivity.this, StoryActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();

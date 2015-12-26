@@ -18,7 +18,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 import java.net.URLDecoder;
 
-import dev.knureview.Activity.MyStoryActivity;
+import dev.knureview.Activity.StoryActivity;
 import dev.knureview.R;
 import dev.knureview.Util.SharedPreferencesActivity;
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -69,7 +69,7 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message
      */
     private void sendNotification(String title, String message) {
-        Intent intent = new Intent(this, MyStoryActivity.class);
+        Intent intent = new Intent(this, StoryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

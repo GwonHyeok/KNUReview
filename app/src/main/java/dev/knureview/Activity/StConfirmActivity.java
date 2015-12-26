@@ -30,7 +30,7 @@ import dev.knureview.Util.TalkTextUtil;
 /**
  * Created by DavidHa on 2015. 12. 23..
  */
-public class MyStConfirmActivity extends Activity {
+public class StConfirmActivity extends Activity {
     private static final int ACCEPT = 1;
     private static final int DENIAL = 0;
     public static Activity activity;
@@ -48,9 +48,9 @@ public class MyStConfirmActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_story_confirm);
+        setContentView(R.layout.activity_story_confirm);
 
-        activity = MyStConfirmActivity.this;
+        activity = StConfirmActivity.this;
         cardImage = (ImageView) findViewById(R.id.cardImage);
         blurImage = (ImageView) findViewById(R.id.blurImage);
         dynamicArea = (LinearLayout) findViewById(R.id.dynamicArea);
@@ -132,7 +132,7 @@ public class MyStConfirmActivity extends Activity {
             public void handleMessage(Message msg) {
                 BitmapDrawable drawable = (BitmapDrawable) cardImage.getDrawable();
                 try {
-                    blurBitmap = blur(MyStConfirmActivity.this, drawable.getBitmap(), 22);
+                    blurBitmap = blur(StConfirmActivity.this, drawable.getBitmap(), 22);
                     blurImage.setImageBitmap(blurBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -175,11 +175,11 @@ public class MyStConfirmActivity extends Activity {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
-                        Intent intent = new Intent(MyStConfirmActivity.this, MyStoryActivity.class);
+                        Intent intent = new Intent(StConfirmActivity.this, StoryActivity.class);
                         startActivity(intent);
-                        MyStoryActivity.activity.finish();
-                        MyStEditActivity.activity.finish();
-                        MyStConfirmActivity.activity.finish();
+                        StoryActivity.activity.finish();
+                        StEditActivity.activity.finish();
+                        StConfirmActivity.activity.finish();
                     }
                 }.sendEmptyMessageDelayed(0, 800);
             } else {

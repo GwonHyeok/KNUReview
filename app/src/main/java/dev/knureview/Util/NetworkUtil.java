@@ -182,6 +182,16 @@ public class NetworkUtil {
         return talkList;
     }
 
+    public ArrayList<TalkVO> getMyTalkList(String stdNo) throws Exception{
+        ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
+        url="";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url,query );
+
+        return talkList;
+    }
+
     public boolean insertTalk(String stdNo, String pictureURL, String description) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertTalk.jsp";
         stdNo = new AES256Util().encrypt(stdNo);

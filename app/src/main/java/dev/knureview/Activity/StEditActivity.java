@@ -15,8 +15,6 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,7 +32,7 @@ import dev.knureview.R;
 /**
  * Created by DavidHa on 2015. 12. 21..
  */
-public class MyStEditActivity extends Activity {
+public class StEditActivity extends Activity {
     public static Activity activity;
     private EditText inputEdit;
     private String description;
@@ -61,9 +59,9 @@ public class MyStEditActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mystory_edit);
+        setContentView(R.layout.activity_story_edit);
 
-        activity = MyStEditActivity.this;
+        activity = StEditActivity.this;
 
         inputEdit = (EditText) findViewById(R.id.inputEdit);
         blurImage = (ImageView) findViewById(R.id.blurImage);
@@ -139,7 +137,7 @@ public class MyStEditActivity extends Activity {
 
     public void updateCardImage(int random) {
         currentImage = random;
-        Picasso.with(MyStEditActivity.this)
+        Picasso.with(StEditActivity.this)
                 .load("http://kureview.cafe24.com/image/" + "sample" + random + ".jpg")
                 .into(cardImage);
 
@@ -151,7 +149,7 @@ public class MyStEditActivity extends Activity {
             public void handleMessage(Message msg) {
                 BitmapDrawable drawable = (BitmapDrawable) cardImage.getDrawable();
                 try {
-                    blurBitmap = blur(MyStEditActivity.this, drawable.getBitmap(), 22);
+                    blurBitmap = blur(StEditActivity.this, drawable.getBitmap(), 22);
                     blurImage.setImageBitmap(blurBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -164,8 +162,9 @@ public class MyStEditActivity extends Activity {
 
     public void updatePreCircleImage(int random, CircleImageView targetImageView) {
         String pictureURL = "sample" + random + ".jpg";
-        Picasso.with(MyStEditActivity.this)
+        Picasso.with(StEditActivity.this)
                 .load("http://kureview.cafe24.com/image_small/" + pictureURL)
+                .noFade()
                 .into(targetImageView);
     }
 
@@ -191,13 +190,13 @@ public class MyStEditActivity extends Activity {
     public void mOnClick(View view) {
         if (view.getId() == R.id.nextBtn) {
             if (!inputEdit.getText().toString().equals("")) {
-                Intent intent = new Intent(MyStEditActivity.this, MyStConfirmActivity.class);
+                Intent intent = new Intent(StEditActivity.this, StConfirmActivity.class);
                 intent.putExtra("pictureURL", "sample" + currentImage + ".jpg");
                 intent.putExtra("description", description);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
             } else {
-                Toast.makeText(MyStEditActivity.this, "텅빈 생각은 안돼안돼", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StEditActivity.this, "텅빈 생각은 안돼안돼", Toast.LENGTH_SHORT).show();
             }
 
         } else if (view.getId() == R.id.backBtn) {

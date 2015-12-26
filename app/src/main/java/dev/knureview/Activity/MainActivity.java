@@ -95,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
             if (id == 0) {
                 //MainActivity
             } else if (id == 1) {
-                Intent intent = new Intent(MainActivity.this, MyStoryActivity.class);
+                Intent intent = new Intent(MainActivity.this, StoryActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();

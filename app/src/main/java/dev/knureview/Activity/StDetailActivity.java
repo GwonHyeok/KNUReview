@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -33,7 +30,7 @@ import dev.knureview.Util.TimeFormat;
 /**
  * Created by DavidHa on 2015. 12. 1..
  */
-public class MyStDetailActivity extends Activity {
+public class StDetailActivity extends Activity {
 
     private ImageView blurImg;
     private ImageView backgroundImg;
@@ -58,7 +55,7 @@ public class MyStDetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_story_detail);
+        setContentView(R.layout.activity_story_detail);
 
         writeTimeTxt = (TextView) findViewById(R.id.writeTime);
         blurImg = (ImageView)findViewById(R.id.blurImg);
@@ -87,7 +84,7 @@ public class MyStDetailActivity extends Activity {
         mListView.setAdapter(mAdapter);
 
 
-        final View headerView = getLayoutInflater().inflate(R.layout.layout_my_story_detail_header, mListView, false);
+        final View headerView = getLayoutInflater().inflate(R.layout.layout_story_detail_header, mListView, false);
 
         backgroundImg = (ImageView) headerView.findViewById(R.id.backgroundImg);
         dynamicArea = (LinearLayout) headerView.findViewById(R.id.dynamicArea);

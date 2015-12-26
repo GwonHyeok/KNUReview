@@ -421,7 +421,7 @@ public class LoginActivity extends Activity {
         pref.savePreferences(VERSION, getResources().getString(R.string.version));
 
         //Main 페이지 이동
-        Intent intent = new Intent(LoginActivity.this, MyStoryActivity.class);
+        Intent intent = new Intent(LoginActivity.this, StoryActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();

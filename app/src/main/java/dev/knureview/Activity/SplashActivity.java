@@ -177,7 +177,7 @@ public class SplashActivity extends Activity {
             pref.savePreferences("talkWarning", vo.getTalkWarning());
             pref.savePreferences("talkAuth", vo.getTalkAuth());
             pref.savePreferences("talkTicket", vo.getTalkTicket());
-            Intent intent = new Intent(SplashActivity.this, MyStoryActivity.class);
+            Intent intent = new Intent(SplashActivity.this, StoryActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();

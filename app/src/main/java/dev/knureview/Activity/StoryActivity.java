@@ -33,7 +33,7 @@ import dev.knureview.VO.TalkVO;
 /**
  * Created by DavidHa on 2015. 11. 26..
  */
-public class MyStoryActivity extends ActionBarActivity {
+public class StoryActivity extends ActionBarActivity {
 
     public static Activity activity;
     private static final int CUR_POSITION = 1;
@@ -57,9 +57,9 @@ public class MyStoryActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_story);
+        setContentView(R.layout.activity_story);
 
-        activity = MyStoryActivity.this;
+        activity = StoryActivity.this;
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,7 +106,7 @@ public class MyStoryActivity extends ActionBarActivity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.fab) {
-            Intent intent = new Intent(MyStoryActivity.this, MyStEditActivity.class);
+            Intent intent = new Intent(StoryActivity.this, StEditActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }else if(view.getId() == R.id.devLayout){
@@ -118,7 +118,7 @@ public class MyStoryActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             listPosition = position;
-            Intent intent = new Intent(MyStoryActivity.this, MyStDetailActivity.class);
+            Intent intent = new Intent(StoryActivity.this, StDetailActivity.class);
             intent.putExtra("tNo", talkList.get(position).gettNo());
             intent.putExtra("pictureURL", talkList.get(position).getPictureURL());
             intent.putExtra("stdNo", talkList.get(position).getStdNo());
@@ -138,12 +138,12 @@ public class MyStoryActivity extends ActionBarActivity {
 
             if (id == 0) {
                 /*
-                Intent intent = new Intent(MyStoryActivity.this, MainActivity.class);
+                Intent intent = new Intent(StoryActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
                 */
-                new MaterialDialog.Builder(MyStoryActivity.this)
+                new MaterialDialog.Builder(StoryActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))
                         .content("아직 준비중이에요 1월 17일에 봬요~")
                         .contentColor(getResources().getColor(R.color.text_lgray))
@@ -151,9 +151,9 @@ public class MyStoryActivity extends ActionBarActivity {
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .show();
             } else if (id == 1) {
-                //MyStoryActivity
+                //StoryActivity
             } else if (id == 2) {
-                Intent intent = new Intent(MyStoryActivity.this, MyProfileActivity.class);
+                Intent intent = new Intent(StoryActivity.this, MyProfileActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
@@ -198,7 +198,7 @@ public class MyStoryActivity extends ActionBarActivity {
         protected void onPostExecute(ArrayList<TalkVO> data) {
             super.onPostExecute(data);
             talkList = data;
-            adapter = new MyStoryAdapter(MyStoryActivity.this, R.layout.layout_mystory_list_row, data);
+            adapter = new MyStoryAdapter(StoryActivity.this, R.layout.layout_story_list_row, data);
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);
