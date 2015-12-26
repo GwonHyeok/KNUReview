@@ -3,31 +3,28 @@ package dev.knureview.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
+import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
-import dev.knureview.Util.NetworkUtil;
+import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.SharedPreferencesActivity;
-import dev.knureview.VO.Cookie;
-import dev.knureview.VO.GradeVO;
-import dev.knureview.VO.StudentVO;
 
 /**
  * Created by DavidHa on 2015. 11. 23..
@@ -35,7 +32,6 @@ import dev.knureview.VO.StudentVO;
 public class MyProfileActivity extends ActionBarActivity {
 
     private static final String LOGIN_RESULT = "loginResult";
-    private static final String STUDENT_NUMBER="studentNumber";
     private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -59,6 +55,15 @@ public class MyProfileActivity extends ActionBarActivity {
 
     private SharedPreferencesActivity pref;
     private String stdNo;
+    private String belong;
+    private String major;
+    private int reviewCnt;
+    private int reviewAuth;
+    private int talkCnt;
+    private int talkWarning;
+    private int talkAuth;
+    private int talkTicket;
+    private BackPressCloseHandler backPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +101,37 @@ public class MyProfileActivity extends ActionBarActivity {
 
         //pref
         pref = new SharedPreferencesActivity(this);
-        stdNo = pref.getPreferences(STUDENT_NUMBER,"");
+        stdNo = pref.getPreferences("stdNo", "");
+        belong = pref.getPreferences("belong", "");
+        major = pref.getPreferences("major", "");
+        reviewCnt = pref.getPreferences("reviewCnt", 0);
+        reviewAuth = pref.getPreferences("reviewAuth", 0);
+        talkCnt = pref.getPreferences("talkCnt", 0);
+        talkWarning = pref.getPreferences("talkWarning", 0);
+        talkAuth = pref.getPreferences("talkAuth", 0);
+        talkTicket = pref.getPreferences("talkTicket", 0);
 
-        backgroundImg = (ImageView)findViewById(R.id.backgroundImg);
-        stdNoTxt = (TextView)findViewById(R.id.stdNo);
-        belongTxt = (TextView)findViewById(R.id.belong);
-        majorTxt = (TextView)findViewById(R.id.major);
-        reviewCntTxt = (TextView)findViewById(R.id.reviewCnt);
-        reviewAuthTxt = (TextView)findViewById(R.id.reviewAuth);
-        talkCntTxt = (TextView)findViewById(R.id.talkCnt);
-        talkWarningTxt = (TextView)findViewById(R.id.talkWarning);
+        backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
+        stdNoTxt = (TextView) findViewById(R.id.stdNo);
+        belongTxt = (TextView) findViewById(R.id.belong);
+        majorTxt = (TextView) findViewById(R.id.major);
+        reviewCntTxt = (TextView) findViewById(R.id.reviewCnt);
+        reviewAuthTxt = (TextView) findViewById(R.id.reviewAuth);
+        talkCntTxt = (TextView) findViewById(R.id.talkCnt);
+        talkWarningTxt = (TextView) findViewById(R.id.talkWarning);
 
-        new MemberInfo().execute(stdNo);
+        stdNoTxt.setText(stdNo);
+        belongTxt.setText(belong);
+        majorTxt.setText(major);
+        reviewCntTxt.setText(String.valueOf(reviewCnt));
+        if (reviewAuth == 0) {
+            reviewAuthTxt.setText("없음");
+        } else {
+            reviewAuthTxt.setText("있음");
+        }
+        talkCntTxt.setText(String.valueOf(talkCnt));
+        talkWarningTxt.setText(String.valueOf(talkWarning));
+        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
 
@@ -117,11 +141,19 @@ public class MyProfileActivity extends ActionBarActivity {
             drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
+                /*
                 Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
-
+                */
+                new MaterialDialog.Builder(MyProfileActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("아직 준비중이에요 1월 17일에 봬요~")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
             } else if (id == 1) {
                 Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
                 startActivity(intent);
@@ -134,10 +166,60 @@ public class MyProfileActivity extends ActionBarActivity {
     };
 
     public void mOnClick(View view) {
+        if (view.getId() == R.id.versionLayout) {
+            Intent intent = new Intent(this, VersionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        } else if (view.getId() == R.id.alarmLayout) {
 
+        } else if (view.getId() == R.id.courseReviewLayout) {
+            new MaterialDialog.Builder(MyProfileActivity.this)
+                    .backgroundColor(getResources().getColor(R.color.white))
+                    .content("아직 준비중이에요 1월 17일에 봬요~")
+                    .contentColor(getResources().getColor(R.color.text_lgray))
+                    .positiveText("확인")
+                    .positiveColor(getResources().getColor(R.color.colorPrimary))
+                    .show();
+
+        } else if (view.getId() == R.id.myStoryLayout) {
+
+        } else if (view.getId() == R.id.storyTicketLayout) {
+
+        } else if (view.getId() == R.id.devInfoLayout) {
+
+        } else if (view.getId() == R.id.logoutLayout) {
+            new MaterialDialog.Builder(this)
+                    .backgroundColor(getResources().getColor(R.color.white))
+                    .title("로그아웃")
+                    .titleColor(getResources().getColor(R.color.black))
+                    .content("정말로 로그아웃 하시겠습니까?")
+                    .contentColor(getResources().getColor(R.color.text_lgray))
+                    .positiveText("확인")
+                    .positiveColor(getResources().getColor(R.color.colorPrimary))
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            pref.savePreferences(LOGIN_RESULT, false);
+                            Intent intent = new Intent(MyProfileActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+                            finish();
+                        }
+                    })
+                    .negativeText("취소")
+                    .negativeColor(getResources().getColor(R.color.colorPrimary))
+                    .show();
+        }
     }
 
     //toggle
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -153,35 +235,7 @@ public class MyProfileActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-
-    }
-    private class MemberInfo extends AsyncTask<String, Void, StudentVO>{
-        @Override
-        protected StudentVO doInBackground(String... params) {
-            try{
-               return new NetworkUtil().getExistMemberInfo(params[0]);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(StudentVO result) {
-            super.onPostExecute(result);
-            stdNoTxt.setText("" + result.getStdNo());
-            belongTxt.setText(result.getBelong());
-            majorTxt.setText(result.getMajor());
-            reviewCntTxt.setText(""+result.getReviewCnt());
-            int reviewAuth =result.getReviewAuth();
-            if(reviewAuth==0){
-                reviewAuthTxt.setText("없음");
-            }else{
-                reviewAuthTxt.setText("있음");
-            }
-            talkCntTxt.setText(""+result.getTalkCnt());
-            talkWarningTxt.setText(""+result.getTalkWarning());
-        }
+        backPressCloseHandler.onBackPressed();
     }
 
 }

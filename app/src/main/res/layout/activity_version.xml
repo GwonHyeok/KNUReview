@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_tool_bar" />
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginRight="12dp"
+            android:elevation="2dp"
+            android:src="@drawable/app_icon" />
+
+        <TextView
+            android:id="@+id/curVerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@id/appIcon"
+            android:text="현재 버전"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/currentVersionTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/curVerTxt"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/curVerTxt"
+            android:text="@string/version"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/latVerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/curVerTxt"
+            android:layout_toRightOf="@id/appIcon"
+            android:text="최신 버전"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/latestVersionTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/latVerTxt"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/latVerTxt"
+            android:text="v1. 0. 0"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="현재 최신 버전입니다."
+        android:background="@drawable/rounded_btn" />
+</RelativeLayout>

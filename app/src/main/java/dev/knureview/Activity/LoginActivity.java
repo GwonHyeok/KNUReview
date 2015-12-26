@@ -1,19 +1,28 @@
 package dev.knureview.Activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import dev.knureview.Push.QuickstartPreferences;
+import dev.knureview.Push.RegistrationIntentService;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -25,9 +34,11 @@ import dev.knureview.VO.StudentVO;
  * Created by DavidHa on 2015. 11. 21..
  */
 public class LoginActivity extends Activity {
-
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = "LoginActivity";
     private static final String LOGIN_RESULT = "loginResult";
-    private static final String STUDENT_NUMBER="studentNumber";
+    private static final String VERSION = "version";
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Typeface archiveFont;
     private Typeface nanumFont;
 
@@ -72,6 +83,9 @@ public class LoginActivity extends Activity {
         //StudentVO
         vo = new StudentVO();
 
+        //register BroadcastReceiver
+        registerBroadcastReceiver();
+
         inputPW.addTextChangedListener(textChangeListener);
     }
 
@@ -104,6 +118,20 @@ public class LoginActivity extends Activity {
                 new SchoolCookie().execute(stdNo, pw);
             }
         }
+    }
+    /**
+     * 앱이 실행되어 화면에 나타날때 LocalBoardcastManager에 액션을 정의하여 등록한다.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_READY));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+
     }
 
 
@@ -206,12 +234,17 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(StudentVO result) {
             super.onPostExecute(result);
+            vo.setIsExist(result.isExist());
+
             if (result.isExist() && isFreshMan) {
                 //신입생 1학기 기존 사용자인 경우
                 setAutoLogin();
+                getInstanceIdToken();
 
             } else if (result.isExist() && !isFreshMan) {
                 //재학생 기존 사용자인 경우
+                getInstanceIdToken();
+
                 if (!result.getMajor().equals(vo.getMajor())) {
                     //전공이 바뀌었으면 update
                     vo.setStdNo(Integer.parseInt(stdNo));
@@ -222,19 +255,94 @@ public class LoginActivity extends Activity {
 
             } else if (!result.isExist() && isFreshMan) {
                 //신입생 1학기 새로운 사용자인 경우
+                vo.setStdNo(Integer.parseInt(stdNo));
                 vo.setReviewAuth(1);
-                vo.setTalkTicket(1);
                 vo.setTalkAuth(1);
-                new RegisterMember().execute(vo);
+                getInstanceIdToken();
 
             } else if (!result.isExist() && !isFreshMan) {
                 //재학생 새로운 사용자인 경우
+                vo.setStdNo(Integer.parseInt(stdNo));
                 vo.setReviewAuth(0);
-                vo.setTalkTicket(0);
-                vo.setTalkTicket(0);
-                new RegisterMember().execute(vo);
+                vo.setTalkAuth(0);
+                getInstanceIdToken();
+
             }
 
+        }
+    }
+
+    /**
+     * LocalBroadcast 리시버를 정의한다. 토큰을 획득하기 위한 READY, GENERATING, COMPLETE 액션에 따라 UI에 변화를 준다.
+     */
+    public void registerBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
+                    String token = intent.getStringExtra("token");
+                    if(vo.isExist()){
+                        //기존 사용자 일 경우
+                        new UpdatePush().execute(token);
+                    }else {
+                        //새로운 사용자 일 경우
+                        vo.setRegId(token);
+                        new RegisterMember().execute(vo);
+                    }
+                }
+            }
+        };
+    }
+
+
+    public void getInstanceIdToken() {
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }else{
+            //토큰을 가져오는데 실패
+            if(vo.isExist() && isFreshMan){
+                //신입생 1학기 기존 사용자인 경우
+            }else if(vo.isExist() && !isFreshMan){
+                //재학생 기존 사용자인 경우
+            }
+            else {
+                //새로운 사용자 일 경우
+                new RegisterMember().execute(vo);
+            }
+        }
+    }
+
+    /**
+     * Google Play Service 를 사용할 수 있는 환경이지를 체크한다.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //Update Push RegId
+    private class UpdatePush extends AsyncTask<String, Void, Void>{
+        @Override
+        protected Void doInBackground(String... params) {
+            try{
+                new NetworkUtil().updatePushRegId(stdNo, params[0]);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
@@ -300,13 +408,17 @@ public class LoginActivity extends Activity {
             super.onPostExecute(result);
             setAutoLogin();
         }
+
     }
 
     private void setAutoLogin() {
         //자동로그인 설정
         progressDialog.dismiss();
         pref.savePreferences(LOGIN_RESULT, true);
-        pref.savePreferences(STUDENT_NUMBER, stdNo);
+        pref.savePreferences("stdNo", stdNo);
+        pref.savePreferences("belong", vo.getBelong());
+        pref.savePreferences("major", vo.getMajor());
+        pref.savePreferences(VERSION, getResources().getString(R.string.version));
 
         //Main 페이지 이동
         Intent intent = new Intent(LoginActivity.this, MyStoryActivity.class);

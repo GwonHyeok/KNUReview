@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.knureview">
+    <!-- [START gcm_permission] -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- [END gcm_permission] -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -17,20 +24,62 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity"
-            android:label="수강리뷰"/>
+        <activity
+            android:name=".Activity.MainActivity"
+            android:label="수강리뷰" />
         <activity
             android:name=".Activity.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity android:name=".Activity.SearchActivity"/>
-        <activity android:name=".Activity.MyProfileActivity"
-            android:label="내 프로필"/>
-        <activity android:name=".Activity.MyStoryActivity"
-             android:label="소곤소곤"/>
-        <activity android:name=".Activity.MyStDetailActivity"
-           />
-        <activity android:name=".Activity.MyStEditActivity"/>
-        <activity android:name=".Activity.MyStConfirmActivity"/>
+        <activity android:name=".Activity.SearchActivity" />
+        <activity
+            android:name=".Activity.MyProfileActivity"
+            android:label="내 프로필" />
+        <activity android:name=".Activity.ProfileDetail.VersionActivity"
+            android:label="버전정보"/>
+        <activity
+            android:name=".Activity.MyStoryActivity"
+            android:label="소곤소곤" />
+        <activity android:name=".Activity.MyStDetailActivity" />
+        <activity android:name=".Activity.MyStEditActivity" />
+        <activity android:name=".Activity.MyStConfirmActivity" />
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="net.saltfactory.demo.gcm" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+        <!-- [START gcm_listener_service] -->
+        <service
+            android:name="dev.knureview.Push.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener_service] -->
+
+        <!-- [START instanceId_listener_service] -->
+        <service
+            android:name="dev.knureview.Push.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener_service] -->
+
+        <!-- [START gcm_registration_service] -->
+        <service
+            android:name="dev.knureview.Push.RegistrationIntentService"
+            android:exported="false"></service>
+        <!-- [END gcm_registration_service] -->
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

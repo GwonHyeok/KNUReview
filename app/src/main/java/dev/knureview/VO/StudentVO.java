@@ -14,6 +14,7 @@ public class StudentVO {
     private int talkWarning;
     private int talkAuth;
     private int talkTicket;
+    private String regId;
     private boolean isExist;
 
     public int getStdNo() {
@@ -86,6 +87,14 @@ public class StudentVO {
 
     public void setTalkTicket(int talkTicket) {
         this.talkTicket = talkTicket;
+    }
+
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
     }
 
     public boolean isExist() {

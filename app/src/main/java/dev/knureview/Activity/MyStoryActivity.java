@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import dev.knureview.Adapter.MyStoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
+import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.VO.TalkVO;
 
@@ -50,7 +52,7 @@ public class MyStoryActivity extends ActionBarActivity {
 
     private ArrayList<TalkVO> talkList;
     private int listPosition;
-
+    private BackPressCloseHandler backPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class MyStoryActivity extends ActionBarActivity {
         //fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToListView(listView);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
     @Override
@@ -159,6 +163,14 @@ public class MyStoryActivity extends ActionBarActivity {
 
 
     //toggle
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -193,5 +205,8 @@ public class MyStoryActivity extends ActionBarActivity {
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        backPressCloseHandler.onBackPressed();
+    }
 }

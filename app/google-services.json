@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_id": "knureview",
+    "project_number": "1096458822392",
+    "name": "KNUReview"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096458822392:android:3425f8afadac3d3e",
+        "client_id": "android:dev.knureview",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "dev.knureview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

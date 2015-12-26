@@ -57,20 +57,23 @@ public class NetworkUtil {
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
-        String result = mainObject.get("member").toString();
-        JSONObject memberObject = (JSONObject) mainObject.get("member");
-        if (result != null) {
-            vo.setStdNo(Integer.parseInt(memberObject.get("stdNo").toString()));
-            vo.setBelong(memberObject.get("belong").toString());
-            vo.setMajor(memberObject.get("major").toString());
-            vo.setReviewCnt(Integer.parseInt(memberObject.get("reviewCnt").toString()));
-            vo.setReviewAuth(Integer.parseInt(memberObject.get("reviewAuth").toString()));
-            vo.setTalkCnt(Integer.parseInt(memberObject.get("talkCnt").toString()));
-            vo.setTalkWarning(Integer.parseInt(memberObject.get("talkWarning").toString()));
-            vo.setTalkAuth(Integer.parseInt(memberObject.get("talkAuth").toString()));
-            vo.setTalkTicket(Integer.parseInt(memberObject.get("talkTicket").toString()));
-            vo.setIsExist(true);
-        } else {
+        try {
+            String result = mainObject.get("member").toString();
+            JSONObject memberObject = (JSONObject) mainObject.get("member");
+            if (result != null) {
+                vo.setStdNo(Integer.parseInt(memberObject.get("stdNo").toString()));
+                vo.setBelong(memberObject.get("belong").toString());
+                vo.setMajor(memberObject.get("major").toString());
+                vo.setReviewCnt(Integer.parseInt(memberObject.get("reviewCnt").toString()));
+                vo.setReviewAuth(Integer.parseInt(memberObject.get("reviewAuth").toString()));
+                vo.setTalkCnt(Integer.parseInt(memberObject.get("talkCnt").toString()));
+                vo.setTalkWarning(Integer.parseInt(memberObject.get("talkWarning").toString()));
+                vo.setTalkAuth(Integer.parseInt(memberObject.get("talkAuth").toString()));
+                vo.setTalkTicket(Integer.parseInt(memberObject.get("talkTicket").toString()));
+                vo.setIsExist(true);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             vo.setIsExist(false);
         }
         return vo;
@@ -88,7 +91,15 @@ public class NetworkUtil {
         url = "http://kureview.cafe24.com/mobileInsertMember.jsp";
         query = "stdNo" + "=" + vo.getStdNo() + "&" + "belong" + "=" + vo.getBelong()
                 + "&" + "major" + "=" + vo.getMajor()
-                + "&" + "reviewAuth" + "=" + vo.getReviewAuth();
+                + "&" + "reviewAuth" + "=" + vo.getReviewAuth()
+                + "&" + "talkAuth" + "=" + vo.getTalkAuth()
+                + "&" + "regId" + "=" + vo.getRegId();
+        sendQuery(url, query);
+    }
+
+    public void updatePushRegId(String stdNo, String regId) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
+        query = "stdNo" + "=" + stdNo + "&" + "regId" + "=" + regId;
         sendQuery(url, query);
     }
 
@@ -133,6 +144,8 @@ public class NetworkUtil {
             }
         }
     }
+
+
 
     public ArrayList<LectureVO> getStudentLecture(String stdNo) throws Exception {
         ArrayList<LectureVO> lectureArray = new ArrayList<LectureVO>();

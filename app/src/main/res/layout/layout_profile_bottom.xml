@@ -12,9 +12,11 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/versionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -49,9 +51,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/alarmLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -86,9 +90,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/courseReviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -115,9 +121,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/myStoryLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -144,9 +152,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/storyTicketLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -189,9 +199,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/devInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
@@ -218,9 +230,11 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
+            android:id="@+id/logoutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="mOnClick"
             android:padding="12dp">
 
             <TextView
