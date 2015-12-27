@@ -204,7 +204,7 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
-            android:id="@+id/devInfoLayout"
+            android:id="@+id/contactLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_selector"
@@ -215,7 +215,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="개발자 정보"
+                android:text="문의하기"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -228,6 +228,69 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/right_arrow_ic" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rowColor" />
+
+        <LinearLayout
+            android:id="@+id/devLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
+            android:orientation="vertical"
+            android:onClick="mOnClick"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="개발자"
+                android:textColor="@color/text_lgray"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:text="하동현"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rowColor" />
+
+        <LinearLayout
+            android:id="@+id/photoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
+            android:onClick="mOnClick"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="사진 제공"
+                android:textColor="@color/text_lgray"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:text="이승훈"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <View

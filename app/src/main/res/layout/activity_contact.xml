@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_tool_bar" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="14dp"
+        android:background="@drawable/rounded_edit_text"
+        android:gravity="left"
+        android:hint="이용하시면서 불편한 사항이나 개선점이 있다면 언제든지 알려주세요"
+        android:padding="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black_40" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="8dp"
+        android:text="문의하신 내용에 대한 원인파악을 위하여 학번과 휴대폰번호를 수집합니다.수집된 개인정보는 개인정보의 수집 및 이용 목적이 달성되면 관련 법령에 의해 보존할 필요가 있는 경우를 제외하고는 지체없이 파기됩니다."
+        android:textColor="@color/text_lgray"
+        android:textSize="12dp" />
+
+    <com.rey.material.widget.CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="14dp"
+        android:gravity="center"
+        android:text="위 내용에 동의합니다"
+        android:textSize="12dp"
+        app:cbd_strokeColor="@color/colorPrimary" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black_40" />
+
+    <Button
+        android:id="@+id/sendBtn"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/fill_rounded_btn"
+        android:text="보내기"
+        android:textColor="@color/white" />
+</LinearLayout>

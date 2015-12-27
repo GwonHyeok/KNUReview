@@ -7,19 +7,18 @@ import android.support.v7.widget.Toolbar;
 import dev.knureview.R;
 
 /**
- * Created by DavidHa on 2015. 12. 25..
+ * Created by DavidHa on 2015. 12. 27..
  */
-public class VersionActivity extends ActionBarActivity {
+public class ContactActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_version);
+        setContentView(R.layout.activity_contact);
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

@@ -16,10 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Activity.ProfileDetail.MyStoryActivity;
 import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
@@ -33,6 +35,7 @@ import dev.knureview.Util.SharedPreferencesActivity;
 public class MyProfileActivity extends ActionBarActivity {
 
     private static final String LOGIN_RESULT = "loginResult";
+    private static final String EASTER_EGG = "easterEgg";
     private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -64,6 +67,8 @@ public class MyProfileActivity extends ActionBarActivity {
     private int talkWarning;
     private int talkAuth;
     private int talkTicket;
+    private int devCount = 0;
+    private boolean getTicket = false;
     private BackPressCloseHandler backPressCloseHandler;
 
     @Override
@@ -111,6 +116,7 @@ public class MyProfileActivity extends ActionBarActivity {
         talkWarning = pref.getPreferences("talkWarning", 0);
         talkAuth = pref.getPreferences("talkAuth", 0);
         talkTicket = pref.getPreferences("talkTicket", 0);
+        getTicket = pref.getPreferences(EASTER_EGG, false);
 
         backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
         stdNoTxt = (TextView) findViewById(R.id.stdNo);
@@ -188,8 +194,49 @@ public class MyProfileActivity extends ActionBarActivity {
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.storyTicketLayout) {
 
-        } else if (view.getId() == R.id.devInfoLayout) {
-
+        } else if (view.getId() == R.id.contactLayout) {
+            Intent intent = new Intent(MyProfileActivity.this, ContactActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        } else if (view.getId() == R.id.devLayout) {
+            devCount++;
+            if (devCount == 5) {
+                Toast.makeText(this, "왜 눌러 봤어?", Toast.LENGTH_SHORT).show();
+            } else if (devCount == 10) {
+                Toast.makeText(this, "사실 이건 숨겨진 기능인데...", Toast.LENGTH_SHORT).show();
+            } else if (devCount == 20) {
+                Toast.makeText(this, "조금 더 눌러봐", Toast.LENGTH_SHORT).show();
+            } else if (devCount == 26) {
+                if (getTicket) {
+                    new MaterialDialog.Builder(this)
+                            .backgroundColor(getResources().getColor(R.color.white))
+                            .content("티켓 받았으면서 왜 또 눌러?\n이제 티켓 안 줄꺼야! 흥!!")
+                            .contentColor(getResources().getColor(R.color.text_lgray))
+                            .positiveText("확인")
+                            .positiveColor(getResources().getColor(R.color.colorPrimary))
+                            .cancelable(false)
+                            .show();
+                } else {
+                    new MaterialDialog.Builder(this)
+                            .backgroundColor(getResources().getColor(R.color.white))
+                            .title("소곤소곤 티켓을 얻었습니다.")
+                            .titleColor(getResources().getColor(R.color.black))
+                            .content("개발자의 나이는 26살 이야\n넌 몇 살이니?")
+                            .contentColor(getResources().getColor(R.color.text_lgray))
+                            .positiveText("티켓받기")
+                            .positiveColor(getResources().getColor(R.color.colorPrimary))
+                            .iconRes(R.drawable.ticket_ic)
+                            .maxIconSize(90)
+                            .cancelable(false)
+                            .show();
+                    pref.savePreferences(EASTER_EGG, true);
+                }
+            } else if (devCount == 27) {
+                Toast.makeText(this, "이제 그만 눌러!!", Toast.LENGTH_SHORT).show();
+            } else if (devCount > 2 && devCount < 27) {
+                Toast.makeText(this, devCount + "번 클릭", Toast.LENGTH_SHORT).show();
+            }
+        } else if (view.getId() == R.id.photoLayout) {
         } else if (view.getId() == R.id.logoutLayout) {
             new MaterialDialog.Builder(this)
                     .backgroundColor(getResources().getColor(R.color.white))

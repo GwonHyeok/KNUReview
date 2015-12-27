@@ -34,8 +34,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile 'com.github.kanytu:android-parallax-listview:v1.1'
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
     compile 'com.google.android.gms:play-services-gcm:7.+'
     compile 'me.leolin:ShortcutBadger:1.1.3@aar'
+    compile 'com.github.rey5137:material:1.2.2'
 }

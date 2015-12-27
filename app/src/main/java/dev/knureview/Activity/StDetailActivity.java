@@ -12,16 +12,11 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.poliveira.apps.parallaxlistview.ParallaxListView;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import dev.knureview.R;
 import dev.knureview.Util.TalkTextUtil;
@@ -48,8 +43,7 @@ public class StDetailActivity extends Activity {
     private String writeTime;
     private int likeCnt;
     private int commentCnt;
-    ArrayAdapter<String> mAdapter;
-    private ImageView headerBlurImg;
+
 
 
     @Override
@@ -75,22 +69,10 @@ public class StDetailActivity extends Activity {
         likeCnt = intent.getIntExtra("likeCnt", 0);
         commentCnt = intent.getIntExtra("commentCnt", 0);
 
-        List<String> mStrings = new ArrayList<>();
-
-
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mStrings);
-
-        ParallaxListView mListView = (ParallaxListView) findViewById(R.id.view);
-        mListView.setAdapter(mAdapter);
-
-
-        final View headerView = getLayoutInflater().inflate(R.layout.layout_story_detail_header, mListView, false);
-
-        backgroundImg = (ImageView) headerView.findViewById(R.id.backgroundImg);
-        dynamicArea = (LinearLayout) headerView.findViewById(R.id.dynamicArea);
-        headerBlurImg = (ImageView) headerView.findViewById(R.id.headerBlurImg);
-        commentCntTxt = (TextView) headerView.findViewById(R.id.commentCnt);
-        likeCntTxt = (TextView) headerView.findViewById(R.id.likeCnt);
+        backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
+        dynamicArea = (LinearLayout) findViewById(R.id.dynamicArea);
+        commentCntTxt = (TextView) findViewById(R.id.commentCnt);
+        likeCntTxt = (TextView) findViewById(R.id.likeCnt);
 
 
         talkTextUtil.setDescription(description, dynamicArea);
@@ -103,10 +85,6 @@ public class StDetailActivity extends Activity {
         BitmapDrawable drawable = (BitmapDrawable) backgroundImg.getDrawable();
         blurBitmap = blur(this, drawable.getBitmap(), 22);
         blurImg.setImageBitmap(blurBitmap);
-        headerBlurImg.setImageBitmap(blurBitmap);
-
-
-        mListView.setParallaxView(headerView);
     }
 
 
