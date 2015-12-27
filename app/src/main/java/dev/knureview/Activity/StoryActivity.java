@@ -23,7 +23,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import dev.knureview.Adapter.MyStoryAdapter;
+import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
@@ -47,7 +47,7 @@ public class StoryActivity extends ActionBarActivity {
     private TextView headerTxt;
     private TextView bottomTxt;
 
-    private MyStoryAdapter adapter;
+    private StoryAdapter adapter;
     private ListView listView;
 
     private ArrayList<TalkVO> talkList;
@@ -198,7 +198,7 @@ public class StoryActivity extends ActionBarActivity {
         protected void onPostExecute(ArrayList<TalkVO> data) {
             super.onPostExecute(data);
             talkList = data;
-            adapter = new MyStoryAdapter(StoryActivity.this, R.layout.layout_story_list_row, data);
+            adapter = new StoryAdapter(StoryActivity.this, R.layout.layout_story_list_row, data);
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);

@@ -15,9 +15,10 @@
             android:id="@+id/versionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,9 +55,10 @@
             android:id="@+id/alarmLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,9 +95,10 @@
             android:id="@+id/courseReviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,9 +127,10 @@
             android:id="@+id/myStoryLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -155,9 +159,10 @@
             android:id="@+id/storyTicketLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -202,9 +207,10 @@
             android:id="@+id/devInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,9 +239,10 @@
             android:id="@+id/logoutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"

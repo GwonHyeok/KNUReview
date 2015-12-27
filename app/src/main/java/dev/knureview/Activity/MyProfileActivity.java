@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import dev.knureview.Activity.ProfileDetail.MyStoryActivity;
 import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
@@ -182,7 +183,9 @@ public class MyProfileActivity extends ActionBarActivity {
                     .show();
 
         } else if (view.getId() == R.id.myStoryLayout) {
-
+            Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.storyTicketLayout) {
 
         } else if (view.getId() == R.id.devInfoLayout) {

@@ -43,7 +43,8 @@
         <activity android:name=".Activity.StDetailActivity" />
         <activity android:name=".Activity.StEditActivity" />
         <activity android:name=".Activity.StConfirmActivity" />
-        <activity android:name=".Activity.ProfileDetail.MyStoryActivity" />
+        <activity android:name=".Activity.ProfileDetail.MyStoryActivity"
+            android:label="내이야기"/>
 
         <!-- [START gcm_receiver] -->
         <receiver

@@ -67,20 +67,15 @@ public class SplashActivity extends Activity {
         isReLogin = pref.getPreferences(LOGIN_RESULT, false);
         currentVersion = getResources().getString(R.string.version);
         appVersion = pref.getPreferences(VERSION, "");
-        stdNo = pref.getPreferences("stdNo","");
+        stdNo = pref.getPreferences("stdNo", "");
 
         //handler
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if (isReLogin) {
-                    //앱 버전이 변경되었을 경우 Push regID 재등록
-                    if (!currentVersion.equals(appVersion)) {
-                        pref.savePreferences(VERSION, currentVersion);
-                        getInstanceIdToken();
-                    }else{
-                        new MemberInfo().execute(stdNo);
-                    }
+                    //자동로그인일 경우 Push Token Update
+                    getInstanceIdToken();
                 } else {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -121,7 +116,7 @@ public class SplashActivity extends Activity {
                 String action = intent.getAction();
                 if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
                     String token = intent.getStringExtra("token");
-                   new UpdatePush().execute(token);
+                    new UpdatePush().execute(token);
                 }
             }
         };
@@ -132,7 +127,7 @@ public class SplashActivity extends Activity {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
-        }else{
+        } else {
             //토큰을 가져오는데 실패
             new MemberInfo().execute(stdNo);
         }
@@ -184,12 +179,12 @@ public class SplashActivity extends Activity {
         }
     }
 
-    private class UpdatePush extends AsyncTask<String, Void, Void>{
+    private class UpdatePush extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {
-            try{
+            try {
                 new NetworkUtil().updatePushRegId(stdNo, params[0]);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;

@@ -4,6 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <include layout="@layout/layout_tool_bar" />
+
+    <TextView
+        android:id="@+id/myTotalStory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="총 0개의 이야기가 있습니다."
+        android:background="@color/black_40"
+        android:textSize="12dp"
+        android:textColor="@color/black"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

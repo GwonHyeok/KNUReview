@@ -72,7 +72,7 @@ public class NetworkUtil {
                 vo.setTalkTicket(Integer.parseInt(memberObject.get("talkTicket").toString()));
                 vo.setIsExist(true);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             vo.setIsExist(false);
         }
@@ -146,7 +146,6 @@ public class NetworkUtil {
     }
 
 
-
     public ArrayList<LectureVO> getStudentLecture(String stdNo) throws Exception {
         ArrayList<LectureVO> lectureArray = new ArrayList<LectureVO>();
         url = "http://kureview.cafe24.com/mobileGetLecture.jsp";
@@ -182,13 +181,25 @@ public class NetworkUtil {
         return talkList;
     }
 
-    public ArrayList<TalkVO> getMyTalkList(String stdNo) throws Exception{
+    public ArrayList<TalkVO> getMyTalkList(String stdNo) throws Exception {
         ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
-        url="";
-        stdNo = new AES256Util().encrypt(stdNo);
+        url = "http://kureview.cafe24.com/mobileMyTalkList.jsp";;
         query = "stdNo" + "=" + stdNo;
-        String data = getJSON(url,query );
-
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray talkArray = (JSONArray) mainObject.get("myTalk");
+        for (int i = 0; i < talkArray.size(); i++) {
+            JSONObject object = (JSONObject) talkArray.get(i);
+            TalkVO vo = new TalkVO();
+            vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+            vo.setPictureURL(object.get("pictureURL").toString());
+            vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+            vo.setDescription(object.get("description").toString());
+            vo.setWriteTime(object.get("writeTime").toString());
+            vo.setLikeCnt(Integer.parseInt(object.get("likeCnt").toString()));
+            vo.setCommentCnt(Integer.parseInt(object.get("commentCnt").toString()));
+            talkList.add(vo);
+        }
         return talkList;
     }
 

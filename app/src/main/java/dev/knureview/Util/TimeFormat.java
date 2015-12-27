@@ -50,4 +50,18 @@ public class TimeFormat {
         }
         return msg;
     }
+
+    public static String formatDateString(String strDate){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM.dd E요일");
+        String msg = null;
+        try{
+            Date date = format.parse(strDate);
+            msg = dateFormat.format(date).toString();
+
+        }catch (ParseException e){
+
+        }
+        return msg;
+    }
 }
