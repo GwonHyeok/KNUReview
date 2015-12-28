@@ -20,8 +20,6 @@ import java.net.URLDecoder;
 
 import dev.knureview.Activity.StoryActivity;
 import dev.knureview.R;
-import dev.knureview.Util.SharedPreferencesActivity;
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created by saltfactory on 6/8/15.
@@ -29,8 +27,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
-    private SharedPreferencesActivity pref;
-    private int count = 0;
+
 
     /**
      * @param from SenderID 값을 받아온다.
@@ -45,17 +42,10 @@ public class MyGcmListenerService extends GcmListenerService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        pref = new SharedPreferencesActivity(this);
-        count = pref.getPreferences("Push", 0);
-        count++;
-        pref.savePreferences("Push", count);
-        if (count > 0) {
-            ShortcutBadger.with(getApplicationContext()).count(count);
-        }
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Title: " + title);
         Log.d(TAG, "Message: " + message);
-        Log.d(TAG, "PushCount: " + count);
 
         // GCM 으로 받은 메세지를 디바이스에 알려주는 sendNotification()을 호출한다.
         sendNotification(title, message);

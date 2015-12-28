@@ -118,7 +118,7 @@ public class MyProfileActivity extends ActionBarActivity {
         talkTicket = pref.getPreferences("talkTicket", 0);
         getTicket = pref.getPreferences(EASTER_EGG, false);
 
-        backgroundImg = (ImageView) findViewById(R.id.backgroundImg);
+        backgroundImg = (ImageView) findViewById(R.id.cardImage);
         stdNoTxt = (TextView) findViewById(R.id.stdNo);
         belongTxt = (TextView) findViewById(R.id.belong);
         majorTxt = (TextView) findViewById(R.id.major);

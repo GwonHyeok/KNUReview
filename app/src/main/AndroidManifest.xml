@@ -47,6 +47,8 @@
             android:label="내이야기"/>
         <activity android:name=".Activity.ProfileDetail.ContactActivity"
             android:label="문의하기"/>
+        <activity android:name=".Activity.ProfileDetail.TicketActivity"
+            android:label="소곤소곤 티켓"/>
 
         <!-- [START gcm_receiver] -->
         <receiver

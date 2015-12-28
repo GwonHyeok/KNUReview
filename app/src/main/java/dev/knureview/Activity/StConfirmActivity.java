@@ -34,6 +34,9 @@ public class StConfirmActivity extends Activity {
     private static final int ACCEPT = 1;
     private static final int DENIAL = 0;
     public static Activity activity;
+
+    private boolean isComment=false;
+    private int tNo;
     private String stdNo;
     private int talkAuth;
     private String pictureURL;
@@ -67,9 +70,16 @@ public class StConfirmActivity extends Activity {
         talkTextUtil.setActivity(this);
         talkTextUtil.setTextSizeUP();
 
+        //intent
         Intent intent = getIntent();
         pictureURL = intent.getStringExtra("pictureURL");
         description = intent.getStringExtra("description");
+        String toDo = intent.getStringExtra("toDo");
+        if(toDo!=null){
+            isComment = true;
+            tNo = intent.getIntExtra("tNo",0);
+        }
+
 
         //initial
         Picasso.with(this)
@@ -104,11 +114,15 @@ public class StConfirmActivity extends Activity {
         } else if (view.getId() == R.id.confirmButton) {
             if (confirmBtn.getProgress() == 0
                     && talkAuth == ACCEPT) {
-                new Talk().execute();
+                if(isComment){
+                    new Comment().execute();
+                }else {
+                    new Talk().execute();
+                }
             } else if (confirmBtn.getProgress() == -1) {
                 confirmBtn.setProgress(0);
-            }else if(confirmBtn.getProgress() == 0
-                    && talkAuth == DENIAL){
+            } else if (confirmBtn.getProgress() == 0
+                    && talkAuth == DENIAL) {
                 confirmBtn.setProgress(-1);
                 new MaterialDialog.Builder(this)
                         .backgroundColor(getResources().getColor(R.color.white))
@@ -180,6 +194,42 @@ public class StConfirmActivity extends Activity {
                         StoryActivity.activity.finish();
                         StEditActivity.activity.finish();
                         StConfirmActivity.activity.finish();
+                    }
+                }.sendEmptyMessageDelayed(0, 800);
+            } else {
+                confirmBtn.setProgress(-1);
+            }
+        }
+    }
+
+    private class Comment extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            confirmBtn.setProgress(50);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().insertComment(stdNo, pictureURL, description, tNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (result == true) {
+                confirmBtn.setProgress(100);
+                new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        super.handleMessage(msg);
+                        finish();
+                        StEditActivity.activity.finish();
                     }
                 }.sendEmptyMessageDelayed(0, 800);
             } else {

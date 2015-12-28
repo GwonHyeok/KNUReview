@@ -35,7 +35,7 @@ public class TalkTextUtil {
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = space40;
         text.setLayoutParams(params);
-        text.setBackgroundColor(activity.getResources().getColor(R.color.transparent_black));
+        text.setBackgroundColor(activity.getResources().getColor(R.color.dim_color));
         text.setSingleLine(true);
 
         text.setPadding(space100, space14, space100, space14);

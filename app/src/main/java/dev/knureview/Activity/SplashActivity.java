@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -76,6 +77,7 @@ public class SplashActivity extends Activity {
                 if (isReLogin) {
                     //자동로그인일 경우 Push Token Update
                     getInstanceIdToken();
+                    new MemberInfo().execute(stdNo);
                 } else {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -127,9 +129,6 @@ public class SplashActivity extends Activity {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
-        } else {
-            //토큰을 가져오는데 실패
-            new MemberInfo().execute(stdNo);
         }
     }
 
@@ -179,6 +178,7 @@ public class SplashActivity extends Activity {
         }
     }
 
+    //Update Push RegId
     private class UpdatePush extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {
@@ -188,13 +188,6 @@ public class SplashActivity extends Activity {
                 e.printStackTrace();
             }
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //Push RegId 등록 끝난후 MainActivity 로 이동
-            new MemberInfo().execute(stdNo);
         }
     }
 

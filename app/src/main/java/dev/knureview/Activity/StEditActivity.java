@@ -39,6 +39,8 @@ public class StEditActivity extends Activity {
     private int[] newLinePosition;
     private int lineCount = 1;
     private boolean isEditable = false;
+    private boolean isComment = false;
+    private int tNo;
     private ImageView blurImage;
     private ImageView cardImage;
     private Bitmap blurBitmap;
@@ -71,6 +73,13 @@ public class StEditActivity extends Activity {
         preImg3 = (CircleImageView) findViewById(R.id.preImg3);
         diceBtn = (ImageView) findViewById(R.id.diceBtn);
 
+        //intent
+        Intent intent = getIntent();
+        String toDo = intent.getStringExtra("toDo");
+        if(toDo!=null){
+            isComment = true;
+            tNo = intent.getIntExtra("tNo",0);
+        }
 
         //random
         randomArray = new int[3];
@@ -164,6 +173,7 @@ public class StEditActivity extends Activity {
         String pictureURL = "sample" + random + ".jpg";
         Picasso.with(StEditActivity.this)
                 .load("http://kureview.cafe24.com/image_small/" + pictureURL)
+                .placeholder(R.drawable.push_ic)
                 .noFade()
                 .into(targetImageView);
     }
@@ -193,6 +203,10 @@ public class StEditActivity extends Activity {
                 Intent intent = new Intent(StEditActivity.this, StConfirmActivity.class);
                 intent.putExtra("pictureURL", "sample" + currentImage + ".jpg");
                 intent.putExtra("description", description);
+                if(isComment){
+                    intent.putExtra("tNo",tNo);
+                    intent.putExtra("toDo","comment");
+                }
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
             } else {

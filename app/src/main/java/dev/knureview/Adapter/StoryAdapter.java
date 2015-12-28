@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +33,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
     private String nextDate;
 
     static class ViewHolder {
-        private ImageView backgroundImg;
+        private ImageView cardImage;
         private LinearLayout dynamicArea;
         private TextView writeTime;
         private TextView likeCnt;
@@ -70,7 +69,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(layout, parent, false);
             vh = new ViewHolder();
-            vh.backgroundImg = (ImageView) convertView.findViewById(R.id.backgroundImg);
+            vh.cardImage = (ImageView) convertView.findViewById(R.id.cardImage);
             vh.dynamicArea = (LinearLayout) convertView.findViewById(R.id.dynamicArea);
             vh.commentCnt = (TextView) convertView.findViewById(R.id.commentCnt);
             vh.likeCnt = (TextView) convertView.findViewById(R.id.likeCnt);
@@ -100,7 +99,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
 
         Picasso.with(activity)
                 .load("http://kureview.cafe24.com/image/" + talkList.get(position).getPictureURL())
-                .into(vh.backgroundImg);
+                .into(vh.cardImage);
 
         vh.writeTime.setText(TimeFormat.formatTimeString(talkList.get(position).getWriteTime()));
         vh.commentCnt.setText("" + talkList.get(position).getCommentCnt());

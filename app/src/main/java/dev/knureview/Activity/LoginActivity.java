@@ -119,6 +119,7 @@ public class LoginActivity extends Activity {
             }
         }
     }
+
     /**
      * 앱이 실행되어 화면에 나타날때 LocalBoardcastManager에 액션을 정의하여 등록한다.
      */
@@ -163,7 +164,8 @@ public class LoginActivity extends Activity {
 
             //학교 서버 로그인 성공했을 경우
             if (result.getLoginResult().equals("success")) {
-
+                //학번 저장
+                vo.setStdNo(Integer.parseInt(stdNo));
                 //학생 소속, 전공 정보 가져오기 (쿠키값 전달)
                 cookie = result;
                 new StudentInfo().execute(cookie);
@@ -239,34 +241,20 @@ public class LoginActivity extends Activity {
             if (result.isExist() && isFreshMan) {
                 //신입생 1학기 기존 사용자인 경우
                 setAutoLogin();
-                getInstanceIdToken();
-
             } else if (result.isExist() && !isFreshMan) {
                 //재학생 기존 사용자인 경우
-                getInstanceIdToken();
-
-                if (!result.getMajor().equals(vo.getMajor())) {
-                    //전공이 바뀌었으면 update
-                    vo.setStdNo(Integer.parseInt(stdNo));
-                    new UpdateMemberInfo().execute(vo);
-                } else {
-                    new StudentLecture().execute(cookie);
-                }
-
+                new UpdateMemberInfo().execute(vo);
             } else if (!result.isExist() && isFreshMan) {
                 //신입생 1학기 새로운 사용자인 경우
-                vo.setStdNo(Integer.parseInt(stdNo));
                 vo.setReviewAuth(1);
                 vo.setTalkAuth(1);
-                getInstanceIdToken();
+                new RegisterMember().execute(vo);
 
             } else if (!result.isExist() && !isFreshMan) {
                 //재학생 새로운 사용자인 경우
-                vo.setStdNo(Integer.parseInt(stdNo));
                 vo.setReviewAuth(0);
                 vo.setTalkAuth(0);
-                getInstanceIdToken();
-
+                new RegisterMember().execute(vo);
             }
 
         }
@@ -282,14 +270,7 @@ public class LoginActivity extends Activity {
                 String action = intent.getAction();
                 if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
                     String token = intent.getStringExtra("token");
-                    if(vo.isExist()){
-                        //기존 사용자 일 경우
-                        new UpdatePush().execute(token);
-                    }else {
-                        //새로운 사용자 일 경우
-                        vo.setRegId(token);
-                        new RegisterMember().execute(vo);
-                    }
+                    new UpdatePush().execute(token);
                 }
             }
         };
@@ -301,17 +282,6 @@ public class LoginActivity extends Activity {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
-        }else{
-            //토큰을 가져오는데 실패
-            if(vo.isExist() && isFreshMan){
-                //신입생 1학기 기존 사용자인 경우
-            }else if(vo.isExist() && !isFreshMan){
-                //재학생 기존 사용자인 경우
-            }
-            else {
-                //새로운 사용자 일 경우
-                new RegisterMember().execute(vo);
-            }
         }
     }
 
@@ -334,12 +304,12 @@ public class LoginActivity extends Activity {
     }
 
     //Update Push RegId
-    private class UpdatePush extends AsyncTask<String, Void, Void>{
+    private class UpdatePush extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {
-            try{
+            try {
                 new NetworkUtil().updatePushRegId(stdNo, params[0]);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -413,6 +383,7 @@ public class LoginActivity extends Activity {
 
     private void setAutoLogin() {
         //자동로그인 설정
+        getInstanceIdToken();
         progressDialog.dismiss();
         pref.savePreferences(LOGIN_RESULT, true);
         pref.savePreferences("stdNo", stdNo);

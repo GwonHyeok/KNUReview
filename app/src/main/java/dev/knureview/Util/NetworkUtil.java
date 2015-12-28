@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
 import dev.knureview.VO.LectureVO;
 import dev.knureview.VO.StudentVO;
@@ -98,7 +99,8 @@ public class NetworkUtil {
     }
 
     public void updatePushRegId(String stdNo, String regId) throws Exception {
-        url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
+        url = "http://kureview.cafe24.com/mobileUpdatePushRegId.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "regId" + "=" + regId;
         sendQuery(url, query);
     }
@@ -183,7 +185,8 @@ public class NetworkUtil {
 
     public ArrayList<TalkVO> getMyTalkList(String stdNo) throws Exception {
         ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
-        url = "http://kureview.cafe24.com/mobileMyTalkList.jsp";;
+        url = "http://kureview.cafe24.com/mobileMyTalkList.jsp";
+        ;
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -203,11 +206,50 @@ public class NetworkUtil {
         return talkList;
     }
 
+    public ArrayList<CommentVO> getAllCommentList(int tNo) throws Exception {
+        ArrayList<CommentVO> talkList = new ArrayList<CommentVO>();
+        url = "http://kureview.cafe24.com/mobileCommentList.jsp";
+        query = "tNo" + "=" + tNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray cmtArray = (JSONArray) mainObject.get("comment");
+        if (cmtArray.size() == 0) {
+            return null;
+        }
+        for (int i = 0; i < cmtArray.size(); i++) {
+            JSONObject object = (JSONObject) cmtArray.get(i);
+            CommentVO vo = new CommentVO();
+            vo.setCno(Integer.parseInt(object.get("cNo").toString()));
+            vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+            vo.setPictureURL(object.get("pictureURL").toString());
+            vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+            vo.setDescription(object.get("description").toString());
+            vo.setWriteTime(object.get("writeTime").toString());
+            vo.setLikeCnt(Integer.parseInt(object.get("likeCnt").toString()));
+            talkList.add(vo);
+        }
+        return talkList;
+    }
+
     public boolean insertTalk(String stdNo, String pictureURL, String description) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertTalk.jsp";
         stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
                 + "&" + "description" + "=" + description;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        if (mainObject.get("result").toString().equals("success")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean insertComment(String stdNo, String pictureURL, String description, int tNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertComment.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
+                + "&" + "description" + "=" + description + "&" + "tNo" +"=" + tNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         if (mainObject.get("result").toString().equals("success")) {
