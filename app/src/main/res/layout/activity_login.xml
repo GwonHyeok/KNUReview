@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/school">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/loginImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_img" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/dim_color" />
 
     <LinearLayout
         android:id="@+id/titleLayout"
@@ -51,36 +62,36 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/login_edit_text"
         android:hint="비밀번호"
-        android:password="true"
         android:padding="12dp"
+        android:password="true"
         android:singleLine="true"
-        android:textSize="14dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/white_40"/>
-    
+        android:textColorHint="@color/white_40"
+        android:textSize="14dp" />
+
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:layout_below="@id/inputPW"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_below="@id/inputPW"
         android:layout_marginTop="15dp"
-        android:text="로그인"
-        android:textSize="14dp"
-        android:textColor="@color/white_20"
         android:background="@drawable/login_btn"
         android:onClick="mOnClick"
-        />
+        android:text="로그인"
+        android:textColor="@color/white_20"
+        android:textSize="14dp" />
+
     <TextView
         android:id="@+id/loginInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginBtn"
-        android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
         android:text="KNU REVIEW 에서는 개인정보를 수집하지 않습니다."
-        android:textSize="10dp"
-        android:textColor="@color/white_40"/>
+        android:textColor="@color/white_40"
+        android:textSize="10dp" />
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -27,7 +28,9 @@ import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
+import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
+import dev.knureview.VO.StudentVO;
 
 /**
  * Created by DavidHa on 2015. 11. 23..
@@ -56,17 +59,13 @@ public class MyProfileActivity extends ActionBarActivity {
     private TextView reviewAuthTxt;
     private TextView talkCntTxt;
     private TextView talkWarningTxt;
+    private TextView talkTicketTxt;
 
     private SharedPreferencesActivity pref;
     private String stdNo;
     private String belong;
     private String major;
-    private int reviewCnt;
-    private int reviewAuth;
-    private int talkCnt;
-    private int talkWarning;
-    private int talkAuth;
-    private int talkTicket;
+
     private int devCount = 0;
     private boolean getTicket = false;
     private BackPressCloseHandler backPressCloseHandler;
@@ -110,12 +109,7 @@ public class MyProfileActivity extends ActionBarActivity {
         stdNo = pref.getPreferences("stdNo", "");
         belong = pref.getPreferences("belong", "");
         major = pref.getPreferences("major", "");
-        reviewCnt = pref.getPreferences("reviewCnt", 0);
-        reviewAuth = pref.getPreferences("reviewAuth", 0);
-        talkCnt = pref.getPreferences("talkCnt", 0);
-        talkWarning = pref.getPreferences("talkWarning", 0);
-        talkAuth = pref.getPreferences("talkAuth", 0);
-        talkTicket = pref.getPreferences("talkTicket", 0);
+
         getTicket = pref.getPreferences(EASTER_EGG, false);
 
         backgroundImg = (ImageView) findViewById(R.id.cardImage);
@@ -126,18 +120,12 @@ public class MyProfileActivity extends ActionBarActivity {
         reviewAuthTxt = (TextView) findViewById(R.id.reviewAuth);
         talkCntTxt = (TextView) findViewById(R.id.talkCnt);
         talkWarningTxt = (TextView) findViewById(R.id.talkWarning);
+        talkTicketTxt = (TextView) findViewById(R.id.talkTicket);
 
         stdNoTxt.setText(stdNo);
         belongTxt.setText(belong);
         majorTxt.setText(major);
-        reviewCntTxt.setText(String.valueOf(reviewCnt));
-        if (reviewAuth == 0) {
-            reviewAuthTxt.setText("없음");
-        } else {
-            reviewAuthTxt.setText("있음");
-        }
-        talkCntTxt.setText(String.valueOf(talkCnt));
-        talkWarningTxt.setText(String.valueOf(talkWarning));
+
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
@@ -180,13 +168,6 @@ public class MyProfileActivity extends ActionBarActivity {
         } else if (view.getId() == R.id.alarmLayout) {
 
         } else if (view.getId() == R.id.courseReviewLayout) {
-            new MaterialDialog.Builder(MyProfileActivity.this)
-                    .backgroundColor(getResources().getColor(R.color.white))
-                    .content("아직 준비중이에요 1월 17일에 봬요~")
-                    .contentColor(getResources().getColor(R.color.text_lgray))
-                    .positiveText("확인")
-                    .positiveColor(getResources().getColor(R.color.colorPrimary))
-                    .show();
 
         } else if (view.getId() == R.id.myStoryLayout) {
             Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
@@ -261,6 +242,31 @@ public class MyProfileActivity extends ActionBarActivity {
                     .show();
         }
     }
+    private class MemberInfo extends AsyncTask<Void, Void, StudentVO>{
+        @Override
+        protected StudentVO doInBackground(Void... params) {
+            try{
+                return new NetworkUtil().getExistMemberInfo(stdNo);
+            }catch (Exception e){
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StudentVO result) {
+            super.onPostExecute(result);
+            reviewCntTxt.setText(String.valueOf(result.getReviewCnt()));
+            if (result.getReviewAuth() == 0) {
+                reviewAuthTxt.setText("없음");
+            } else {
+                reviewAuthTxt.setText("있음");
+            }
+            talkCntTxt.setText(String.valueOf(result.getTalkCnt()));
+            talkWarningTxt.setText(String.valueOf(result.getTalkWarning()));
+            talkTicketTxt.setText(String.valueOf(result.getTalkTicket()));
+        }
+    }
 
     //toggle
 
@@ -281,6 +287,12 @@ public class MyProfileActivity extends ActionBarActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MemberInfo().execute();
     }
 
     @Override
