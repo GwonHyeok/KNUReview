@@ -23,8 +23,8 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
+import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;

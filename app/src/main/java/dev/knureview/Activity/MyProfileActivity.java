@@ -242,7 +242,7 @@ public class MyProfileActivity extends ActionBarActivity {
                     .backgroundColor(getResources().getColor(R.color.white))
                     .title("로그아웃")
                     .titleColor(getResources().getColor(R.color.black))
-                    .content("정말로 로그아웃 하시겠습니까?")
+                    .content("로그아웃 하시겠습니까?")
                     .contentColor(getResources().getColor(R.color.text_lgray))
                     .positiveText("확인")
                     .positiveColor(getResources().getColor(R.color.colorPrimary))

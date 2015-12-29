@@ -204,6 +204,7 @@ public class LoginActivity extends Activity {
             //소속, 전공 초기화
             vo.setBelong(result.getBelong());
             vo.setMajor(result.getMajor());
+            vo.setName(result.getName());
 
             String year = stdNo.substring(0, 4);
             TimeUtil timeUtil = new TimeUtil();

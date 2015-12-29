@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -151,7 +153,29 @@ public class StDetailActivity extends Activity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.deleteBtn) {
-
+            new MaterialDialog.Builder(this)
+                    .backgroundColor(getResources().getColor(R.color.white))
+                    .title("이야기 삭제")
+                    .titleColor(getResources().getColor(R.color.black))
+                    .content("이야기를 삭제하시겠습니까?")
+                    .contentColor(getResources().getColor(R.color.text_lgray))
+                    .positiveText("확인")
+                    .positiveColor(getResources().getColor(R.color.colorPrimary))
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            if(isComment) {
+                                //comment 삭제
+                                new CommentDelete().execute();
+                            }else{
+                                //talk 삭제
+                                new TalkDelete().execute();
+                            }
+                        }
+                    })
+                    .negativeText("취소")
+                    .negativeColor(getResources().getColor(R.color.colorPrimary))
+                    .show();
         } else if (view.getId() == R.id.backBtn) {
             finish();
         } else if (view.getId() == R.id.fab) {
@@ -216,6 +240,41 @@ public class StDetailActivity extends Activity {
                 fab.setVisibility(View.VISIBLE);
             }
 
+        }
+    }
+    private class TalkDelete extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                new NetworkUtil().deleteTalk(tNo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            finish();
+        }
+    }
+
+    private class CommentDelete extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                new NetworkUtil().deleteComment(cNo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            finish();
         }
     }
 
