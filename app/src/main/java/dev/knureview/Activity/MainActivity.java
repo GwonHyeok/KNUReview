@@ -25,6 +25,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 
+import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
@@ -113,6 +114,14 @@ public class MainActivity extends ActionBarActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    public void mOnClick(View view){
+        if(view.getId() == R.id.devContactLayout){
+            Intent intent = new Intent(MainActivity.this, ContactActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }
     }
 
     //toggle

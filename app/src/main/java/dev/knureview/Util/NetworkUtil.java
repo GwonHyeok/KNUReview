@@ -105,6 +105,14 @@ public class NetworkUtil {
         sendQuery(url, query);
     }
 
+    public void updateMemberTalkTicket(String stdNo, int talkTicket, int talkAuth) throws Exception {
+        url = "";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo
+                + "&" + "talkTicket" + "=" + talkTicket + "&" + "talkAuth" + "=" + talkAuth;
+        sendQuery(url, query);
+    }
+
     // lecture 에 수강했던 과목 가져오기
     public void setStudentLecture(Cookie cookie, String stdNo) throws Exception {
         //기존에 저장된 lecture 삭제 및 초기화
@@ -249,7 +257,7 @@ public class NetworkUtil {
         url = "http://kureview.cafe24.com/mobileInsertComment.jsp";
         stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
-                + "&" + "description" + "=" + description + "&" + "tNo" +"=" + tNo;
+                + "&" + "description" + "=" + description + "&" + "tNo" + "=" + tNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         if (mainObject.get("result").toString().equals("success")) {

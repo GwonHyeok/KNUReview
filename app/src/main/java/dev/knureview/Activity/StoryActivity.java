@@ -23,6 +23,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
@@ -105,6 +106,12 @@ public class StoryActivity extends ActionBarActivity {
     }
 
     public void mOnClick(View view) {
+        if(view.getId() == R.id.devContactLayout){
+            Intent intent = new Intent(StoryActivity.this, ContactActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }
+
         if (view.getId() == R.id.fab) {
             Intent intent = new Intent(StoryActivity.this, StEditActivity.class);
             startActivity(intent);

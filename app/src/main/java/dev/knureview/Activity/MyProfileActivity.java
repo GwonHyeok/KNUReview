@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Activity.ProfileDetail.MyStoryActivity;
+import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
@@ -173,6 +174,12 @@ public class MyProfileActivity extends ActionBarActivity {
     };
 
     public void mOnClick(View view) {
+        if(view.getId() == R.id.devContactLayout){
+            Intent intent = new Intent(MyProfileActivity.this, ContactActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }
+
         if (view.getId() == R.id.versionLayout) {
             Intent intent = new Intent(this, VersionActivity.class);
             startActivity(intent);
@@ -193,7 +200,9 @@ public class MyProfileActivity extends ActionBarActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.storyTicketLayout) {
-
+            Intent intent = new Intent(MyProfileActivity.this, TicketActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.contactLayout) {
             Intent intent = new Intent(MyProfileActivity.this, ContactActivity.class);
             startActivity(intent);
