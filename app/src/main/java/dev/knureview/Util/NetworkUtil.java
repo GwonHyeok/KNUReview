@@ -43,6 +43,8 @@ public class NetworkUtil {
         JSONObject stdObject = (JSONObject) new JSONParser().parse(data);
         JSONObject dataObject = (JSONObject) stdObject.get("data");
 
+        //이름
+        vo.setName(dataObject.get("mast_name").toString());
         //소속
         vo.setBelong(dataObject.get("mast_unko").toString());
         //전공
@@ -63,6 +65,7 @@ public class NetworkUtil {
             JSONObject memberObject = (JSONObject) mainObject.get("member");
             if (result != null) {
                 vo.setStdNo(Integer.parseInt(memberObject.get("stdNo").toString()));
+                vo.setName(memberObject.get("name").toString());
                 vo.setBelong(memberObject.get("belong").toString());
                 vo.setMajor(memberObject.get("major").toString());
                 vo.setReviewCnt(Integer.parseInt(memberObject.get("reviewCnt").toString()));
@@ -83,18 +86,21 @@ public class NetworkUtil {
 
     public void updateMemberInfo(StudentVO vo) throws Exception {
         url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
-        query = "stdNo" + "=" + vo.getStdNo() + "&" + "belong" + "=" + vo.getBelong()
+        query = "stdNo" + "=" + new AES256Util().encrypt(String.valueOf(vo.getStdNo())) + "&" + "name" + "=" + vo.getName() + "&" + "belong" + "=" + vo.getBelong()
                 + "&" + "major" + "=" + vo.getMajor();
         sendQuery(url, query);
     }
 
     public void setMemberInfo(StudentVO vo) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertMember.jsp";
-        query = "stdNo" + "=" + vo.getStdNo() + "&" + "belong" + "=" + vo.getBelong()
+        query = "stdNo" + "=" + vo.getStdNo()
+                + "&" + "name" + "=" + vo.getName()
+                + "&" + "belong" + "=" + vo.getBelong()
                 + "&" + "major" + "=" + vo.getMajor()
                 + "&" + "reviewAuth" + "=" + vo.getReviewAuth()
                 + "&" + "talkAuth" + "=" + vo.getTalkAuth()
-                + "&" + "regId" + "=" + vo.getRegId();
+                + "&" + "regId" + "=" + vo.getRegId()
+                + "&" + "key" + "=" + new AES256Util().encrypt(vo.getKey());
         sendQuery(url, query);
     }
 
@@ -265,6 +271,18 @@ public class NetworkUtil {
         } else {
             return false;
         }
+    }
+
+    public void deleteTalk(int tNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileDeleteTalk.jsp";
+        query = "tNo" + "=" + new AES256Util().encrypt(String.valueOf(tNo));
+        sendQuery(url, query);
+    }
+
+    public void deleteComment(int cNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileDeleteComment.jsp";
+        query = "cNo" + "=" + new AES256Util().encrypt(String.valueOf(cNo));
+        sendQuery(url, query);
     }
 
     // NetWork Util Method

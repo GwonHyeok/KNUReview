@@ -5,9 +5,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,7 +50,7 @@ public class LoginActivity extends Activity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Typeface archiveFont;
     private Typeface nanumFont;
-
+    private ImageView loginImage;
     private TextView appTitleEng;
     private EditText inputID;
     private EditText inputPW;
@@ -63,7 +72,7 @@ public class LoginActivity extends Activity {
         archiveFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/Archive.otf");
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
 
-
+        loginImage = (ImageView)findViewById(R.id.loginImage);
         appTitleEng = (TextView) findViewById(R.id.appTitleEng);
         inputID = (EditText) findViewById(R.id.inputID);
         inputPW = (EditText) findViewById(R.id.inputPW);
@@ -87,6 +96,11 @@ public class LoginActivity extends Activity {
         registerBroadcastReceiver();
 
         inputPW.addTextChangedListener(textChangeListener);
+
+        //blur
+        BitmapDrawable drawable = (BitmapDrawable) loginImage.getDrawable();
+        Bitmap blurBitmap = blur(this, drawable.getBitmap(), 12);
+        loginImage.setImageBitmap(blurBitmap);
     }
 
     TextWatcher textChangeListener = new TextWatcher() {
@@ -133,6 +147,25 @@ public class LoginActivity extends Activity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
 
+    }
+
+    public Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+
+            final RenderScript rs = RenderScript.create(context);
+            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
+                    Allocation.USAGE_SCRIPT);
+            final Allocation output = Allocation.createTyped(rs, input.getType());
+            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            script.setRadius(radius); //0.0f ~ 25.0f
+            script.setInput(input);
+            script.forEach(output);
+            output.copyTo(bitmap);
+            return bitmap;
+        }
+        return null;
     }
 
 
@@ -204,6 +237,7 @@ public class LoginActivity extends Activity {
             //소속, 전공 초기화
             vo.setBelong(result.getBelong());
             vo.setMajor(result.getMajor());
+            vo.setName(result.getName());
 
             String year = stdNo.substring(0, 4);
             TimeUtil timeUtil = new TimeUtil();

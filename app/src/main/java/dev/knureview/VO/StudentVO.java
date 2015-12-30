@@ -6,6 +6,7 @@ package dev.knureview.VO;
 public class StudentVO {
 
     private int stdNo;
+    private String name;
     private String belong;
     private String major;
     private int reviewCnt;
@@ -16,6 +17,11 @@ public class StudentVO {
     private int talkTicket;
     private String regId;
     private boolean isExist;
+    private String key;
+
+    public StudentVO() {
+        this.key = "강k남n대u리r뷰v키k";
+    }
 
     public int getStdNo() {
         return stdNo;
@@ -23,6 +29,14 @@ public class StudentVO {
 
     public void setStdNo(int stdNo) {
         this.stdNo = stdNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBelong() {
@@ -103,5 +117,13 @@ public class StudentVO {
 
     public void setIsExist(boolean isExist) {
         this.isExist = isExist;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

@@ -58,8 +58,7 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="14dp"
-            android:visibility="gone">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -90,8 +89,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rowColor"
-            android:visibility="gone" />
+            android:background="@color/rowColor" />
 
         <LinearLayout
             android:id="@+id/courseReviewLayout"
@@ -100,8 +98,7 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="14dp"
-            android:visibility="gone">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,8 +121,39 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rowColor"
-            android:visibility="gone" />
+            android:background="@color/rowColor" />
+
+        <LinearLayout
+            android:id="@+id/myStoryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_selector"
+            android:gravity="center"
+            android:onClick="mOnClick"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내가 쓴 글"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/right_arrow_ic" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rowColor" />
 
         <LinearLayout
             android:id="@+id/storyTicketLayout"
@@ -176,39 +204,6 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
-            android:id="@+id/myStoryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
-            android:gravity="center"
-            android:onClick="mOnClick"
-            android:padding="14dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="내가 쓴 글"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/right_arrow_ic" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rowColor" />
-
-
-        <LinearLayout
             android:id="@+id/contactLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -245,8 +240,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_selector"
-            android:onClick="mOnClick"
             android:orientation="vertical"
+            android:onClick="mOnClick"
             android:padding="14dp">
 
             <TextView
