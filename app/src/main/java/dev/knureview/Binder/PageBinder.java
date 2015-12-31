@@ -2,7 +2,6 @@ package dev.knureview.Binder;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import dev.knureview.Activity.StDetailActivity;
 import dev.knureview.R;
@@ -26,14 +25,17 @@ public class PageBinder extends RecyclerBinder<DemoViewType> {
     private CommentVO vo;
     private Activity activity;
     private TalkTextUtil talkTextUtil;
+    private HashMap<Integer, String> likeHashMap;
 
-    public PageBinder(Activity activity, CommentVO vo) {
+    public PageBinder(Activity activity, CommentVO vo, HashMap<Integer, String> likeHashmap) {
         super(activity, DemoViewType.PAGE);
         this.activity = activity;
         this.vo = vo;
+        this.likeHashMap = likeHashmap;
         talkTextUtil = new TalkTextUtil();
         talkTextUtil.setActivity(activity);
     }
+
 
     @Override
     public int layoutResId() {
@@ -55,15 +57,21 @@ public class PageBinder extends RecyclerBinder<DemoViewType> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, StDetailActivity.class);
-                intent.putExtra("toDo","comment");
-                intent.putExtra("cNo",vo.getCno());
+                intent.putExtra("toDo", "comment");
+                intent.putExtra("tNo", vo.gettNo());
+                intent.putExtra("cNo", vo.getCno());
                 intent.putExtra("pictureURL", vo.getPictureURL());
                 intent.putExtra("writerStdNo", vo.getStdNo());
                 intent.putExtra("description", vo.getDescription());
                 intent.putExtra("writeTime", vo.getWriteTime());
                 intent.putExtra("likeCnt", vo.getLikeCnt());
+                try {
+                    intent.putExtra("like", likeHashMap.get(vo.getCno()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 activity.startActivity(intent);
-                activity. overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+                activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
             }
         });
         talkTextUtil.setDescription(vo.getDescription(), vh.dynamicArea);
@@ -71,7 +79,19 @@ public class PageBinder extends RecyclerBinder<DemoViewType> {
                 .load("http://kureview.cafe24.com/image/" + vo.getPictureURL())
                 .into(vh.cardImage);
         vh.writeTime.setText(TimeFormat.formatTimeString(vo.getWriteTime()));
+        //자기 자신이 좋아요 했던 게시물 표시
+        try {
+
+            if (likeHashMap.get(vo.getCno()).equals("like")) {
+                vh.likeImage.setImageResource(R.drawable.fill_like_ic);
+            } else {
+                vh.likeImage.setImageResource(R.drawable.like_ic);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         vh.likeCnt.setText("" + vo.getLikeCnt());
+
 
     }
 
@@ -80,6 +100,7 @@ public class PageBinder extends RecyclerBinder<DemoViewType> {
         private ImageView cardImage;
         private LinearLayout dynamicArea;
         private TextView writeTime;
+        private ImageView likeImage;
         private TextView likeCnt;
 
         public ViewHolder(View itemView) {
@@ -87,6 +108,7 @@ public class PageBinder extends RecyclerBinder<DemoViewType> {
             cardImage = (ImageView) itemView.findViewById(R.id.cmtCardImage);
             dynamicArea = (LinearLayout) itemView.findViewById(R.id.cmtDynamicArea);
             writeTime = (TextView) itemView.findViewById(R.id.cmtWriteTime);
+            likeImage = (ImageView) itemView.findViewById(R.id.likeImage);
             likeCnt = (TextView) itemView.findViewById(R.id.cmtLikeCnt);
         }
     }

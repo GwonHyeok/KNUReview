@@ -93,6 +93,7 @@
                     android:textSize="12dp" />
 
                 <ImageView
+                    android:id="@+id/likeImage"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_gravity="center"

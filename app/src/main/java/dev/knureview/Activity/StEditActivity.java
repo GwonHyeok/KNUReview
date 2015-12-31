@@ -76,9 +76,9 @@ public class StEditActivity extends Activity {
         //intent
         Intent intent = getIntent();
         String toDo = intent.getStringExtra("toDo");
-        if(toDo!=null){
+        if (toDo != null) {
             isComment = true;
-            tNo = intent.getIntExtra("tNo",0);
+            tNo = intent.getIntExtra("tNo", 0);
         }
 
         //random
@@ -203,9 +203,9 @@ public class StEditActivity extends Activity {
                 Intent intent = new Intent(StEditActivity.this, StConfirmActivity.class);
                 intent.putExtra("pictureURL", "sample" + currentImage + ".jpg");
                 intent.putExtra("description", description);
-                if(isComment){
-                    intent.putExtra("tNo",tNo);
-                    intent.putExtra("toDo","comment");
+                if (isComment) {
+                    intent.putExtra("tNo", tNo);
+                    intent.putExtra("toDo", "comment");
                 }
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);

@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import dev.knureview.VO.CommentVO;
@@ -279,9 +280,77 @@ public class NetworkUtil {
         sendQuery(url, query);
     }
 
-    public void deleteComment(int cNo) throws Exception {
+    public void deleteComment(int cNo, int tNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileDeleteComment.jsp";
-        query = "cNo" + "=" + new AES256Util().encrypt(String.valueOf(cNo));
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "cNo" + "=" + cNo
+                + "&" + "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+    }
+
+    public HashMap<Integer, String> findMyLikeTalk(String stdNo) throws Exception {
+        HashMap<Integer, String> likeHashMap = new HashMap<>();
+        url = "http://kureview.cafe24.com/mobileFindMyLikeTalk.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray likeArray = (JSONArray) mainObject.get("myLikeTalk");
+
+        if (likeArray.size() > 0) {
+            for (int i = 0; i < likeArray.size(); i++) {
+                likeHashMap.put(Integer.parseInt(likeArray.get(i).toString()), "like");
+            }
+            return likeHashMap;
+        } else {
+            return null;
+        }
+    }
+
+    public HashMap<Integer, String> findMyLikeComment(String stdNo) throws Exception {
+        HashMap<Integer, String> likeHashMap = new HashMap<>();
+        url = "http://kureview.cafe24.com/mobileFindMyLikeComment.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray likeArray = (JSONArray) mainObject.get("myLikeComment");
+
+        if (likeArray.size() > 0) {
+            for (int i = 0; i < likeArray.size(); i++) {
+                likeHashMap.put(Integer.parseInt(likeArray.get(i).toString()), "like");
+            }
+            return likeHashMap;
+        } else {
+            return null;
+        }
+    }
+
+    public void increaseTalkLike(int tNo, String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileIncreaseLike.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 0;
+        sendQuery(url, query);
+    }
+
+    public void increaseCommentLike(int cNo, String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileIncreaseLike.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 1;
+        sendQuery(url, query);
+    }
+
+    public void decreaseTalkLike(int tNo, String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileDecreaseLike.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 0;
+        sendQuery(url, query);
+    }
+
+    public void decreaseCommentLike(int cNo, String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileDecreaseLike.jsp";
+        stdNo = new AES256Util().encrypt(stdNo);
+        query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 1;
         sendQuery(url, query);
     }
 

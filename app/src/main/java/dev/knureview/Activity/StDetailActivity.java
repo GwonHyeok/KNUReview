@@ -27,6 +27,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dev.knureview.Binder.PageBinder;
 import dev.knureview.R;
@@ -52,6 +53,7 @@ public class StDetailActivity extends Activity {
     private Bitmap blurBitmap;
     private LinearLayout dynamicArea;
     private TextView writeTimeTxt;
+    private ImageView likeImage;
     private TextView likeCntTxt;
     private TextView commentCntTxt;
     private LinearLayout commentLayout;
@@ -59,13 +61,17 @@ public class StDetailActivity extends Activity {
 
     private TalkTextUtil talkTextUtil;
     private int tNo;
+    String stdNo;
     private String pictureURL;
     private int writerStdNo;
     private String description;
     private String writeTime;
     private int likeCnt;
     private int commentCnt;
+    private HashMap<Integer, String> likeHashMap;
+    private String like;
     private boolean isComment = false;
+    private boolean isLike = false;
     private int cNo;
 
 
@@ -80,13 +86,14 @@ public class StDetailActivity extends Activity {
         dynamicArea = (LinearLayout) findViewById(R.id.dynamicArea);
         commentCntTxt = (TextView) findViewById(R.id.commentCnt);
         commentLayout = (LinearLayout) findViewById(R.id.commentLayout);
+        likeImage = (ImageView) findViewById(R.id.likeImage);
         likeCntTxt = (TextView) findViewById(R.id.likeCnt);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         deleteBtn = (ImageView) findViewById(R.id.deleteBtn);
 
         //pref
         SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
-        String stdNo = pref.getPreferences("stdNo", "");
+        stdNo = pref.getPreferences("stdNo", "");
 
         //talkTextUtil
         talkTextUtil = new TalkTextUtil();
@@ -103,16 +110,18 @@ public class StDetailActivity extends Activity {
 
         } else {
             isComment = false;
-            tNo = intent.getIntExtra("tNo", 0);
             commentCnt = intent.getIntExtra("commentCnt", 0);
             commentCntTxt.setText("" + commentCnt);
             commentLayout.setVisibility(View.VISIBLE);
         }
+
+        tNo = intent.getIntExtra("tNo", 0);
         pictureURL = intent.getStringExtra("pictureURL");
         writerStdNo = intent.getIntExtra("writerStdNo", 0);
         description = intent.getStringExtra("description");
         writeTime = intent.getStringExtra("writeTime");
         likeCnt = intent.getIntExtra("likeCnt", 0);
+        like = intent.getStringExtra("like");
 
         //initial
         talkTextUtil.setDescription(description, dynamicArea);
@@ -131,25 +140,20 @@ public class StDetailActivity extends Activity {
             deleteBtn.setVisibility(View.INVISIBLE);
         }
 
+        if (like == null) {
+            likeImage.setImageResource(R.drawable.like_ic);
+            isLike = false;
+        } else {
+            likeImage.setImageResource(R.drawable.fill_like_ic);
+            isLike = true;
+        }
+
         //horizontal RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.recycler_horizontal);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
 
     }
-
-    //RecyclerBinder Adapter
-    @NonNull
-    private RecyclerBinderAdapter<DemoSectionType, DemoViewType> initAdapter(ArrayList<CommentVO> cmtList) {
-        RecyclerBinderAdapter<DemoSectionType, DemoViewType> adapter
-                = new RecyclerBinderAdapter<>();
-        for (int i = 0; i < cmtList.size(); i++) {
-            RecyclerBinder<DemoViewType> binder = new PageBinder(this, cmtList.get(i));
-            adapter.add(DemoSectionType.ITEM, binder);
-        }
-        return adapter;
-    }
-
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.deleteBtn) {
@@ -164,10 +168,10 @@ public class StDetailActivity extends Activity {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            if(isComment) {
+                            if (isComment) {
                                 //comment 삭제
                                 new CommentDelete().execute();
-                            }else{
+                            } else {
                                 //talk 삭제
                                 new TalkDelete().execute();
                             }
@@ -190,7 +194,37 @@ public class StDetailActivity extends Activity {
             intent.putExtra("tNo", tNo);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        } else if (view.getId() == R.id.likeLayout) {
+            int like = Integer.parseInt(likeCntTxt.getText().toString());
+            if (isLike) {
+                decreaseLike(like);
+            } else {
+                increaseLike(like);
+            }
+
         }
+    }
+
+    private void increaseLike(int likeCnt) {
+        likeImage.setImageResource(R.drawable.fill_like_ic);
+        if (isComment) {
+            new IncreaseCmtLike().execute();
+        } else {
+            new IncreaseTlkLike().execute();
+        }
+        likeCntTxt.setText(String.valueOf(++likeCnt));
+        isLike = true;
+    }
+
+    private void decreaseLike(int likeCnt) {
+        likeImage.setImageResource(R.drawable.like_ic);
+        if (isComment) {
+            new DecreaseCmtLike().execute();
+        } else {
+            new DecreaseTlkLike().execute();
+        }
+        likeCntTxt.setText(String.valueOf(--likeCnt));
+        isLike = false;
     }
 
     public Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
@@ -212,11 +246,8 @@ public class StDetailActivity extends Activity {
         return null;
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_right);
-    }
+
+    //Async
 
     private class CommentList extends AsyncTask<Void, Void, ArrayList<CommentVO>> {
         @Override
@@ -233,21 +264,87 @@ public class StDetailActivity extends Activity {
         protected void onPostExecute(ArrayList<CommentVO> data) {
             super.onPostExecute(data);
             if (data != null) {
-                fab.setVisibility(View.GONE);
+                fab.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                commentCntTxt.setText(String.valueOf(data.size()));
                 RecyclerBinderAdapter<DemoSectionType, DemoViewType> normalAdapter = initAdapter(data);
                 recyclerView.setAdapter(normalAdapter);
+                normalAdapter.notifyDataSetChanged();
             } else {
+                recyclerView.setVisibility(View.INVISIBLE);
                 fab.setVisibility(View.VISIBLE);
+                commentCntTxt.setText("0");
             }
 
         }
     }
-    private class TalkDelete extends AsyncTask<Void, Void, Void>{
+
+    //RecyclerBinder Adapter
+    @NonNull
+    private RecyclerBinderAdapter<DemoSectionType, DemoViewType> initAdapter(ArrayList<CommentVO> cmtList) {
+        RecyclerBinderAdapter<DemoSectionType, DemoViewType> adapter
+                = new RecyclerBinderAdapter<>();
+        for (int i = 0; i < cmtList.size(); i++) {
+            RecyclerBinder<DemoViewType> binder = new PageBinder(this, cmtList.get(i), likeHashMap);
+            adapter.add(DemoSectionType.ITEM, binder);
+        }
+        return adapter;
+    }
+
+    private class IncreaseCmtLike extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            try{
+            try {
+                new NetworkUtil().increaseCommentLike(cNo, stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class IncreaseTlkLike extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                new NetworkUtil().increaseTalkLike(tNo, stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class DecreaseCmtLike extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                new NetworkUtil().decreaseCommentLike(cNo, stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class DecreaseTlkLike extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                new NetworkUtil().decreaseTalkLike(tNo, stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class TalkDelete extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
                 new NetworkUtil().deleteTalk(tNo);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -260,12 +357,12 @@ public class StDetailActivity extends Activity {
         }
     }
 
-    private class CommentDelete extends AsyncTask<Void, Void, Void>{
+    private class CommentDelete extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            try{
-                new NetworkUtil().deleteComment(cNo);
-            }catch (Exception e){
+            try {
+                new NetworkUtil().deleteComment(cNo, tNo, stdNo);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -276,13 +373,41 @@ public class StDetailActivity extends Activity {
             super.onPostExecute(aVoid);
             finish();
         }
+    }
+
+
+    private class FavouriteComment extends AsyncTask<Void, Void, HashMap<Integer, String>> {
+        @Override
+        protected HashMap<Integer, String> doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().findMyLikeComment(stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<Integer, String> result) {
+            super.onPostExecute(result);
+            likeHashMap = result;
+            if (!isComment) {
+                new CommentList().execute();
+            }
+        }
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_right);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isComment) {
-            new CommentList().execute();
-        }
+        new FavouriteComment().execute();
+
     }
 }

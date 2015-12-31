@@ -1,6 +1,7 @@
 package dev.knureview.Adapter;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dev.knureview.R;
 import dev.knureview.Util.TalkTextUtil;
@@ -29,6 +31,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
     private TalkTextUtil talkTextUtil;
     private boolean isShowDate = false;
     private ArrayList<Integer> showDatePosition;
+    private HashMap<Integer, String> likeHashmap;
     private String date;
     private String nextDate;
 
@@ -36,6 +39,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
         private ImageView cardImage;
         private LinearLayout dynamicArea;
         private TextView writeTime;
+        private ImageView likeImage;
         private TextView likeCnt;
         private TextView commentCnt;
         private TextView date;
@@ -61,6 +65,10 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
         }
     }
 
+    public void setMyLikeTalk(HashMap<Integer, String> likeHashmap) {
+        this.likeHashmap = likeHashmap;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder vh;
@@ -72,6 +80,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
             vh.cardImage = (ImageView) convertView.findViewById(R.id.cardImage);
             vh.dynamicArea = (LinearLayout) convertView.findViewById(R.id.dynamicArea);
             vh.commentCnt = (TextView) convertView.findViewById(R.id.commentCnt);
+            vh.likeImage = (ImageView) convertView.findViewById(R.id.likeImage);
             vh.likeCnt = (TextView) convertView.findViewById(R.id.likeCnt);
             vh.writeTime = (TextView) convertView.findViewById(R.id.writeTime);
             vh.date = (TextView) convertView.findViewById(R.id.date);
@@ -92,6 +101,19 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
 
         }
 
+        //자기 자신이 좋아요 했던 게시물 표시
+        try {
+
+            if (likeHashmap.get(talkList.get(position).gettNo()).equals("like")) {
+                vh.likeImage.setImageResource(R.drawable.fill_like_ic);
+            } else {
+                vh.likeImage.setImageResource(R.drawable.like_ic);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         if (vh.dynamicArea.getChildCount() > 0) {
             vh.dynamicArea.removeAllViews();
         }
@@ -107,6 +129,4 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
 
         return convertView;
     }
-
-
 }

@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.StoryAdapter;
@@ -29,6 +30,7 @@ import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;
+import dev.knureview.Util.SharedPreferencesActivity;
 import dev.knureview.VO.TalkVO;
 
 /**
@@ -52,7 +54,9 @@ public class StoryActivity extends ActionBarActivity {
     private ListView listView;
 
     private ArrayList<TalkVO> talkList;
+    private HashMap<Integer, String> likeHashMap;
     private int listPosition;
+    private String stdNo;
     private BackPressCloseHandler backPressCloseHandler;
 
     @Override
@@ -92,6 +96,10 @@ public class StoryActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(listItemListener);
 
+        //pref
+        SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
+        stdNo = pref.getPreferences("stdNo", "");
+
         //fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToListView(listView);
@@ -102,7 +110,8 @@ public class StoryActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new TalkList().execute();
+        new FavouriteTalk().execute();
+
     }
 
     public void mOnClick(View view) {
@@ -110,7 +119,7 @@ public class StoryActivity extends ActionBarActivity {
             Intent intent = new Intent(StoryActivity.this, StEditActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
-        }else if(view.getId() == R.id.devLayout){
+        } else if (view.getId() == R.id.devLayout) {
 
         }
     }
@@ -127,6 +136,11 @@ public class StoryActivity extends ActionBarActivity {
             intent.putExtra("writeTime", talkList.get(position).getWriteTime());
             intent.putExtra("likeCnt", talkList.get(position).getLikeCnt());
             intent.putExtra("commentCnt", talkList.get(position).getCommentCnt());
+            try {
+                intent.putExtra("like", likeHashMap.get(talkList.get(position).gettNo()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }
@@ -200,9 +214,29 @@ public class StoryActivity extends ActionBarActivity {
             super.onPostExecute(data);
             talkList = data;
             adapter = new StoryAdapter(StoryActivity.this, R.layout.layout_story_list_row, data);
+            adapter.setMyLikeTalk(likeHashMap);
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);
+        }
+    }
+
+    private class FavouriteTalk extends AsyncTask<Void, Void, HashMap<Integer, String>> {
+        @Override
+        protected HashMap<Integer, String> doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().findMyLikeTalk(stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<Integer, String> result) {
+            super.onPostExecute(result);
+            likeHashMap = result;
+            new TalkList().execute();
         }
     }
 
