@@ -40,6 +40,8 @@
         <activity
             android:name=".Activity.StoryActivity"
             android:label="소곤소곤" />
+        <activity android:name=".Activity.AlarmActivity"
+            android:label="알림"/>
         <activity android:name=".Activity.StDetailActivity" />
         <activity android:name=".Activity.StEditActivity" />
         <activity android:name=".Activity.StConfirmActivity" />

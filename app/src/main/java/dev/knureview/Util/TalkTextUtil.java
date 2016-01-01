@@ -25,7 +25,7 @@ public class TalkTextUtil {
 
 
     private void makeTextView(String description, LinearLayout dynamicArea) {
-        final int space100 = (int) PixelUtil.convertPixelsToDp(100 + textSize, activity);
+        final int space70 = (int) PixelUtil.convertPixelsToDp(70 + textSize, activity);
         final int space40 = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
         final int space14 = (int) PixelUtil.convertPixelsToDp(14 + textSize, activity);
         final int txtSize = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
@@ -38,7 +38,7 @@ public class TalkTextUtil {
         text.setBackgroundColor(activity.getResources().getColor(R.color.dim_color));
         text.setSingleLine(true);
 
-        text.setPadding(space100, space14, space100, space14);
+        text.setPadding(space70, space14, space70, space14);
         text.setText(description);
         text.setTextColor(activity.getResources().getColor(R.color.white));
         text.setTextSize(txtSize);

@@ -99,6 +99,7 @@ public class NetworkUtil {
                 + "&" + "major" + "=" + vo.getMajor()
                 + "&" + "reviewAuth" + "=" + vo.getReviewAuth()
                 + "&" + "talkAuth" + "=" + vo.getTalkAuth()
+                + "&" + "talkTicket" + "=" + vo.getTalkTicket()
                 + "&" + "regId" + "=" + vo.getRegId()
                 + "&" + "key" + "=" + new AES256Util().encrypt(vo.getKey());
         sendQuery(url, query);

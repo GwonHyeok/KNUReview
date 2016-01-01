@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,12 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
@@ -105,6 +110,7 @@ public class StoryActivity extends ActionBarActivity {
         fab.attachToListView(listView);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
+
     }
 
     @Override
@@ -138,7 +144,7 @@ public class StoryActivity extends ActionBarActivity {
             intent.putExtra("commentCnt", talkList.get(position).getCommentCnt());
             try {
                 intent.putExtra("like", likeHashMap.get(talkList.get(position).gettNo()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             startActivity(intent);
@@ -179,10 +185,23 @@ public class StoryActivity extends ActionBarActivity {
 
     //toggle
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+       // inflater.inflate(R.menu.story_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item))
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
+        }else if(item.getItemId() == R.id.alarm){
+            Intent intent = new Intent(StoryActivity.this, AlarmActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+        }
         return super.onOptionsItemSelected(item);
     }
 

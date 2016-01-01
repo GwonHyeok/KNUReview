@@ -7,7 +7,6 @@
     <dimen name="splash_image_height">240dp</dimen>
     <dimen name="splash_text_size">24dp</dimen>
     <dimen name="splash_margin_top">88dp</dimen>
-    <dimen name="st_detail_recycle_height">230dp</dimen>
     <dimen name="st_detail_recycle_width">320dp</dimen>
     <dimen name="st_detail_card_image_height">360dp</dimen>
     <dimen name="st_card_image_height">240dp</dimen>

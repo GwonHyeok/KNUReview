@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +47,7 @@ public class LoginActivity extends Activity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "LoginActivity";
     private static final String LOGIN_RESULT = "loginResult";
-    private static final String VERSION = "version";
+
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Typeface archiveFont;
     private Typeface nanumFont;
@@ -179,6 +180,7 @@ public class LoginActivity extends Activity {
                     .content("잠시만 기다려주세요.")
                     .contentColor(getResources().getColor(R.color.text_lgray))
                     .progress(true, 0)
+                    .cancelable(false)
                     .show();
         }
 
@@ -274,20 +276,34 @@ public class LoginActivity extends Activity {
 
             if (result.isExist() && isFreshMan) {
                 //신입생 1학기 기존 사용자인 경우
+                vo.setReviewCnt(result.getReviewCnt());
+                vo.setReviewAuth(result.getReviewAuth());
+                vo.setTalkAuth(result.getTalkAuth());
+                vo.setTalkCnt(result.getTalkCnt());
+                vo.setTalkTicket(result.getTalkTicket());
+                vo.setTalkWarning(result.getTalkWarning());
                 setAutoLogin();
             } else if (result.isExist() && !isFreshMan) {
                 //재학생 기존 사용자인 경우
+                vo.setReviewCnt(result.getReviewCnt());
+                vo.setReviewAuth(result.getReviewAuth());
+                vo.setTalkAuth(result.getTalkAuth());
+                vo.setTalkCnt(result.getTalkCnt());
+                vo.setTalkTicket(result.getTalkTicket());
+                vo.setTalkWarning(result.getTalkWarning());
                 new UpdateMemberInfo().execute(vo);
             } else if (!result.isExist() && isFreshMan) {
                 //신입생 1학기 새로운 사용자인 경우
                 vo.setReviewAuth(1);
                 vo.setTalkAuth(1);
+                vo.setTalkTicket(1);
                 new RegisterMember().execute(vo);
 
             } else if (!result.isExist() && !isFreshMan) {
                 //재학생 새로운 사용자인 경우
                 vo.setReviewAuth(0);
                 vo.setTalkAuth(0);
+                vo.setTalkTicket(1);
                 new RegisterMember().execute(vo);
             }
 
@@ -429,7 +445,6 @@ public class LoginActivity extends Activity {
         pref.savePreferences("talkWarning", vo.getTalkWarning());
         pref.savePreferences("talkAuth", vo.getTalkAuth());
         pref.savePreferences("talkTicket", vo.getTalkTicket());
-        pref.savePreferences(VERSION, getResources().getString(R.string.version));
 
         //Main 페이지 이동
         Intent intent = new Intent(LoginActivity.this, StoryActivity.class);

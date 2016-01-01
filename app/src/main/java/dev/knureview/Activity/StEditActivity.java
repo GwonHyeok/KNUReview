@@ -36,9 +36,7 @@ public class StEditActivity extends Activity {
     public static Activity activity;
     private EditText inputEdit;
     private String description;
-    private int[] newLinePosition;
-    private int lineCount = 1;
-    private boolean isEditable = false;
+
     private boolean isComment = false;
     private int tNo;
     private ImageView blurImage;
@@ -51,7 +49,7 @@ public class StEditActivity extends Activity {
 
     private int[] randomArray;
     private int currentImage;
-    private final int IMAGE_COUNT = 40;
+    private final int IMAGE_COUNT = 70;
 
     private Animation diceAnim;
     private Animation preCircle1Anim;
@@ -103,8 +101,6 @@ public class StEditActivity extends Activity {
         //inputEdit
         inputEdit.addTextChangedListener(inputListener);
 
-        //newLinePosition
-        newLinePosition = new int[6];
     }
 
 

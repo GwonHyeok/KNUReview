@@ -23,7 +23,7 @@ public class PixelUtil {
         } else if (displayDP <= 560) {
             dp = px / ((displayDP / 1.36f) / 160f);
         } else if (displayDP <= 640) {
-            dp = px / ((displayDP / 1.78f) / 160f);
+            dp = px / ((displayDP / 1.32f) / 160f);
         }
         return dp;
     }

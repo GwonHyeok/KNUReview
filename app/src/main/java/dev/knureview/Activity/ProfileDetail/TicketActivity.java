@@ -155,8 +155,10 @@ public class TicketActivity extends ActionBarActivity {
                 adapter = new TicketAdapter(TicketActivity.this, R.layout.layout_ticket_list_row,
                         talkAuth, totalTicket - talkAuth);
                 listView.setAdapter(adapter);
+                listView.setVisibility(View.VISIBLE);
             } else {
                 alarmNoTicketTxt.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.INVISIBLE);
             }
         }
     }
