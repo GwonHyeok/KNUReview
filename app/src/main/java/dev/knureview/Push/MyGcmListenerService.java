@@ -18,6 +18,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 import java.net.URLDecoder;
 
+import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.StoryActivity;
 import dev.knureview.R;
 
@@ -59,8 +60,14 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message
      */
     private void sendNotification(String title, String message) {
-        Intent intent = new Intent(this, StoryActivity.class);
+        Intent intent = null;
+        if (message.contains("소곤소곤 티켓")) {
+            intent = new Intent(this, TicketActivity.class);
+        } else {
+            intent = new Intent(this, StoryActivity.class);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

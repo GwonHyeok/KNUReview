@@ -13,16 +13,16 @@ public class PixelUtil {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         int displayDP = metrics.densityDpi;
         float dp = 0;
-        if (displayDP == 240) {
+        if (displayDP <= 240) {
             dp = px / ((displayDP * 4f) / 160f);
-        } else if (displayDP == 320) {
+        } else if (displayDP <= 320) {
             dp = px / ((displayDP * 2.25f) / 160f);
-        } else if (displayDP == 480) {
+        } else if (displayDP <= 480) {
             dp = px / (displayDP / 160f);
 
-        } else if (displayDP == 560) {
+        } else if (displayDP <= 560) {
             dp = px / ((displayDP / 1.36f) / 160f);
-        } else if (displayDP == 640) {
+        } else if (displayDP <= 640) {
             dp = px / ((displayDP / 1.78f) / 160f);
         }
         return dp;

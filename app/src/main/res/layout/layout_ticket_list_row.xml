@@ -21,7 +21,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="선물하기"
-        android:background="@drawable/rounded_btn"/>
+        android:background="@drawable/rounded_btn"
+        android:onClick="mOnClick"/>
 
     <View
         android:layout_width="match_parent"

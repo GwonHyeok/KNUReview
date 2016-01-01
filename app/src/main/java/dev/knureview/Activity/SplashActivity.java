@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -74,19 +77,10 @@ public class SplashActivity extends Activity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (isReLogin) {
-                    //자동로그인일 경우 Push Token Update
-                    getInstanceIdToken();
-                    new MemberInfo().execute(stdNo);
-                } else {
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                }
+                new VersionCheck().execute();
             }
         };
-        handler.sendEmptyMessageDelayed(0, 1000);
+        handler.sendEmptyMessageDelayed(0, 800);
     }
 
     /**
@@ -188,6 +182,56 @@ public class SplashActivity extends Activity {
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    private class VersionCheck extends AsyncTask<Void, Void, String[]> {
+        @Override
+        protected String[] doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getLatestVersion();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] s) {
+            super.onPostExecute(s);
+            String latVersion = s[0];
+            String shouldUpdate = s[1];
+            String curVersion = getResources().getString(R.string.version);
+            if (shouldUpdate.equals("false") || latVersion.equals(curVersion)) {
+                if (isReLogin) {
+                    //자동로그인일 경우 Push Token Update
+                    getInstanceIdToken();
+                    new MemberInfo().execute(stdNo);
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
+                }
+            }else {
+                //update 강제
+                new MaterialDialog.Builder(SplashActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("KNU REVIEW의 최신 버전이 출시 되었습니다\n업데이트 후 이용해 주세요.")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=dev.knureview"));
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .cancelable(false)
+                        .show();
+            }
         }
     }
 

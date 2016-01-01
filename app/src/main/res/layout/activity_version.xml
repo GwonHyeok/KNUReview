@@ -57,17 +57,19 @@
             android:layout_alignBottom="@id/latVerTxt"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/latVerTxt"
-            android:text="v1. 0. 0"
+            android:text="1. 0. 0"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18dp" />
     </RelativeLayout>
 
     <Button
+        android:id="@+id/downloadBtn"
         android:layout_width="240dp"
         android:layout_height="40dp"
         android:layout_below="@id/layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:text="현재 최신 버전입니다."
+        android:onClick="mOnClick"
         android:background="@drawable/rounded_btn" />
 </RelativeLayout>

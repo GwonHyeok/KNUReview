@@ -28,6 +28,7 @@ import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
+import dev.knureview.Util.AES256Util;
 import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -40,6 +41,7 @@ public class MyProfileActivity extends ActionBarActivity {
 
     private static final String LOGIN_RESULT = "loginResult";
     private static final String EASTER_EGG = "easterEgg";
+    private static final String DEV_ID = "2013013070";
     private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -162,7 +164,7 @@ public class MyProfileActivity extends ActionBarActivity {
     };
 
     public void mOnClick(View view) {
-        if(view.getId() == R.id.devContactLayout){
+        if (view.getId() == R.id.devContactLayout) {
             Intent intent = new Intent(MyProfileActivity.this, ContactActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
@@ -215,13 +217,19 @@ public class MyProfileActivity extends ActionBarActivity {
                             .contentColor(getResources().getColor(R.color.text_lgray))
                             .positiveText("티켓받기")
                             .positiveColor(getResources().getColor(R.color.colorPrimary))
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                    new GetTicket().execute();
+                                    pref.savePreferences(EASTER_EGG, true);
+                                }
+                            })
                             .iconRes(R.drawable.ticket_ic)
                             .maxIconSize(90)
                             .cancelable(false)
                             .show();
-                    pref.savePreferences(EASTER_EGG, true);
                 }
-            } else if (devCount == 27) {
+            } else if (devCount <= 30 && devCount >= 27) {
                 Toast.makeText(this, "이제 그만 눌러!!", Toast.LENGTH_SHORT).show();
             } else if (devCount > 2 && devCount < 27) {
                 Toast.makeText(this, devCount + "번 클릭", Toast.LENGTH_SHORT).show();
@@ -251,12 +259,13 @@ public class MyProfileActivity extends ActionBarActivity {
                     .show();
         }
     }
-    private class MemberInfo extends AsyncTask<Void, Void, StudentVO>{
+
+    private class MemberInfo extends AsyncTask<Void, Void, StudentVO> {
         @Override
         protected StudentVO doInBackground(Void... params) {
-            try{
+            try {
                 return new NetworkUtil().getExistMemberInfo(stdNo);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             return null;
@@ -307,6 +316,25 @@ public class MyProfileActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         backPressCloseHandler.onBackPressed();
+    }
+
+
+    private class GetTicket extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                new NetworkUtil().sendMemberTicket(DEV_ID, stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new MemberInfo().execute();
+        }
     }
 
 }

@@ -60,7 +60,7 @@ public class MyStoryActivity extends ActionBarActivity {
             Intent intent = new Intent(MyStoryActivity.this, StDetailActivity.class);
             intent.putExtra("tNo", talkList.get(position).gettNo());
             intent.putExtra("pictureURL", talkList.get(position).getPictureURL());
-            intent.putExtra("stdNo", talkList.get(position).getStdNo());
+            intent.putExtra("writerStdNo", talkList.get(position).getStdNo());
             intent.putExtra("description", talkList.get(position).getDescription());
             intent.putExtra("writeTime", talkList.get(position).getWriteTime());
             intent.putExtra("likeCnt", talkList.get(position).getLikeCnt());

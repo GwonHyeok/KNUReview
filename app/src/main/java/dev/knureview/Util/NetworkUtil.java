@@ -57,7 +57,6 @@ public class NetworkUtil {
     public StudentVO getExistMemberInfo(String stdNo) throws Exception {
         StudentVO vo = new StudentVO();
         url = "http://kureview.cafe24.com/mobileLookupMember.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -87,7 +86,7 @@ public class NetworkUtil {
 
     public void updateMemberInfo(StudentVO vo) throws Exception {
         url = "http://kureview.cafe24.com/mobileUpdateMember.jsp";
-        query = "stdNo" + "=" + new AES256Util().encrypt(String.valueOf(vo.getStdNo())) + "&" + "name" + "=" + vo.getName() + "&" + "belong" + "=" + vo.getBelong()
+        query = "stdNo" + "=" + vo.getStdNo() + "&" + "name" + "=" + vo.getName() + "&" + "belong" + "=" + vo.getBelong()
                 + "&" + "major" + "=" + vo.getMajor();
         sendQuery(url, query);
     }
@@ -107,18 +106,10 @@ public class NetworkUtil {
 
     public void updatePushRegId(String stdNo, String regId) throws Exception {
         url = "http://kureview.cafe24.com/mobileUpdatePushRegId.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "regId" + "=" + regId;
         sendQuery(url, query);
     }
 
-    public void updateMemberTalkTicket(String stdNo, int talkTicket, int talkAuth) throws Exception {
-        url = "";
-        stdNo = new AES256Util().encrypt(stdNo);
-        query = "stdNo" + "=" + stdNo
-                + "&" + "talkTicket" + "=" + talkTicket + "&" + "talkAuth" + "=" + talkAuth;
-        sendQuery(url, query);
-    }
 
     // lecture 에 수강했던 과목 가져오기
     public void setStudentLecture(Cookie cookie, String stdNo) throws Exception {
@@ -166,7 +157,6 @@ public class NetworkUtil {
     public ArrayList<LectureVO> getStudentLecture(String stdNo) throws Exception {
         ArrayList<LectureVO> lectureArray = new ArrayList<LectureVO>();
         url = "http://kureview.cafe24.com/mobileGetLecture.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -248,7 +238,6 @@ public class NetworkUtil {
 
     public boolean insertTalk(String stdNo, String pictureURL, String description) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertTalk.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
                 + "&" + "description" + "=" + description;
         String data = getJSON(url, query);
@@ -262,7 +251,6 @@ public class NetworkUtil {
 
     public boolean insertComment(String stdNo, String pictureURL, String description, int tNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertComment.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
                 + "&" + "description" + "=" + description + "&" + "tNo" + "=" + tNo;
         String data = getJSON(url, query);
@@ -276,13 +264,12 @@ public class NetworkUtil {
 
     public void deleteTalk(int tNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileDeleteTalk.jsp";
-        query = "tNo" + "=" + new AES256Util().encrypt(String.valueOf(tNo));
+        query = "tNo" + "=" + tNo;
         sendQuery(url, query);
     }
 
     public void deleteComment(int cNo, int tNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileDeleteComment.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "cNo" + "=" + cNo
                 + "&" + "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo;
         sendQuery(url, query);
@@ -291,7 +278,6 @@ public class NetworkUtil {
     public HashMap<Integer, String> findMyLikeTalk(String stdNo) throws Exception {
         HashMap<Integer, String> likeHashMap = new HashMap<>();
         url = "http://kureview.cafe24.com/mobileFindMyLikeTalk.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -310,7 +296,6 @@ public class NetworkUtil {
     public HashMap<Integer, String> findMyLikeComment(String stdNo) throws Exception {
         HashMap<Integer, String> likeHashMap = new HashMap<>();
         url = "http://kureview.cafe24.com/mobileFindMyLikeComment.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -328,30 +313,53 @@ public class NetworkUtil {
 
     public void increaseTalkLike(int tNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileIncreaseLike.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 0;
         sendQuery(url, query);
     }
 
     public void increaseCommentLike(int cNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileIncreaseLike.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 1;
         sendQuery(url, query);
     }
 
     public void decreaseTalkLike(int tNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileDecreaseLike.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 0;
         sendQuery(url, query);
     }
 
     public void decreaseCommentLike(int cNo, String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileDecreaseLike.jsp";
-        stdNo = new AES256Util().encrypt(stdNo);
         query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo + "&" + "isComment" + "=" + 1;
         sendQuery(url, query);
+    }
+
+    //profile
+    public void sendMemberTicket(String sendStdNo, String receiveStdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateTicketCnt.jsp";
+        StudentVO vo = new StudentVO();
+        query = "sendStdNo" + "=" + sendStdNo + "&" + "receiveStdNo" + "=" + receiveStdNo +
+        "&" + "key" + "=" + new AES256Util().encrypt(vo.getKey());
+        sendQuery(url, query);
+    }
+
+    public void updateMemberTicketAuth(String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateTicketAuth.jsp";
+        query = "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+    }
+
+
+    //version
+    public String[] getLatestVersion() throws Exception {
+        String[] versionInfo = new String[2];
+        url = "http://kureview.cafe24.com/mobileVersion.jsp";
+        String data = getJSON(url, null);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        versionInfo[0] = mainObject.get("version").toString();
+        versionInfo[1] = mainObject.get("update").toString();
+        return versionInfo;
     }
 
     // NetWork Util Method

@@ -111,6 +111,7 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            vh.likeImage.setImageResource(R.drawable.like_ic);
         }
 
 

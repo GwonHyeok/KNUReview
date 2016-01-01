@@ -56,10 +56,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_selector"
-            android:visibility="gone"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="14dp">
+            android:padding="14dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/rowColor"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/courseReviewLayout"
@@ -100,8 +100,8 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:visibility="gone"
-            android:padding="14dp">
+            android:padding="14dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/rowColor"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/storyTicketLayout"
@@ -217,7 +217,8 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:padding="14dp">
+            android:padding="14dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -240,15 +241,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rowColor" />
+            android:background="@color/rowColor"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/devLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_selector"
-            android:orientation="vertical"
             android:onClick="mOnClick"
+            android:orientation="vertical"
             android:padding="14dp">
 
             <TextView

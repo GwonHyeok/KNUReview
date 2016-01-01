@@ -423,6 +423,12 @@ public class LoginActivity extends Activity {
         pref.savePreferences("stdNo", stdNo);
         pref.savePreferences("belong", vo.getBelong());
         pref.savePreferences("major", vo.getMajor());
+        pref.savePreferences("reviewCnt", vo.getReviewCnt());
+        pref.savePreferences("reviewAuth", vo.getReviewAuth());
+        pref.savePreferences("talkCnt", vo.getTalkCnt());
+        pref.savePreferences("talkWarning", vo.getTalkWarning());
+        pref.savePreferences("talkAuth", vo.getTalkAuth());
+        pref.savePreferences("talkTicket", vo.getTalkTicket());
         pref.savePreferences(VERSION, getResources().getString(R.string.version));
 
         //Main 페이지 이동
