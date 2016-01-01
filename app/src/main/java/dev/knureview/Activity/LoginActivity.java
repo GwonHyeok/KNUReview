@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -303,7 +303,7 @@ public class LoginActivity extends Activity {
                 //재학생 새로운 사용자인 경우
                 vo.setReviewAuth(0);
                 vo.setTalkAuth(0);
-                vo.setTalkTicket(1);
+                vo.setTalkTicket(0);
                 new RegisterMember().execute(vo);
             }
 

@@ -237,6 +237,7 @@ public class TicketActivity extends ActionBarActivity {
                     .contentColor(getResources().getColor(R.color.text_lgray))
                     .positiveText("확인")
                     .positiveColor(getResources().getColor(R.color.colorPrimary))
+                    .cancelable(false)
                     .show();
         }
     }

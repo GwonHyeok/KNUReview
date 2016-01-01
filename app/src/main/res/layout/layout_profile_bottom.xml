@@ -58,6 +58,7 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
+            android:visibility="gone"
             android:padding="14dp">
 
             <TextView
@@ -89,7 +90,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rowColor" />
+            android:background="@color/rowColor"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/courseReviewLayout"
