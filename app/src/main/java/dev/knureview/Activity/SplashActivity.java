@@ -41,14 +41,12 @@ public class SplashActivity extends Activity {
     private String appVersion;
     private String currentVersion;
     private String stdNo;
-
+    private int pictureCnt;
     private Typeface archiveFont;
     private Typeface nanumFont;
-
     private TextView appTitleEng;
     private TextView appCopyRight;
     private Handler handler;
-
     private SharedPreferencesActivity pref;
 
     @Override
@@ -165,6 +163,7 @@ public class SplashActivity extends Activity {
             pref.savePreferences("talkWarning", vo.getTalkWarning());
             pref.savePreferences("talkAuth", vo.getTalkAuth());
             pref.savePreferences("talkTicket", vo.getTalkTicket());
+            pref.savePreferences("pictureCnt", pictureCnt);
             Intent intent = new Intent(SplashActivity.this, StoryActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -182,6 +181,25 @@ public class SplashActivity extends Activity {
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    private class PictureCnt extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getPictureCnt();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            pictureCnt = result;
+            new MemberInfo().execute(stdNo);
         }
     }
 
@@ -206,7 +224,8 @@ public class SplashActivity extends Activity {
                 if (isReLogin) {
                     //자동로그인일 경우 Push Token Update
                     getInstanceIdToken();
-                    new MemberInfo().execute(stdNo);
+                    //소곤소곤 사진 갯수 가져옴
+                    new PictureCnt().execute();
                 } else {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -234,6 +253,7 @@ public class SplashActivity extends Activity {
             }
         }
     }
+
 
 
 }

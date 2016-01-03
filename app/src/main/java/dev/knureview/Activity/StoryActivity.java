@@ -189,7 +189,7 @@ public class StoryActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-       // inflater.inflate(R.menu.story_menu, menu);
+        inflater.inflate(R.menu.story_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -200,7 +200,7 @@ public class StoryActivity extends ActionBarActivity {
         }else if(item.getItemId() == R.id.alarm){
             Intent intent = new Intent(StoryActivity.this, AlarmActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }
         return super.onOptionsItemSelected(item);
     }

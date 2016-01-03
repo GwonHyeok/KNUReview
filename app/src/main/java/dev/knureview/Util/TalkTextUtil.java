@@ -13,6 +13,7 @@ import dev.knureview.R;
 public class TalkTextUtil {
     private static Activity activity;
     private int textSize;
+    private int sizeDown;
 
 
     public void setActivity(Activity activity) {
@@ -21,14 +22,20 @@ public class TalkTextUtil {
 
     public void setTextSizeUP() {
         this.textSize = 10;
+        this.sizeDown = 0;
+    }
+
+    public void setTextSizeDown() {
+        this.textSize = -10;
+        this.sizeDown = -18;
     }
 
 
     private void makeTextView(String description, LinearLayout dynamicArea) {
-        final int space70 = (int) PixelUtil.convertPixelsToDp(70 + textSize, activity);
-        final int space40 = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
+        final int space70 = (int) PixelUtil.convertPixelsToDp(70 + textSize + (sizeDown * 2), activity);
+        final int space40 = (int) PixelUtil.convertPixelsToDp(40 + textSize + sizeDown, activity);
         final int space14 = (int) PixelUtil.convertPixelsToDp(14 + textSize, activity);
-        final int txtSize = (int) PixelUtil.convertPixelsToDp(40 + textSize, activity);
+        final int txtSize = (int) PixelUtil.convertPixelsToDp(40 + textSize + sizeDown, activity);
 
         TextView text = new TextView(activity);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams

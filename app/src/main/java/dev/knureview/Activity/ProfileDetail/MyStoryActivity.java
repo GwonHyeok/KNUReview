@@ -88,8 +88,8 @@ public class MyStoryActivity extends ActionBarActivity {
             talkList = data;
             myTotalStory.setText("총 " + data.size()+"개의 이야기가 있습니다.");
             adapter = new StoryAdapter(MyStoryActivity.this, R.layout.layout_story_list_row, data);
-            adapter.showDate();
             listView.setAdapter(adapter);
+            adapter.showDate();
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);
         }

@@ -1,7 +1,6 @@
 package dev.knureview.Adapter;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,8 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
     private ArrayList<TalkVO> talkList;
     private TalkTextUtil talkTextUtil;
     private boolean isShowDate = false;
-    private ArrayList<Integer> showDatePosition;
     private HashMap<Integer, String> likeHashmap;
+    private HashMap<Integer, String> datePositionHashMap;
     private String date;
     private String nextDate;
 
@@ -54,13 +53,13 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
 
     public void showDate() {
         isShowDate = true;
-        showDatePosition = new ArrayList<Integer>();
-        showDatePosition.add(0);
+        datePositionHashMap = new HashMap<Integer, String>();
+        datePositionHashMap.put(0, "show");
         for (int i = 0; i < talkList.size() - 1; i++) {
             date = TimeFormat.formatDateString(talkList.get(i).getWriteTime());
             nextDate = TimeFormat.formatDateString(talkList.get(i + 1).getWriteTime());
             if (!date.equals(nextDate)) {
-                showDatePosition.add(i + 1);
+                datePositionHashMap.put(i + 1, "show");
             }
         }
     }
@@ -91,14 +90,19 @@ public class StoryAdapter extends ArrayAdapter<TalkVO> {
             vh = (ViewHolder) convertView.getTag();
         }
 
+
         if (isShowDate) {
-            if ((position < showDatePosition.size()) && showDatePosition.get(position) == position) {
-                vh.date.setVisibility(View.VISIBLE);
-                vh.date.setText(TimeFormat.formatDateString(talkList.get(position).getWriteTime()));
-            } else {
+            try {
+                if (datePositionHashMap.get(position).equals("show")) {
+                    vh.date.setVisibility(View.VISIBLE);
+                    vh.date.setText(TimeFormat.formatDateString(talkList.get(position).getWriteTime()));
+                } else {
+                    vh.date.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 vh.date.setVisibility(View.GONE);
             }
-
         }
 
         //자기 자신이 좋아요 했던 게시물 표시

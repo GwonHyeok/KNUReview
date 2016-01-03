@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dev.knureview.VO.AlarmVO;
 import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
 import dev.knureview.VO.LectureVO;
@@ -341,7 +342,7 @@ public class NetworkUtil {
         url = "http://kureview.cafe24.com/mobileUpdateTicketCnt.jsp";
         StudentVO vo = new StudentVO();
         query = "sendStdNo" + "=" + sendStdNo + "&" + "receiveStdNo" + "=" + receiveStdNo +
-        "&" + "key" + "=" + new AES256Util().encrypt(vo.getKey());
+                "&" + "key" + "=" + new AES256Util().encrypt(vo.getKey());
         sendQuery(url, query);
     }
 
@@ -349,6 +350,31 @@ public class NetworkUtil {
         url = "http://kureview.cafe24.com/mobileUpdateTicketAuth.jsp";
         query = "stdNo" + "=" + stdNo;
         sendQuery(url, query);
+    }
+
+    //alarm
+    public ArrayList<AlarmVO> getAlarmList(String stdNo) throws Exception {
+        ArrayList<AlarmVO> alarmList = new ArrayList<AlarmVO>();
+        url = "http://kureview.cafe24.com/mobileAlarmList.jsp";
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray talkArray = (JSONArray) mainObject.get("alarm");
+        for (int i = 0; i < talkArray.size(); i++) {
+            JSONObject object = (JSONObject) talkArray.get(i);
+            AlarmVO vo = new AlarmVO();
+            vo.setaNo(Integer.parseInt(object.get("aNo").toString()));
+            vo.setR_stdNo(Integer.parseInt(object.get("r_stdNo").toString()));
+            vo.setS_stdNo(Integer.parseInt(object.get("s_stdNo").toString()));
+            vo.setWriteTime(object.get("writeTime").toString());
+            vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+            vo.setcNo(Integer.parseInt(object.get("cNo").toString()));
+            vo.setPictureURL(object.get("pictureURL").toString());
+            vo.setDescription(object.get("description").toString());
+            vo.setIsLike(Integer.parseInt(object.get("isLike").toString()));
+            alarmList.add(vo);
+        }
+        return alarmList;
     }
 
 
@@ -361,6 +387,16 @@ public class NetworkUtil {
         versionInfo[0] = mainObject.get("version").toString();
         versionInfo[1] = mainObject.get("update").toString();
         return versionInfo;
+    }
+
+    //picture count
+    public int getPictureCnt() throws Exception {
+        int pictureCnt = 0;
+        url = "http://kureview.cafe24.com/mobilePictureCnt.jsp";
+        String data = getJSON(url, null);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        pictureCnt = Integer.parseInt(mainObject.get("pictureCnt").toString());
+        return pictureCnt;
     }
 
     // NetWork Util Method

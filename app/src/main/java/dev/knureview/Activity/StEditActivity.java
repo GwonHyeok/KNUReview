@@ -28,6 +28,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dev.knureview.R;
+import dev.knureview.Util.SharedPreferencesActivity;
 
 /**
  * Created by DavidHa on 2015. 12. 21..
@@ -49,7 +50,7 @@ public class StEditActivity extends Activity {
 
     private int[] randomArray;
     private int currentImage;
-    private final int IMAGE_COUNT = 70;
+    private static int pictureCnt;
 
     private Animation diceAnim;
     private Animation preCircle1Anim;
@@ -78,6 +79,10 @@ public class StEditActivity extends Activity {
             isComment = true;
             tNo = intent.getIntExtra("tNo", 0);
         }
+
+        //pref
+        SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
+        pictureCnt =pref.getPreferences("pictureCnt",0);
 
         //random
         randomArray = new int[3];
@@ -130,7 +135,7 @@ public class StEditActivity extends Activity {
     public void setRandomArray() {
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
-            randomArray[i] = random.nextInt(IMAGE_COUNT);
+            randomArray[i] = random.nextInt(pictureCnt);
             for (int j = 0; j < i; j++) {
                 if (randomArray[i] == randomArray[j]) {
                     i--;

@@ -16,6 +16,7 @@
     <color name="text_gray">#323232</color>
     <color name="folder_color">#FBC02D</color>
     <color name="rowColor">#EAEAEA</color>
+    <color name="alarm_bg_color">#f1f1f1</color>
     <color name="transparent_black">#aa000000</color>
     <color name="bg_color">#99000000</color>
     <color name="dim_color">#66000000</color>

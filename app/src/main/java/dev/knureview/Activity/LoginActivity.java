@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -60,7 +58,8 @@ public class LoginActivity extends Activity {
     private String stdNo;
     private StudentVO vo;
     private Cookie cookie;
-    boolean isFreshMan = false;
+    private boolean isFreshMan = false;
+    private int pictureCnt;
 
 
     private MaterialDialog progressDialog;
@@ -73,7 +72,7 @@ public class LoginActivity extends Activity {
         archiveFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/Archive.otf");
         nanumFont = Typeface.createFromAsset(getResources().getAssets(), "fonts/NanumGothic.ttf");
 
-        loginImage = (ImageView)findViewById(R.id.loginImage);
+        loginImage = (ImageView) findViewById(R.id.loginImage);
         appTitleEng = (TextView) findViewById(R.id.appTitleEng);
         inputID = (EditText) findViewById(R.id.inputID);
         inputPW = (EditText) findViewById(R.id.inputPW);
@@ -196,7 +195,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(Cookie result) {
-
+            new PictureCnt().execute();
             //학교 서버 로그인 성공했을 경우
             if (result.getLoginResult().equals("success")) {
                 //학번 저장
@@ -431,6 +430,24 @@ public class LoginActivity extends Activity {
 
     }
 
+    private class PictureCnt extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getPictureCnt();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            pictureCnt = result;
+        }
+    }
+
     private void setAutoLogin() {
         //자동로그인 설정
         getInstanceIdToken();
@@ -445,6 +462,7 @@ public class LoginActivity extends Activity {
         pref.savePreferences("talkWarning", vo.getTalkWarning());
         pref.savePreferences("talkAuth", vo.getTalkAuth());
         pref.savePreferences("talkTicket", vo.getTalkTicket());
+        pref.savePreferences("pictureCnt", pictureCnt);
 
         //Main 페이지 이동
         Intent intent = new Intent(LoginActivity.this, StoryActivity.class);
