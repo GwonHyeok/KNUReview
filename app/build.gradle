@@ -8,7 +8,7 @@ android {
         applicationId "dev.knureview"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "@string/version"
     }
     buildTypes {
