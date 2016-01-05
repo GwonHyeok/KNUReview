@@ -18,9 +18,12 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 import java.net.URLDecoder;
 
+import dev.knureview.Activity.AlarmActivity;
+import dev.knureview.Activity.MyProfileActivity;
 import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.StoryActivity;
 import dev.knureview.R;
+import dev.knureview.Util.SharedPreferencesActivity;
 
 /**
  * Created by saltfactory on 6/8/15.
@@ -62,30 +65,44 @@ public class MyGcmListenerService extends GcmListenerService {
     private void sendNotification(String title, String message) {
         Intent intent = null;
         if (message.contains("소곤소곤 티켓")) {
-            intent = new Intent(this, TicketActivity.class);
+            intent = new Intent(this, MyProfileActivity.class);
+            intent.putExtra("push", "ticket");
+        } else if (message.contains("누군가")) {
+            intent = new Intent(this, StoryActivity.class);
+            intent.putExtra("push", "msgAlarm");
         } else {
             intent = new Intent(this, StoryActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         int color = getResources().getColor(R.color.colorPrimary);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.push_ic)
-                .setColor(color)
-                .setContentTitle("KNU REVIEW")
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
+        String pushAlarmSound = pref.getPreferences("pushAlarmSound", "default");
+        String pushAlarmSetting = pref.getPreferences("pushAlarmSetting", "default");
+
+        Uri soundUri;
+        if (pushAlarmSound.equals("default")) {
+            soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        } else {
+            soundUri = null;
+        }
+        if (pushAlarmSetting.equals("default")) {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.push_ic)
+                    .setColor(color)
+                    .setContentTitle("KNU REVIEW")
+                    .setContentText(message)
+                    .setAutoCancel(true)
+                    .setSound(soundUri)
+                    .setContentIntent(pendingIntent);
 
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        }
     }
 }

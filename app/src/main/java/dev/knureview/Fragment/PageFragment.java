@@ -6,10 +6,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import dev.knureview.Activity.MainActivity;
 import dev.knureview.Holder.DepartmentHolder;
 import dev.knureview.Holder.IconTreeItemHolder;
 import dev.knureview.Holder.CollegeHolder;
@@ -60,6 +62,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
         tView = new AndroidTreeView(getActivity(), root);
         tView.setDefaultAnimation(true);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
+        tView.setDefaultNodeClickListener(nodeClickListener);
         containerView.addView(tView.getView());
 
         if (savedInstanceState != null) {
@@ -74,18 +77,19 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
     //교양선택
     private void addCollegeOfCulture(TreeNode parentNode) {
-        TreeNode childNode1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_bookmark_outline, "교양선택"))
+        TreeNode childNode1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_bookmark_outline, "교양선택(주)"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        TreeNode childNode2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_bookmark_outline, "1학년 교양필수"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
         addCultureData(childNode1);
-        parentNode.addChildren(childNode1);
+        addFirstGradeCultureData(childNode2);
+        parentNode.addChildren(childNode1, childNode2);
     }
 
 
     //인문대학
     private void addCollegeOfHumanities(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "인문대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
+
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "신학과"))
@@ -112,30 +116,24 @@ public class PageFragment extends android.support.v4.app.Fragment {
         addGradeData(childNode3, "(국어국문학과)");
         addGradeData(childNode4, "(문헌정보학과)");
         addGradeData(childNode5, "(영문학과)");
-        parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5);
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4, childNode5);
     }
 
     //국제학대학
     private void addCollegeOfInternationalStudies(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "국제학대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "국제통상학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         addGradeData(childNode1, "(국제통상학과)");
-        parentNode.addChildren(childNode0, childNode1);
+        parentNode.addChildren(childNode1);
     }
-
 
 
     //중국학대학
     private void addCollegeOfSinology(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "중국학대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
+
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "중국어문화학과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
@@ -146,14 +144,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
         addGradeData(childNode1, "(중국어문화학과)");
         addGradeData(childNode2, "(중국실용지역학과)");
-        parentNode.addChildren(childNode0, childNode1, childNode2);
+        parentNode.addChildren(childNode1, childNode2);
     }
 
     //사범대학
     private void addCollegeOfEducation(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "사범대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "교육학과"))
@@ -173,16 +168,13 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
         addGradeData(childNode1, "(교육학과)");
         addGradeData(childNode2, "(유아교육과)");
-        addGradeData(childNode3, "(초등특수교육)");
-        addGradeData(childNode4, "(중등특수교육)");
-        parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4);
+        addGradeData(childNode3, "(초등특수교육과)");
+        addGradeData(childNode4, "(중등특수교육과)");
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4);
     }
 
     //사회과학대학
     private void addCollegeOfSocialScience(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "사회과학대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "경제학과"))
@@ -209,21 +201,18 @@ public class PageFragment extends android.support.v4.app.Fragment {
         addGradeData(childNode3, "(행정학과)");
         addGradeData(childNode4, "(부동산학과)");
         addGradeData(childNode5, "(세무학과)");
-        parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5);
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4, childNode5);
     }
 
     //사회복지대학
     private void addCollegeOfSocialWelfare(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "사회복지대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark, "사회복지학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         addDetailOfSocialWelfare(childNode1);
-        parentNode.addChildren(childNode0, childNode1);
+        parentNode.addChildren(childNode1);
     }
 
     //사회복지학부
@@ -249,16 +238,13 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
     //경영대학
     private void addCollegeOfManagement(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "경영대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark_outline, "경영학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         addDetailOfManagement(childNode1);
-        parentNode.addChildren(childNode0, childNode1);
+        parentNode.addChildren(childNode1);
     }
 
     //경영학부
@@ -273,9 +259,6 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
     //공과대학
     private void addCollegeOfTech(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "공과대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark, "컴퓨터미디어정보공학부"))
@@ -307,7 +290,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
         addGradeData(childNode4, "(응용수학과)");
         addGradeData(childNode5, "(도시공학과)");
         addGradeData(childNode6, "(건축공학과)");
-        parentNode.addChildren(childNode0, childNode1, childNode2, childNode3, childNode4, childNode5, childNode6);
+        parentNode.addChildren(childNode1, childNode2, childNode3, childNode4, childNode5, childNode6);
     }
 
     //컴퓨터미디어정보공학부
@@ -334,9 +317,6 @@ public class PageFragment extends android.support.v4.app.Fragment {
 
     //예체능 대학
     private void addCollegeOfArtsAndPhysical(TreeNode parentNode) {
-        TreeNode childNode0 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_check_box_outline_blank, "예체능대학 1학년 교양필수"))
-                .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
                 .IconTreeItem(R.string.ic_bookmark, "회화·디자인학부"))
@@ -353,7 +333,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
         addDetailOfArtsAndDesign(childNode1);
         addGradeData(childNode2, "(음악학과)");
         addGradeData(childNode3, "(사회체육학과)");
-        parentNode.addChildren(childNode0, childNode1, childNode2, childNode3);
+        parentNode.addChildren(childNode1, childNode2, childNode3);
     }
 
     //회화 디자인학부
@@ -377,21 +357,27 @@ public class PageFragment extends android.support.v4.app.Fragment {
     //교양 과목 표시
     private void addCultureData(TreeNode parentNode) {
 
-        TreeNode cultureChildNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("제 1영역(인문학)"))
+        TreeNode cultureChildNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("제 1영역", "(인문학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("제 2영역(사회과학)"))
+        TreeNode cultureChildNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("제 2영역", "(사회과학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode3 = new TreeNode(new DetailViewHolder.DetailViewItem("제 3영역(자연과학)"))
+        TreeNode cultureChildNode3 = new TreeNode(new DetailViewHolder.DetailViewItem("제 3영역", "(자연과학)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode4 = new TreeNode(new DetailViewHolder.DetailViewItem("제 4영역(생활과예술)"))
+        TreeNode cultureChildNode4 = new TreeNode(new DetailViewHolder.DetailViewItem("제 4영역", "(생활과예술)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode5 = new TreeNode(new DetailViewHolder.DetailViewItem("제 5영역(리더십과봉사)"))
+        TreeNode cultureChildNode5 = new TreeNode(new DetailViewHolder.DetailViewItem("제 5영역", "(리더십과봉사)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        TreeNode cultureChildNode6 = new TreeNode(new DetailViewHolder.DetailViewItem("제 6영역(국제화)"))
+        TreeNode cultureChildNode6 = new TreeNode(new DetailViewHolder.DetailViewItem("제 6영역", "(국제화)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
         parentNode.addChildren(cultureChildNode1, cultureChildNode2,
                 cultureChildNode3, cultureChildNode4,
                 cultureChildNode5, cultureChildNode6);
+    }
+
+    private void addFirstGradeCultureData(TreeNode parentNode) {
+        TreeNode firstCultureChildNode = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "교양필수"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+        parentNode.addChildren(firstCultureChildNode);
     }
 
     //학년 표시
@@ -424,6 +410,18 @@ public class PageFragment extends android.support.v4.app.Fragment {
             parentNode.addChildren(gradeChildNode1, gradeChildNode2, gradeChildNode3);
         }
     }
+
+    private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
+        @Override
+        public void onClick(TreeNode treeNode, Object value) {
+            try {
+                DetailViewHolder.DetailViewItem item = (DetailViewHolder.DetailViewItem) value;
+                Toast.makeText(getContext(), "" + item.gradeName + item.deptName, 0).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

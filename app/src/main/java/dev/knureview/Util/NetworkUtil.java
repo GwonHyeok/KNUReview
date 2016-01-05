@@ -19,6 +19,7 @@ import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
 import dev.knureview.VO.LectureVO;
 import dev.knureview.VO.StudentVO;
+import dev.knureview.VO.SubjectVO;
 import dev.knureview.VO.TalkVO;
 
 /**
@@ -167,6 +168,29 @@ public class NetworkUtil {
         return lectureArray;
     }
 
+    //수강리뷰
+    public ArrayList<SubjectVO> getSubjectList(String dName) throws Exception {
+        ArrayList<SubjectVO> sbjList = new ArrayList<SubjectVO>();
+        url = "http://kureview.cafe24.com/mobileGetSubject.jsp";
+        query = "dName" + "=" + dName;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray sbjArray = (JSONArray) mainObject.get("subject");
+        for (int i = 0; i < sbjArray.size(); i++) {
+            JSONObject object = (JSONObject) sbjArray.get(i);
+            SubjectVO vo = new SubjectVO();
+            vo.setsNo(Integer.parseInt(object.get("sNo").toString()));
+            vo.setGrade(Integer.parseInt(object.get("grade").toString()));
+            vo.setTerm(Integer.parseInt(object.get("term").toString()));
+            vo.setsName(object.get("sName").toString());
+            vo.setdNo(Integer.parseInt(object.get("dNo").toString()));
+            vo.setCredit(Integer.parseInt(object.get("credit").toString()));
+            vo.setTime(Integer.parseInt(object.get("time").toString()));
+        }
+        return sbjList;
+    }
+
+
     //소곤소곤
 
     public ArrayList<TalkVO> getAllTalkList() throws Exception {
@@ -193,7 +217,6 @@ public class NetworkUtil {
     public ArrayList<TalkVO> getMyTalkList(String stdNo) throws Exception {
         ArrayList<TalkVO> talkList = new ArrayList<TalkVO>();
         url = "http://kureview.cafe24.com/mobileMyTalkList.jsp";
-        ;
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
@@ -211,6 +234,44 @@ public class NetworkUtil {
             talkList.add(vo);
         }
         return talkList;
+    }
+
+    public TalkVO getAlarmTalk(int tNo, String stdNo) throws Exception {
+
+        url = "http://kureview.cafe24.com/mobileGetAlarmTalk.jsp";
+        query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONObject object = (JSONObject)mainObject.get("alarmTalk");
+        TalkVO vo = new TalkVO();
+        vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+        vo.setPictureURL(object.get("pictureURL").toString());
+        vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+        vo.setDescription(object.get("description").toString());
+        vo.setWriteTime(object.get("writeTime").toString());
+        vo.setLikeCnt(Integer.parseInt(object.get("likeCnt").toString()));
+        vo.setCommentCnt(Integer.parseInt(object.get("commentCnt").toString()));
+        vo.setIsLike(Integer.parseInt(object.get("isLike").toString()));
+        return vo;
+    }
+
+    public CommentVO getAlarmComment(int cNo, String stdNo) throws Exception {
+
+        url = "http://kureview.cafe24.com/mobileGetAlarmComment.jsp";
+        query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONObject object = (JSONObject)mainObject.get("alarmComment");
+        CommentVO vo = new CommentVO();
+        vo.setCno(Integer.parseInt(object.get("cNo").toString()));
+        vo.settNo(Integer.parseInt(object.get("tNo").toString()));
+        vo.setPictureURL(object.get("pictureURL").toString());
+        vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+        vo.setDescription(object.get("description").toString());
+        vo.setWriteTime(object.get("writeTime").toString());
+        vo.setLikeCnt(Integer.parseInt(object.get("likeCnt").toString()));
+        vo.setIsLike(Integer.parseInt(object.get("isLike").toString()));
+        return vo;
     }
 
     public ArrayList<CommentVO> getAllCommentList(int tNo) throws Exception {

@@ -40,9 +40,6 @@ public class DetailViewHolder extends TreeNode.BaseNodeViewHolder<DetailViewHold
         public String gradeName;
         public String deptName;
 
-        public DetailViewItem(String gradeName) {
-            this.gradeName = gradeName;
-        }
         public DetailViewItem(String gradeName, String deptName) {
             this.gradeName = gradeName;
             this.deptName = deptName;

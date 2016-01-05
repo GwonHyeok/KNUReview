@@ -57,7 +57,7 @@
             android:layout_alignBottom="@id/latVerTxt"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/latVerTxt"
-            android:text="1. 0. 0"
+            android:text="1.0.0"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18dp" />
     </RelativeLayout>

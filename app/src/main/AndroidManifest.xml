@@ -25,12 +25,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.MainActivity"
-            android:label="수강리뷰" />
-        <activity
             android:name=".Activity.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".Activity.MainActivity"
+            android:label="수강리뷰" />
+
         <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".Activity.SubjectActivity"
+            android:label="과목검색"/>
+        <!-- 소곤소곤 -->
         <activity
             android:name=".Activity.MyProfileActivity"
             android:label="내 프로필" />
@@ -51,6 +55,8 @@
             android:label="문의하기"/>
         <activity android:name=".Activity.ProfileDetail.TicketActivity"
             android:label="소곤소곤 티켓"/>
+        <activity android:name=".Activity.ProfileDetail.AlarmSetting"
+            android:label="알림 설정"/>
 
         <!-- [START gcm_receiver] -->
         <receiver

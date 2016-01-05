@@ -11,6 +11,7 @@ public class CommentVO {
     private String description;
     private int likeCnt;
     private String writeTime;
+    private int isLike;
 
     public String getPictureURL() {
         return pictureURL;
@@ -66,5 +67,13 @@ public class CommentVO {
 
     public void setWriteTime(String writeTime) {
         this.writeTime = writeTime;
+    }
+
+    public int getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(int isLike) {
+        this.isLike = isLike;
     }
 }

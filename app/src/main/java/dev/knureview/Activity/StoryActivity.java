@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
@@ -29,9 +27,8 @@ import com.melnykov.fab.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import dev.knureview.Activity.ProfileDetail.ContactActivity;
-import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
+import dev.knureview.Adapter.StoryAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;
@@ -50,6 +47,7 @@ public class StoryActivity extends ActionBarActivity {
     private ListView drawer;
     private NavigationDrawerAdapter drawerAdapter;
     private FloatingActionButton fab;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Typeface nanumFont;
     private TextView headerTxt;
@@ -62,6 +60,7 @@ public class StoryActivity extends ActionBarActivity {
     private HashMap<Integer, String> likeHashMap;
     private int listPosition;
     private String stdNo;
+
     private BackPressCloseHandler backPressCloseHandler;
 
     @Override
@@ -109,6 +108,17 @@ public class StoryActivity extends ActionBarActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToListView(listView);
 
+        //intent
+        Intent intent = getIntent();
+        String pushStr = intent.getStringExtra("push");
+        if(pushStr !=null){
+            startActivity(new Intent(this,AlarmActivity.class));
+        }
+
+        //refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
+        mSwipeRefreshLayout.setOnRefreshListener(refreshListener);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
     }
@@ -129,6 +139,14 @@ public class StoryActivity extends ActionBarActivity {
 
         }
     }
+
+    SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            new FavouriteTalk().execute();
+        }
+    };
+
 
     AdapterView.OnItemClickListener listItemListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -237,6 +255,8 @@ public class StoryActivity extends ActionBarActivity {
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);
+            mSwipeRefreshLayout.setRefreshing(false);
+
         }
     }
 

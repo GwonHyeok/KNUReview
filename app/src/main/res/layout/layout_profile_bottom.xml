@@ -58,7 +58,6 @@
             android:background="@drawable/profile_selector"
             android:gravity="center"
             android:onClick="mOnClick"
-            android:visibility="gone"
             android:padding="14dp">
 
             <TextView
@@ -74,10 +73,10 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/pushAlarmTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:text="ON"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14dp" />
 
@@ -90,8 +89,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/rowColor"
-            android:visibility="gone"/>
+            android:background="@color/rowColor" />
 
         <LinearLayout
             android:id="@+id/courseReviewLayout"

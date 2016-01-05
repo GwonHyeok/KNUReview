@@ -44,7 +44,6 @@ public class VersionActivity extends ActionBarActivity {
             if(canDownLoad){
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=dev.knureview"));
                 startActivity(intent);
-                finish();
             }
         }
     }
@@ -80,7 +79,9 @@ public class VersionActivity extends ActionBarActivity {
             String latVersion = s[0];
             latVersionTxt.setText(latVersion);
             if (!curVersionTxt.getText().toString().equals(latVersion)) {
-                downloadBtn.setText("최신 버전 " + latVersion + " 업데이트 하기");
+                downloadBtn.setText("최신 버전 업데이트 하기");
+                downloadBtn.setTextColor(getResources().getColor(R.color.white));
+                downloadBtn.setBackground(getDrawable(R.drawable.fill_rounded_btn));
                 canDownLoad = true;
             }else{
                 canDownLoad = false;

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import dev.knureview.Activity.ProfileDetail.AlarmSetting;
 import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Activity.ProfileDetail.MyStoryActivity;
 import dev.knureview.Activity.ProfileDetail.TicketActivity;
@@ -63,11 +64,13 @@ public class MyProfileActivity extends ActionBarActivity {
     private TextView talkCntTxt;
     private TextView talkWarningTxt;
     private TextView talkTicketTxt;
+    private TextView pushAlarmTxt;
 
     private SharedPreferencesActivity pref;
     private String stdNo;
     private String belong;
     private String major;
+    private String pushAlarmSetting;
 
     private int devCount = 0;
     private boolean getTicket = false;
@@ -112,7 +115,6 @@ public class MyProfileActivity extends ActionBarActivity {
         stdNo = pref.getPreferences("stdNo", "");
         belong = pref.getPreferences("belong", "");
         major = pref.getPreferences("major", "");
-
         getTicket = pref.getPreferences(EASTER_EGG, false);
 
         backgroundImg = (ImageView) findViewById(R.id.cardImage);
@@ -124,10 +126,18 @@ public class MyProfileActivity extends ActionBarActivity {
         talkCntTxt = (TextView) findViewById(R.id.talkCnt);
         talkWarningTxt = (TextView) findViewById(R.id.talkWarning);
         talkTicketTxt = (TextView) findViewById(R.id.talkTicket);
+        pushAlarmTxt = (TextView) findViewById(R.id.pushAlarmTxt);
 
         stdNoTxt.setText(stdNo);
         belongTxt.setText(belong);
         majorTxt.setText(major);
+
+        //intent
+        Intent intent = getIntent();
+        String pushStr = intent.getStringExtra("push");
+        if (pushStr != null) {
+            startActivity(new Intent(this, TicketActivity.class));
+        }
 
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
@@ -175,7 +185,9 @@ public class MyProfileActivity extends ActionBarActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.alarmLayout) {
-
+            Intent intent = new Intent(this, AlarmSetting.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.courseReviewLayout) {
 
         } else if (view.getId() == R.id.myStoryLayout) {
@@ -311,6 +323,14 @@ public class MyProfileActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         new MemberInfo().execute();
+
+        //push setting
+        pushAlarmSetting = pref.getPreferences("pushAlarmSetting", "default");
+        if(pushAlarmSetting.equals("default")) {
+            pushAlarmTxt.setText("ON");
+        }else{
+            pushAlarmTxt.setText("OFF");
+        }
     }
 
     @Override
