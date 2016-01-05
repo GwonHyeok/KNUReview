@@ -119,6 +119,7 @@ public class StoryActivity extends ActionBarActivity {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
         mSwipeRefreshLayout.setOnRefreshListener(refreshListener);
+
         backPressCloseHandler = new BackPressCloseHandler(this);
 
     }

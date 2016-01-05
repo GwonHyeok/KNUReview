@@ -3,6 +3,7 @@ package dev.knureview.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ public class AlarmActivity extends ActionBarActivity {
     private ListView listView;
     private TextView noAlarmTxt;
     private AlarmAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String stdNo;
     private ArrayList<AlarmVO> alarmList;
     private int listPosition;
@@ -51,7 +53,18 @@ public class AlarmActivity extends ActionBarActivity {
         //pref
         SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
         stdNo = pref.getPreferences("stdNo", "");
+
+        //refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight);
+        mSwipeRefreshLayout.setOnRefreshListener(refreshListener);
     }
+    SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            new AlarmList().execute();
+        }
+    };
 
     private AdapterView.OnItemClickListener listItemListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -105,7 +118,7 @@ public class AlarmActivity extends ActionBarActivity {
                 listView.setAdapter(adapter);
                 adapter.showDate();
                 adapter.notifyDataSetChanged();
-
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
         }
