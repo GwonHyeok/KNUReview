@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/layout_tool_bar"
-        />
+        layout="@layout/layout_tool_bar" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerLayout"
@@ -47,6 +47,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/viewpagertab" />
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:onClick="mOnClick"
+                android:src="@drawable/plus24"
+                fab:fab_colorNormal="@color/colorPrimaryDark"
+                fab:fab_shadow="true" />
         </RelativeLayout>
 
         <include layout="@layout/layout_navigation_drawer" />

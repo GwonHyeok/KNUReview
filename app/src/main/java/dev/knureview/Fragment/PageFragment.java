@@ -1,5 +1,6 @@
 package dev.knureview.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -8,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
 import dev.knureview.Activity.MainActivity;
+import dev.knureview.Activity.SubjectActivity;
 import dev.knureview.Holder.DepartmentHolder;
 import dev.knureview.Holder.IconTreeItemHolder;
 import dev.knureview.Holder.CollegeHolder;
@@ -23,6 +26,7 @@ import dev.knureview.R;
  */
 public class PageFragment extends android.support.v4.app.Fragment {
     private AndroidTreeView tView;
+    private int term;
 
     @Nullable
     @Override
@@ -415,8 +419,15 @@ public class PageFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(TreeNode treeNode, Object value) {
             try {
+
                 DetailViewHolder.DetailViewItem item = (DetailViewHolder.DetailViewItem) value;
-                Toast.makeText(getContext(), "" + item.gradeName + item.deptName, 0).show();
+                Intent intent = new Intent(getActivity(), SubjectActivity.class);
+                intent.putExtra("gradeName", item.gradeName);
+                String dName = item.deptName.replaceAll("[()]","").trim();
+                intent.putExtra("dName", dName);
+                intent.putExtra("term", term);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -426,9 +437,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // int position = FragmentPagerItem.getPosition(getArguments());
-        // TextView title = (TextView) view.findViewById(R.id.item_title);
-        //title.setText(String.valueOf(position));
+         term = FragmentPagerItem.getPosition(getArguments())+1;
     }
 
     @Override

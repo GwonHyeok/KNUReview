@@ -17,6 +17,7 @@ import java.util.List;
 import dev.knureview.VO.AlarmVO;
 import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
+import dev.knureview.VO.DepartmentVO;
 import dev.knureview.VO.LectureVO;
 import dev.knureview.VO.StudentVO;
 import dev.knureview.VO.SubjectVO;
@@ -186,8 +187,22 @@ public class NetworkUtil {
             vo.setdNo(Integer.parseInt(object.get("dNo").toString()));
             vo.setCredit(Integer.parseInt(object.get("credit").toString()));
             vo.setTime(Integer.parseInt(object.get("time").toString()));
+            sbjList.add(vo);
         }
         return sbjList;
+    }
+
+    public ArrayList<String> getDepartmentList() throws Exception{
+        ArrayList<String> deptList = new ArrayList<>();
+        url = "http://kureview.cafe24.com/mobileGetDeptList.jsp";
+        String data = getJSON(url, null);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray deptArray = (JSONArray) mainObject.get("department");
+        for(int i=0; i<deptArray.size(); i++){
+            JSONObject object = (JSONObject) deptArray.get(i);
+            deptList.add(object.get("dName").toString());
+        }
+        return deptList;
     }
 
 
@@ -242,7 +257,7 @@ public class NetworkUtil {
         query = "tNo" + "=" + tNo + "&" + "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
-        JSONObject object = (JSONObject)mainObject.get("alarmTalk");
+        JSONObject object = (JSONObject) mainObject.get("alarmTalk");
         TalkVO vo = new TalkVO();
         vo.settNo(Integer.parseInt(object.get("tNo").toString()));
         vo.setPictureURL(object.get("pictureURL").toString());
@@ -261,7 +276,7 @@ public class NetworkUtil {
         query = "cNo" + "=" + cNo + "&" + "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
-        JSONObject object = (JSONObject)mainObject.get("alarmComment");
+        JSONObject object = (JSONObject) mainObject.get("alarmComment");
         CommentVO vo = new CommentVO();
         vo.setCno(Integer.parseInt(object.get("cNo").toString()));
         vo.settNo(Integer.parseInt(object.get("tNo").toString()));

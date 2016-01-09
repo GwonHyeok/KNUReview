@@ -30,6 +30,8 @@
         <activity
             android:name=".Activity.MainActivity"
             android:label="수강리뷰" />
+        <activity android:name=".Activity.ReviewEditActivity"
+            android:label="강의평가"/>
 
         <activity android:name=".Activity.SearchActivity" />
         <activity android:name=".Activity.SubjectActivity"

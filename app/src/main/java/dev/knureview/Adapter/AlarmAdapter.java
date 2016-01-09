@@ -35,7 +35,7 @@ public class AlarmAdapter extends ArrayAdapter<AlarmVO> {
     private String nextDate;
 
 
-    static class ViewHolder{
+    static class ViewHolder {
         private LinearLayout dayLayout;
         private TextView dateTxt;
         private ImageView iconImage;
@@ -45,7 +45,7 @@ public class AlarmAdapter extends ArrayAdapter<AlarmVO> {
         private LinearLayout dynamicArea;
     }
 
-    public AlarmAdapter(Activity activity, int layout, ArrayList<AlarmVO> alarmList){
+    public AlarmAdapter(Activity activity, int layout, ArrayList<AlarmVO> alarmList) {
         super(activity, layout, alarmList);
         this.activity = activity;
         this.layout = layout;
@@ -67,19 +67,20 @@ public class AlarmAdapter extends ArrayAdapter<AlarmVO> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) { final ViewHolder vh;
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder vh;
 
         if (convertView == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(layout, parent, false);
             vh = new ViewHolder();
-            vh.dayLayout = (LinearLayout)convertView.findViewById(R.id.dayLayout);
-            vh.dateTxt = (TextView)convertView.findViewById(R.id.date);
-            vh.iconImage = (ImageView)convertView.findViewById(R.id.iconImage);
-            vh.cardImage = (ImageView)convertView.findViewById(R.id.cardImage);
-            vh.messageTxt = (TextView)convertView.findViewById(R.id.message);
-            vh.writeTimeTxt = (TextView)convertView.findViewById(R.id.writeTime);
-            vh.dynamicArea = (LinearLayout)convertView.findViewById(R.id.dynamicArea);
+            vh.dayLayout = (LinearLayout) convertView.findViewById(R.id.dayLayout);
+            vh.dateTxt = (TextView) convertView.findViewById(R.id.date);
+            vh.iconImage = (ImageView) convertView.findViewById(R.id.iconImage);
+            vh.cardImage = (ImageView) convertView.findViewById(R.id.cardImage);
+            vh.messageTxt = (TextView) convertView.findViewById(R.id.message);
+            vh.writeTimeTxt = (TextView) convertView.findViewById(R.id.writeTime);
+            vh.dynamicArea = (LinearLayout) convertView.findViewById(R.id.dynamicArea);
             talkTextUtil = new TalkTextUtil();
             talkTextUtil.setActivity(activity);
             talkTextUtil.setTextSizeDown();
@@ -104,10 +105,10 @@ public class AlarmAdapter extends ArrayAdapter<AlarmVO> {
         }
 
 
-        if(alarmList.get(position).getIsLike() == 1){
+        if (alarmList.get(position).getIsLike() == 1) {
             vh.messageTxt.setText(LIKE_MSG);
             vh.iconImage.setImageResource(R.drawable.alarm_like_ic);
-        }else{
+        } else {
             vh.messageTxt.setText(COMMENT_MSG);
             vh.iconImage.setImageResource(R.drawable.alarm_comment_ic);
         }

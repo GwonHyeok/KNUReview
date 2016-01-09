@@ -1,54 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="14dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/sNameTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginRight="4dp"
-        android:text="진로지도상담1"
-        android:textColor="@color/black"
-        android:textSize="16dp" />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/deptLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp">
+        android:background="@color/sbj_row_color"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:elevation="2dp">
 
         <TextView
+            android:id="@+id/gradeTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0학점"
-            android:textColor="@color/text_gray"
-            android:textSize="12dp" />
+            android:text="1학년"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
 
         <TextView
+            android:id="@+id/dNameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=", "
-            android:textColor="@color/text_gray"
-            android:textSize="12dp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0시간"
-            android:textColor="@color/text_gray"
-            android:textSize="12dp" />
+            android:layout_marginLeft="4dp"
+            android:text="(철학과)"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
     </LinearLayout>
 
-
-    <View
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/rowColor" />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/row"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rowColor" />
+
+        <TextView
+            android:id="@+id/sNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:text="진로지도상담1"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/creditTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0학점"
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", "
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
 
 
+            <TextView
+                android:id="@+id/timeTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0시간"
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 </LinearLayout>

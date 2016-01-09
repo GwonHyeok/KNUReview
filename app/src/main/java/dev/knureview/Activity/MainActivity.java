@@ -121,6 +121,10 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(MainActivity.this, ContactActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        }else if(view.getId() == R.id.fab){
+            Intent intent = new Intent(MainActivity.this, ReviewEditActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }
     }
 
