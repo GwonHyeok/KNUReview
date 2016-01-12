@@ -76,6 +76,7 @@ public class SubjectActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(ArrayList<SubjectVO> result) {
             super.onPostExecute(result);
+            sbjList = result;
             adapter = new SubjectAdapter(SubjectActivity.this, R.layout.layout_subject_list_row, result);
             totalSubjectTxt.setText("총 " + result.size() + "개의 과목이 있습니다.");
             adapter.setDeptName(dName);

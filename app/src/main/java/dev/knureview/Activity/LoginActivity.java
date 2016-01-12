@@ -44,7 +44,7 @@ import dev.knureview.VO.StudentVO;
 public class LoginActivity extends Activity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "LoginActivity";
-    private static final String LOGIN_RESULT = "loginResult";
+    private static final String LOGIN_RESULT = "LoginResult";
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Typeface archiveFont;
@@ -243,11 +243,8 @@ public class LoginActivity extends Activity {
             String year = stdNo.substring(0, 4);
             TimeUtil timeUtil = new TimeUtil();
 
-            //2월 ~ 7월 14일까지
-            if (year.equals(timeUtil.getYear())
-                    && (timeUtil.getMonth() >= 2
-                    && ((timeUtil.getMonth() <= 7) && timeUtil.getDay() < 15))) {
-                //신입생 1학기 일 경우
+            if (year.equals(timeUtil.getYear())) {
+                //신입생 일 경우
                 isFreshMan = true;
             } else {
                 isFreshMan = false;
@@ -399,6 +396,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            new LoginState().execute();
             if (isFreshMan) {
                 //신입생 1학기 새로운 사용자인 경우
                 setAutoLogin();
@@ -415,7 +413,7 @@ public class LoginActivity extends Activity {
         @Override
         protected Void doInBackground(Cookie[] params) {
             try {
-                new NetworkUtil().setStudentLecture(params[0], stdNo);
+                new NetworkUtil().setStudentLecture(params[0], stdNo, vo.getMajor());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -445,6 +443,18 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
             pictureCnt = result;
+        }
+    }
+
+    private class LoginState extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                new NetworkUtil().insertLoginState(stdNo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="14dp"
+    android:background="@drawable/row_selector">
+    <TextView
+        android:id="@+id/rowTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="과목명"
+        android:textSize="16dp"/>
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/right_arrow_ic"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

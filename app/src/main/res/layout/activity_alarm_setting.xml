@@ -25,7 +25,7 @@
                 android:id="@+id/pushSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/profile_selector"
+                android:background="@drawable/row_selector"
                 android:gravity="center"
                 android:onClick="mOnClick"
                 android:padding="14dp">
@@ -59,7 +59,7 @@
                 android:id="@+id/silentSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/profile_selector"
+                android:background="@drawable/row_selector"
                 android:gravity="center"
                 android:onClick="mOnClick"
                 android:padding="14dp">

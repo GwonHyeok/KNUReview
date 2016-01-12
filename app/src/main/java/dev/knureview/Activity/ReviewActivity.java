@@ -31,5 +31,7 @@ public class ReviewActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(sName);
     }
 
-    //private class ReviewList extends AsyncTask<Void, Void, ArrayList<>>
+    //private class ReviewList extends AsyncTask<Void, Void, ArrayList<>>{
+
+    //}
 }

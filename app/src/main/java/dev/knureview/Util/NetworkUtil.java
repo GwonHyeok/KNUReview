@@ -19,6 +19,7 @@ import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
 import dev.knureview.VO.DepartmentVO;
 import dev.knureview.VO.LectureVO;
+import dev.knureview.VO.ProfVO;
 import dev.knureview.VO.StudentVO;
 import dev.knureview.VO.SubjectVO;
 import dev.knureview.VO.TalkVO;
@@ -116,7 +117,7 @@ public class NetworkUtil {
 
 
     // lecture 에 수강했던 과목 가져오기
-    public void setStudentLecture(Cookie cookie, String stdNo) throws Exception {
+    public void setStudentLecture(Cookie cookie, String stdNo, String major) throws Exception {
         //기존에 저장된 lecture 삭제 및 초기화
         url = "http://kureview.cafe24.com/mobileDeleteLecture.jsp";
         query = "stdNo" + "=" + stdNo;
@@ -134,6 +135,7 @@ public class NetworkUtil {
             String schlYear = object.get("schl_year").toString();
             String schlSmst = object.get("schl_smst").toString();
 
+
             //1, 2학기 수강 데이터만 가져옴
             if (Integer.parseInt(schlSmst) < 3) {
                 url = "https://m.kangnam.ac.kr/knusmart/s/s252.do?";
@@ -145,29 +147,22 @@ public class NetworkUtil {
                 for (int j = 0; j < lectArray.size(); j++) {
                     JSONObject innerObject = (JSONObject) lectArray.get(j);
                     //수강했던 과목 Lecture Table Insert
-                    String subjName = innerObject.get("subj_knam").toString().replace('&', '0');
-
-                    url = "http://kureview.cafe24.com/mobileInsertLecture.jsp";
-                    query = "stdNo" + "=" + stdNo + "&" + "year" + "=" + schlYear
-                            + "&" + "term" + "=" + schlSmst
-                            + "&" + "subjName" + "=" + subjName;
-                    sendQuery(url, query);
+                    int subjUnit = Integer.parseInt(innerObject.get("subj_unit").toString());
+                    if (subjUnit > 0) {
+                        //0학점 이상만 등록
+                        String subjName = innerObject.get("subj_knam").toString().replace('&', '0');
+                        url = "http://kureview.cafe24.com/mobileCheckAndInsertLecture.jsp";
+                        query = "stdNo" + "=" + stdNo + "&" + "year" + "=" + schlYear
+                                + "&" + "term" + "=" + schlSmst
+                                + "&" + "subjName" + "=" + subjName
+                                + "&" + "major" + "=" + major;
+                        sendQuery(url, query);
+                    }
                 }
             }
         }
     }
 
-
-    public ArrayList<LectureVO> getStudentLecture(String stdNo) throws Exception {
-        ArrayList<LectureVO> lectureArray = new ArrayList<LectureVO>();
-        url = "http://kureview.cafe24.com/mobileGetLecture.jsp";
-        query = "stdNo" + "=" + stdNo;
-        String data = getJSON(url, query);
-        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
-        //json parsing
-
-        return lectureArray;
-    }
 
     //수강리뷰
     public ArrayList<SubjectVO> getSubjectList(String dName) throws Exception {
@@ -192,19 +187,53 @@ public class NetworkUtil {
         return sbjList;
     }
 
-    public ArrayList<String> getDepartmentList() throws Exception{
+    public ArrayList<String> getDepartmentList() throws Exception {
         ArrayList<String> deptList = new ArrayList<>();
         url = "http://kureview.cafe24.com/mobileGetDeptList.jsp";
         String data = getJSON(url, null);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         JSONArray deptArray = (JSONArray) mainObject.get("department");
-        for(int i=0; i<deptArray.size(); i++){
+        for (int i = 0; i < deptArray.size(); i++) {
             JSONObject object = (JSONObject) deptArray.get(i);
             deptList.add(object.get("dName").toString());
         }
         return deptList;
     }
 
+    public ArrayList<LectureVO> getMyLecture(String stdNo, String term) throws Exception {
+        ArrayList<LectureVO> lectureList = new ArrayList<LectureVO>();
+        url = "http://kureview.cafe24.com/mobileGetLecture.jsp";
+        query = "stdNo" + "=" + stdNo + "&" + "term" + "=" + term;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray lectureArray = (JSONArray) mainObject.get("lecture");
+        for (int i = 0; i < lectureArray.size(); i++) {
+            JSONObject object = (JSONObject) lectureArray.get(i);
+            LectureVO vo = new LectureVO();
+            vo.setYear(Integer.parseInt(object.get("year").toString()));
+            vo.setTerm(Integer.parseInt(object.get("term").toString()));
+            vo.setSbjName(object.get("sbjName").toString());
+            vo.setIsReview(Integer.parseInt(object.get("isReview").toString()));
+            lectureList.add(vo);
+        }
+        return lectureList;
+    }
+
+    public ArrayList<ProfVO> getProfList() throws Exception {
+        ArrayList<ProfVO> profList = new ArrayList<>();
+        url = "http://kureview.cafe24.com/mobileProfList.jsp";
+        String data = getJSON(url, null);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray profArray = (JSONArray) mainObject.get("prof");
+        for (int i = 0; i < profArray.size(); i++) {
+            JSONObject object = (JSONObject) profArray.get(i);
+            ProfVO vo = new ProfVO();
+            vo.setpNo(Integer.parseInt(object.get("pNo").toString()));
+            vo.setpName(object.get("pName").toString());
+            profList.add(vo);
+        }
+        return profList;
+    }
 
     //소곤소곤
 
@@ -453,6 +482,32 @@ public class NetworkUtil {
         return alarmList;
     }
 
+    //login Update
+    public void insertLoginState(String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertLogin.jsp";
+        query = "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+    }
+
+    public boolean getLoginState(String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileGetLogin.jsp";
+        query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        if (mainObject.get("update").toString().equals("true")) {
+            updateLoginState(stdNo);
+            return true;
+        } else if (mainObject.get("update").equals("noMember")) {
+            insertLoginState(stdNo);
+        }
+        return false;
+    }
+
+    public void updateLoginState(String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateLogin.jsp";
+        query = "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+    }
 
     //version
     public String[] getLatestVersion() throws Exception {

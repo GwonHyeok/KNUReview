@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+     //   inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -122,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }else if(view.getId() == R.id.fab){
-            Intent intent = new Intent(MainActivity.this, ReviewEditActivity.class);
+            Intent intent = new Intent(MainActivity.this, RvSbjActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }

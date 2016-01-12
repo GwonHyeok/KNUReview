@@ -7,9 +7,6 @@
 
     <include layout="@layout/layout_tool_bar" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,128 +14,24 @@
             android:padding="14dp">
 
             <RelativeLayout
-                android:id="@+id/yearLayout"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp">
-
-                <EditText
-                    android:id="@+id/inputYear"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/auto_edit_box"
-                    android:hint="수강년도"
-                    android:paddingBottom="8dp"
-                    android:editable="false"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="16dp" />
-
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/expand_arrow_ic" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/termLayout"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@id/yearLayout">
-
-                <EditText
-                    android:id="@+id/inputTerm"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/auto_edit_box"
-                    android:hint="학기"
-                    android:editable="false"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="16dp" />
-
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/expand_arrow_ic" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/deptLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/termLayout"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="18dp">
-
-                <EditText
-                    android:id="@+id/inputDept"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/auto_edit_box"
-                    android:hint="학과명"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="42dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="16dp" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/dept_ic" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/collapse_arrow_ic" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
                 android:id="@+id/sbjLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/deptLayout"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="18dp">
+                android:layout_marginRight="14dp">
 
                 <EditText
                     android:id="@+id/inputSbj"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/auto_edit_box"
-                    android:hint="교과목명"
+                    android:editable="false"
                     android:paddingBottom="8dp"
                     android:paddingLeft="42dp"
                     android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="18dp"
@@ -147,13 +40,6 @@
                     android:layout_marginLeft="8dp"
                     android:src="@drawable/sbj_ic" />
 
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/expand_arrow_ic" />
             </RelativeLayout>
 
 
@@ -164,7 +50,7 @@
                 android:layout_below="@id/sbjLayout"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="18dp">
+                android:layout_marginTop="14dp">
 
                 <EditText
                     android:id="@+id/inputProf"
@@ -174,10 +60,10 @@
                     android:hint="담당교수"
                     android:paddingBottom="8dp"
                     android:paddingLeft="42dp"
-                    android:paddingRight="8dp"
+                    android:paddingRight="28dp"
                     android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="18dp"
@@ -202,7 +88,7 @@
                 android:layout_below="@id/profLayout"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:background="@color/white"
                 android:padding="14dp">
 
@@ -219,8 +105,11 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/difcTxt"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/difcTxt"
+                    android:layout_above="@+id/difcRating"
+                    android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
                 <RatingBar
@@ -247,8 +136,11 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/asignTxt"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@id/difcRating"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/asignTxt"
+                    android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
                 <RatingBar
@@ -275,8 +167,11 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/atendTxt"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/atendTxt"
+                   android:layout_below="@id/asignRating"
+                    android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
                 <RatingBar
@@ -303,8 +198,11 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/gradeTxt"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/gradeTxt"
+                    android:layout_below="@id/atendRating"
+                    android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
 
@@ -332,8 +230,11 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/achivTxt"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/achivTxt"
+                    android:layout_below="@id/gradeRating"
+                    android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
                 <RatingBar
@@ -349,48 +250,6 @@
             </RelativeLayout>
 
             <ListView
-                android:id="@+id/yearList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/yearLayout"
-                android:layout_alignRight="@id/yearLayout"
-                android:layout_below="@id/yearLayout"
-                android:background="@color/white"
-                android:elevation="2dp" />
-
-            <ListView
-                android:id="@+id/termList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/termLayout"
-                android:layout_alignRight="@id/termLayout"
-                android:layout_below="@id/termLayout"
-                android:background="@color/white"
-                android:elevation="2dp" />
-
-            <ListView
-                android:id="@+id/deptList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/deptLayout"
-                android:layout_alignRight="@id/deptLayout"
-                android:layout_below="@id/deptLayout"
-                android:layout_marginLeft="42dp"
-                android:background="@color/white"
-                android:elevation="2dp" />
-
-            <ListView
-                android:id="@+id/sbjList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/sbjLayout"
-                android:layout_alignRight="@id/sbjLayout"
-                android:layout_below="@id/sbjLayout"
-                android:layout_marginLeft="42dp"
-                android:background="@color/white"
-                android:elevation="2dp" />
-
-            <ListView
                 android:id="@+id/profList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -401,5 +260,4 @@
                 android:background="@color/white"
                 android:elevation="2dp" />
         </RelativeLayout>
-    </ScrollView>
 </LinearLayout>

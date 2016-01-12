@@ -149,19 +149,10 @@ public class MyProfileActivity extends ActionBarActivity {
             drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
-                /*
                 Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
-                */
-                new MaterialDialog.Builder(MyProfileActivity.this)
-                        .backgroundColor(getResources().getColor(R.color.white))
-                        .content("아직 준비중이에요 1월 17일에 봬요~")
-                        .contentColor(getResources().getColor(R.color.text_lgray))
-                        .positiveText("확인")
-                        .positiveColor(getResources().getColor(R.color.colorPrimary))
-                        .show();
             } else if (id == 1) {
                 Intent intent = new Intent(MyProfileActivity.this, StoryActivity.class);
                 startActivity(intent);

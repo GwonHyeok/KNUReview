@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_tool_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="14dp">
+
+        <RelativeLayout
+            android:id="@+id/yearLayout"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="18dp">
+
+            <EditText
+                android:id="@+id/inputYear"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/auto_edit_box"
+                android:editable="false"
+                android:hint="수강년도"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:singleLine="true"
+                android:textSize="16dp" />
+
+
+            <ImageView
+                android:id="@+id/yearImage"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/expand_arrow_ic" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/termLayout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/yearLayout">
+
+            <TextView
+                android:id="@+id/termTxt"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/auto_edit_box"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/alarmTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:text="수강년도를 선택해주세요."/>
+
+
+        <ListView
+            android:id="@+id/sbjList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yearLayout"
+            android:layout_margin="14dp"
+            android:elevation="4dp"
+            android:background="@color/white" />
+
+
+        <ListView
+            android:id="@+id/yearList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/yearLayout"
+            android:layout_alignRight="@id/yearLayout"
+            android:layout_below="@id/yearLayout"
+            android:background="@color/white"
+            android:elevation="18dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

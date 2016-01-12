@@ -26,6 +26,7 @@ import dev.knureview.Push.RegistrationIntentService;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
+import dev.knureview.Util.TimeUtil;
 import dev.knureview.VO.StudentVO;
 
 /**
@@ -34,7 +35,7 @@ import dev.knureview.VO.StudentVO;
 public class SplashActivity extends Activity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "SplashActivity";
-    private static final String LOGIN_RESULT = "loginResult";
+    private static final String LOGIN_RESULT = "LoginResult";
     private static final String VERSION = "version";
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReLogin;
@@ -70,6 +71,12 @@ public class SplashActivity extends Activity {
         currentVersion = getResources().getString(R.string.version);
         appVersion = pref.getPreferences(VERSION, "");
         stdNo = pref.getPreferences("stdNo", "");
+        String term = "1학기";
+        TimeUtil timeUtil = new TimeUtil();
+        if(timeUtil.getMonth()>=7 && timeUtil.getMonth() <=12){
+            term = "2학기";
+        }
+        pref.savePreferences("term",term);
 
         //handler
         handler = new Handler() {
@@ -221,17 +228,7 @@ public class SplashActivity extends Activity {
             String shouldUpdate = s[1];
             String curVersion = getResources().getString(R.string.version);
             if (shouldUpdate.equals("false") || latVersion.equals(curVersion)) {
-                if (isReLogin) {
-                    //자동로그인일 경우 Push Token Update
-                    getInstanceIdToken();
-                    //소곤소곤 사진 갯수 가져옴
-                    new PictureCnt().execute();
-                } else {
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                }
+                new LoginState().execute();
             }else {
                 //update 강제
                 new MaterialDialog.Builder(SplashActivity.this)
@@ -253,7 +250,34 @@ public class SplashActivity extends Activity {
             }
         }
     }
+    private class LoginState extends AsyncTask<Void, Void, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try{
+                return new NetworkUtil().getLoginState(stdNo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Boolean loginUpdate) {
+            super.onPostExecute(loginUpdate);
+
+            if (isReLogin && !loginUpdate) {
+                //자동로그인일 경우 Push Token Update
+                getInstanceIdToken();
+                //소곤소곤 사진 갯수 가져옴
+                new PictureCnt().execute();
+            } else {
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
+            }
+        }
+    }
 
 
 }

@@ -15,7 +15,7 @@
             android:id="@+id/versionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp">
@@ -55,7 +55,7 @@
             android:id="@+id/alarmLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp">
@@ -95,7 +95,7 @@
             android:id="@+id/courseReviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp"
@@ -129,7 +129,7 @@
             android:id="@+id/storyTicketLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp">
@@ -179,7 +179,7 @@
             android:id="@+id/myStoryLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp">
@@ -212,7 +212,7 @@
             android:id="@+id/contactLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp"
@@ -246,7 +246,7 @@
             android:id="@+id/devLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:onClick="mOnClick"
             android:orientation="vertical"
             android:padding="14dp">
@@ -278,7 +278,7 @@
             android:id="@+id/photoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:onClick="mOnClick"
             android:orientation="vertical"
             android:padding="14dp">
@@ -309,7 +309,7 @@
             android:id="@+id/logoutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/profile_selector"
+            android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
             android:padding="14dp">

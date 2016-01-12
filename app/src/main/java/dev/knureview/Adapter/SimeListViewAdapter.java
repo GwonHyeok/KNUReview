@@ -13,13 +13,15 @@ import java.util.ArrayList;
 
 import dev.knureview.R;
 import dev.knureview.Util.SoundSearcher;
+import dev.knureview.VO.LectureVO;
 
 /**
  * Created by DavidHa on 2016. 1. 9..
  */
-public class AutoCompleteAdapter extends BaseAdapter {
+public class SimeListViewAdapter extends BaseAdapter {
     private Activity activity;
     private int layout;
+    private ArrayList<LectureVO> lectList;
     private ArrayList<String> list;
     private ArrayList<String> showList;
 
@@ -27,14 +29,14 @@ public class AutoCompleteAdapter extends BaseAdapter {
         private TextView rowTxt;
     }
 
-    public AutoCompleteAdapter(Activity activity, ArrayList<String> list) {
+    public SimeListViewAdapter(Activity activity, int layout, ArrayList<String> list) {
         this.activity = activity;
-        this.layout = R.layout.layout_auto_list_row;
+        this.layout = layout;
         this.list = list;
         showList = new ArrayList<>();
     }
 
-    public void refreshListView(String searchStr) {
+    public void autoComplete(String searchStr) {
         showList.clear();
         if (!searchStr.equals("")) {
             for (int i = 0; i < list.size(); i++) {
@@ -44,7 +46,26 @@ public class AutoCompleteAdapter extends BaseAdapter {
             }
         }
     }
-    public ArrayList<String> getItemList(){
+
+    public void setYearListView() {
+        showList.add(0,"전체");
+        showList.add(list.get(0) + "년도");
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (!list.get(i).equals(list.get(i + 1))) {
+                showList.add(list.get(i + 1) + "년도");
+            }
+        }
+    }
+
+    public void showAllList(){
+        showList = list;
+    }
+    public void refreshListView(ArrayList<String> newList){
+        showList = newList;
+
+    }
+
+    public ArrayList<String> getItemList() {
         return showList;
     }
 

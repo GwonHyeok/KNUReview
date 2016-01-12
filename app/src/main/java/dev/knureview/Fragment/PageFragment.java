@@ -7,30 +7,34 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
-import dev.knureview.Activity.MainActivity;
 import dev.knureview.Activity.SubjectActivity;
 import dev.knureview.Holder.DepartmentHolder;
 import dev.knureview.Holder.IconTreeItemHolder;
 import dev.knureview.Holder.CollegeHolder;
 import dev.knureview.Holder.DetailViewHolder;
 import dev.knureview.R;
+import dev.knureview.Util.SharedPreferencesActivity;
 
 /**
  * Created by DavidHa on 2015. 11. 16..
  */
 public class PageFragment extends android.support.v4.app.Fragment {
     private AndroidTreeView tView;
-    private int term;
+    private int selectedTerm;
+    private String term;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        SharedPreferencesActivity pref = new SharedPreferencesActivity(getContext());
+        term = pref.getPreferences("term", "");
+
         final View rootView = inflater.inflate(R.layout.fragment_page, null, false);
         final ViewGroup containerView = (ViewGroup) rootView.findViewById(R.id.container);
         rootView.findViewById(R.id.status_bar).setVisibility(View.GONE);
@@ -419,15 +423,24 @@ public class PageFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(TreeNode treeNode, Object value) {
             try {
-
-                DetailViewHolder.DetailViewItem item = (DetailViewHolder.DetailViewItem) value;
-                Intent intent = new Intent(getActivity(), SubjectActivity.class);
-                intent.putExtra("gradeName", item.gradeName);
-                String dName = item.deptName.replaceAll("[()]","").trim();
-                intent.putExtra("dName", dName);
-                intent.putExtra("term", term);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+                if (Integer.parseInt(term.substring(0, 1)) == selectedTerm) {
+                    DetailViewHolder.DetailViewItem item = (DetailViewHolder.DetailViewItem) value;
+                    Intent intent = new Intent(getActivity(), SubjectActivity.class);
+                    intent.putExtra("gradeName", item.gradeName);
+                    String dName = item.deptName.replaceAll("[()]", "").trim();
+                    intent.putExtra("dName", dName);
+                    intent.putExtra("term", selectedTerm);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+                }else{
+                    new MaterialDialog.Builder(getContext())
+                            .backgroundColor(getResources().getColor(R.color.white))
+                            .content("현재 "+selectedTerm+"학기의 수강리뷰를 조회하실 수 없습니다.")
+                            .contentColor(getResources().getColor(R.color.text_lgray))
+                            .positiveText("확인")
+                            .positiveColor(getResources().getColor(R.color.colorPrimary))
+                            .show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -437,7 +450,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         term = FragmentPagerItem.getPosition(getArguments())+1;
+        selectedTerm = FragmentPagerItem.getPosition(getArguments()) + 1;
     }
 
     @Override
