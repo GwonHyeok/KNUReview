@@ -111,8 +111,8 @@ public class StoryActivity extends ActionBarActivity {
         //intent
         Intent intent = getIntent();
         String pushStr = intent.getStringExtra("push");
-        if(pushStr !=null){
-            startActivity(new Intent(this,AlarmActivity.class));
+        if (pushStr != null) {
+            startActivity(new Intent(this, AlarmActivity.class));
         }
 
         //refresh
@@ -144,6 +144,7 @@ public class StoryActivity extends ActionBarActivity {
     SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
+            listPosition = 0;
             new FavouriteTalk().execute();
         }
     };
@@ -188,6 +189,15 @@ public class StoryActivity extends ActionBarActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
+            }else if(id==3){
+                new MaterialDialog.Builder(StoryActivity.this)
+                        .title("시간표 기능 업데이트 알림")
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("시간표 기능은 단순히 시간표만 보여주는 기능 뿐만 아니라 같이 수업듣는 학우들끼리 서로 정보를 공유하는 기능을 제공할 예정입니다.\n2월 27일에 업데이트 될 예정이오니 많이 기대해주세요~")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
             }
         }
     };
@@ -207,7 +217,7 @@ public class StoryActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
             return true;
-        }else if(item.getItemId() == R.id.alarm){
+        } else if (item.getItemId() == R.id.alarm) {
             Intent intent = new Intent(StoryActivity.this, AlarmActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);

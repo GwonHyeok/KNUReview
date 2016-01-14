@@ -160,6 +160,15 @@ public class MyProfileActivity extends ActionBarActivity {
                 finish();
             } else if (id == 2) {
                 //MyProfileActivity
+            }else if(id==3){
+                new MaterialDialog.Builder(MyProfileActivity.this)
+                        .title("시간표 기능 업데이트 알림")
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("시간표 기능은 단순히 시간표만 보여주는 기능 뿐만 아니라 같이 수업듣는 학우들끼리 서로 정보를 공유하는 기능을 제공할 예정입니다.\n2월 27일에 업데이트 될 예정이오니 많이 기대해주세요~")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
             }
         }
     };

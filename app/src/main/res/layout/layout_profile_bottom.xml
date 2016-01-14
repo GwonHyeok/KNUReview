@@ -91,39 +91,6 @@
             android:layout_height="1dp"
             android:background="@color/rowColor" />
 
-        <LinearLayout
-            android:id="@+id/courseReviewLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/row_selector"
-            android:gravity="center"
-            android:onClick="mOnClick"
-            android:padding="14dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="내 강의평"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/right_arrow_ic" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rowColor"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/storyTicketLayout"
@@ -174,6 +141,52 @@
             android:layout_height="1dp"
             android:background="@color/rowColor" />
 
+        <LinearLayout
+            android:id="@+id/courseReviewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/row_selector"
+            android:gravity="center"
+            android:onClick="mOnClick"
+            android:padding="14dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="수강리뷰"
+                    android:textColor="@color/text_lgray"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내 강의평"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/right_arrow_ic" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rowColor" />
+
 
         <LinearLayout
             android:id="@+id/myStoryLayout"
@@ -182,14 +195,29 @@
             android:background="@drawable/row_selector"
             android:gravity="center"
             android:onClick="mOnClick"
+            android:orientation="horizontal"
             android:padding="14dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="내가 쓴 글"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="소곤소곤"
+                    android:textColor="@color/text_lgray"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내가 쓴 글"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"

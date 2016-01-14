@@ -17,8 +17,8 @@ import dev.knureview.R;
  */
 public class NavigationDrawerAdapter extends BaseAdapter {
 
-    private String mTitles[] = {"수강리뷰", "소곤소곤", "내프로필"};
-    private int mIcons[] = {R.drawable.review, R.drawable.my_story, R.drawable.my_profile};
+    private String mTitles[] = {"수강리뷰", "소곤소곤", "내프로필", "시간표"};
+    private int mIcons[] = {R.drawable.review, R.drawable.my_story, R.drawable.my_profile, R.drawable.timetable};
     private Activity activity;
     private int resource;
     private Typeface font;

@@ -174,7 +174,7 @@ public class StEditActivity extends Activity {
         String pictureURL = "sample" + random + ".jpg";
         Picasso.with(StEditActivity.this)
                 .load("http://kureview.cafe24.com/image_small/" + pictureURL)
-                .placeholder(R.drawable.push_ic)
+                .placeholder(R.drawable.default_img_icon)
                 .noFade()
                 .into(targetImageView);
     }

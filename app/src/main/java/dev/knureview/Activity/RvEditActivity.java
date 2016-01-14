@@ -288,8 +288,6 @@ public class RvEditActivity extends ActionBarActivity {
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .show();
-            }else if(result.equals("noProf")){
-                Toast.makeText(RvEditActivity.this,"NoProf",0).show();
             }
         }
     }

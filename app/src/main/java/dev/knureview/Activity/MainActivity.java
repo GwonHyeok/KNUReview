@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -29,6 +30,7 @@ import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
+import dev.knureview.Util.BackPressCloseHandler;
 
 public class MainActivity extends ActionBarActivity {
     private static final int CUR_POSITION = 0;
@@ -40,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
     private Typeface nanumFont;
     private TextView headerTxt;
     private TextView bottomTxt;
+    private BackPressCloseHandler backPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,8 @@ public class MainActivity extends ActionBarActivity {
 
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
     AdapterView.OnItemClickListener drawerListener = new AdapterView.OnItemClickListener() {
@@ -105,6 +110,15 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
+            }else if(id == 3){
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("시간표 기능 업데이트 알림")
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("시간표 기능은 단순히 시간표만 보여주는 기능 뿐만 아니라 같이 수업듣는 학우들끼리 서로 정보를 공유하는 기능을 제공할 예정입니다.\n2월 27일에 업데이트 될 예정이오니 많이 기대해주세요~")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
             }
         }
     };
@@ -158,6 +172,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-
+        backPressCloseHandler.onBackPressed();
     }
 }
