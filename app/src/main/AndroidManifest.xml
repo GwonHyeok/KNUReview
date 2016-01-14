@@ -38,6 +38,7 @@
         <activity android:name=".Activity.SearchActivity" />
         <activity android:name=".Activity.SubjectActivity"
             android:label="과목검색"/>
+        <activity android:name=".Activity.RvDetailActivity"/>
         <!-- 소곤소곤 -->
         <activity
             android:name=".Activity.MyProfileActivity"

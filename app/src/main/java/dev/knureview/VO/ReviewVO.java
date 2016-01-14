@@ -7,8 +7,13 @@ public class ReviewVO {
     private int rNo;
     private int stdNo;
     private String description;
-    private int scNo;
-    private int sb_profNo;
+    private int difc;
+    private int asign;
+    private int atend;
+    private int grade;
+    private int achiv;
+    private int sbjNo;
+    private int profNo;
 
     public int getrNo() {
         return rNo;
@@ -34,19 +39,59 @@ public class ReviewVO {
         this.description = description;
     }
 
-    public int getScNo() {
-        return scNo;
+    public int getDifc() {
+        return difc;
     }
 
-    public void setScNo(int scNo) {
-        this.scNo = scNo;
+    public void setDifc(int difc) {
+        this.difc = difc;
     }
 
-    public int getSb_profNo() {
-        return sb_profNo;
+    public int getAsign() {
+        return asign;
     }
 
-    public void setSb_profNo(int sb_profNo) {
-        this.sb_profNo = sb_profNo;
+    public void setAsign(int asign) {
+        this.asign = asign;
+    }
+
+    public int getAtend() {
+        return atend;
+    }
+
+    public void setAtend(int atend) {
+        this.atend = atend;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public int getAchiv() {
+        return achiv;
+    }
+
+    public void setAchiv(int achiv) {
+        this.achiv = achiv;
+    }
+
+    public int getSbjNo() {
+        return sbjNo;
+    }
+
+    public void setSbjNo(int sbjNo) {
+        this.sbjNo = sbjNo;
+    }
+
+    public int getProfNo() {
+        return profNo;
+    }
+
+    public void setProfNo(int profNo) {
+        this.profNo = profNo;
     }
 }

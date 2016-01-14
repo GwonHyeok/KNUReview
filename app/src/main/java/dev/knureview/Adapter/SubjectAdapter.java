@@ -48,26 +48,38 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
     public void setDeptName(String deptName) {
         this.deptName = deptName;
         dPositionHashMap = new HashMap<>();
-        dPositionHashMap.put(0, "1학년");
         gradePosition[0] = 0;
         int cnt = 1;
+        int position = 0;
+        if (deptName.contains("전공")) {
+            dPositionHashMap.put(0, "3학년");
+            cnt = 3;
+            position = -1;
+        } else if (deptName.contains("학과") || deptName.contains("학부")) {
+            dPositionHashMap.put(0, "1학년");
+        }
+
         for (int i = 0; i < sbjList.size() - 1; i++) {
             if (sbjList.get(i).getGrade() != sbjList.get(i + 1).getGrade()) {
                 cnt++;
-                gradePosition[cnt-1] = i;
+                gradePosition[cnt - 1] = i;
                 dPositionHashMap.put(i + 1, cnt + "학년");
             }
         }
+        gradePosition[2] += position;
+
+
     }
-    public int getGradePosition(String gradeName){
-        if(gradeName.contains("1")){
+
+    public int getGradePosition(String gradeName) {
+        if (gradeName.contains("1")) {
             return gradePosition[0];
-        }else if(gradeName.contains("2")){
-            return gradePosition[1]+1;
-        }else if(gradeName.contains("3")){
-            return gradePosition[2]+1;
-        }else if(gradeName.contains("4")){
-            return gradePosition[3]+1;
+        } else if (gradeName.contains("2")) {
+            return gradePosition[1] + 1;
+        } else if (gradeName.contains("3")) {
+            return gradePosition[2] + 1;
+        } else if (gradeName.contains("4")) {
+            return gradePosition[3] + 1;
         }
         return 0;
     }
@@ -87,7 +99,7 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
             vh.sNameTxt = (TextView) convertView.findViewById(R.id.sNameTxt);
             vh.creditTxt = (TextView) convertView.findViewById(R.id.creditTxt);
             vh.timeTxt = (TextView) convertView.findViewById(R.id.timeTxt);
-            vh.row = (View)convertView.findViewById(R.id.row);
+            vh.row = (View) convertView.findViewById(R.id.row);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -97,7 +109,7 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
             if (dPositionHashMap.get(position).contains("학년")) {
                 vh.deptLayout.setVisibility(View.VISIBLE);
                 vh.row.setVisibility(View.INVISIBLE);
-                vh.dNameTxt.setText("("+deptName+")");
+                vh.dNameTxt.setText("(" + deptName + ")");
                 vh.gradeTxt.setText(dPositionHashMap.get(position));
             } else {
                 vh.deptLayout.setVisibility(View.GONE);
@@ -110,8 +122,8 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
         }
 
         vh.sNameTxt.setText(sbjList.get(position).getsName());
-        vh.timeTxt.setText(sbjList.get(position).getTime()+"시간");
-        vh.creditTxt.setText(sbjList.get(position).getCredit()+"학점");
+        vh.timeTxt.setText(sbjList.get(position).getTime() + "시간");
+        vh.creditTxt.setText(sbjList.get(position).getCredit() + "학점");
 
 
         return convertView;

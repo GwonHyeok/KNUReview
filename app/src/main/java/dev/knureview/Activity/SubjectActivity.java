@@ -12,11 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 
 import dev.knureview.Adapter.SubjectAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
+import dev.knureview.Util.SharedPreferencesActivity;
 import dev.knureview.VO.SubjectVO;
 
 /**
@@ -29,6 +32,7 @@ public class SubjectActivity extends ActionBarActivity {
     private ArrayList<SubjectVO> sbjList;
     private String dName;
     private String gradeName;
+    private int reviewAuth;
     private int term;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,22 +47,37 @@ public class SubjectActivity extends ActionBarActivity {
         totalSubjectTxt = (TextView)findViewById(R.id.totalSubject);
         listView = (ListView)findViewById(R.id.listView);
         listView.setOnItemClickListener(clickListener);
+
+        //pref
+        SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
+        reviewAuth= pref.getPreferences("reviewAuth",0);
+
         Intent intent = getIntent();
         dName = intent.getStringExtra("dName");
         gradeName = intent.getStringExtra("gradeName");
-        term = intent.getIntExtra("term",0);
-        getSupportActionBar().setTitle(dName+"("+term+"학기"+")");
+        term = intent.getIntExtra("term", 0);
+        getSupportActionBar().setTitle(dName + "(" + term + "학기" + ")");
         new SubjectList().execute();
     }
 
     AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(SubjectActivity.this, ReviewActivity.class);
-            intent.putExtra("sNo", sbjList.get(position).getsNo());
-            intent.putExtra("sName", sbjList.get(position).getsName());
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+            if(reviewAuth == 1) {
+                Intent intent = new Intent(SubjectActivity.this, ReviewActivity.class);
+                intent.putExtra("sNo", sbjList.get(position).getsNo());
+                intent.putExtra("sName", sbjList.get(position).getsName());
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+            }else{
+                new MaterialDialog.Builder(SubjectActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("수강리뷰를 볼 수 있는 권한이 없습니다.")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
+            }
         }
     };
 
@@ -92,6 +111,7 @@ public class SubjectActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void finish() {

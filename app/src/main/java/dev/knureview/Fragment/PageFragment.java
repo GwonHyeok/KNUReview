@@ -50,7 +50,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
         TreeNode cNode7 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회복지대학")).setViewHolder(new CollegeHolder(getActivity()));
         TreeNode cNode8 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "경영대학")).setViewHolder(new CollegeHolder(getActivity()));
         TreeNode cNode9 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "공과대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode10 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "예·체능대학")).setViewHolder(new CollegeHolder(getActivity()));
+        //TreeNode cNode10 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "예·체능대학")).setViewHolder(new CollegeHolder(getActivity()));
 
         addCollegeOfCulture(cNode1);
         addCollegeOfHumanities(cNode2);
@@ -61,11 +61,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
         addCollegeOfSocialWelfare(cNode7);
         addCollegeOfManagement(cNode8);
         addCollegeOfTech(cNode9);
-        addCollegeOfArtsAndPhysical(cNode10);
+        //addCollegeOfArtsAndPhysical(cNode10);
 
 
         root.addChildren(cNode1, cNode2, cNode3, cNode4, cNode5,
-                cNode6, cNode7, cNode8, cNode9, cNode10);
+                cNode6, cNode7, cNode8, cNode9);
 
         tView = new AndroidTreeView(getActivity(), root);
         tView.setDefaultAnimation(true);

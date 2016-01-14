@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class RvSbjActivity extends ActionBarActivity {
     private ArrayList<LectureVO> lectList;
     private ArrayList<String> yearStrArray;
     private ArrayList<String> sbjStrArray;
+    private String yearStr;
     private String stdNo;
     private String term;
 
@@ -69,7 +71,7 @@ public class RvSbjActivity extends ActionBarActivity {
         inputYear.setOnTouchListener(touchListener);
         yearListView.setOnItemClickListener(yearClickListener);
         sbjListView.setOnItemClickListener(sbjClickListener);
-        new StudentLecture().execute();
+
     }
 
 
@@ -94,22 +96,7 @@ public class RvSbjActivity extends ActionBarActivity {
             yearImage.setImageResource(R.drawable.expand_arrow_ic);
             String selectedYearStr = yearAdapter.getItemList().get(position);
             inputYear.setText(selectedYearStr);
-
-            if (selectedYearStr.equals("전체")) {
-                for (int i = 0; i < lectList.size(); i++) {
-                    sbjStrArray.add(lectList.get(i).getSbjName());
-                }
-            } else {
-                sbjStrArray.clear();
-                int year = Integer.parseInt(selectedYearStr.substring(0, 4));
-                for (int i = 0; i < lectList.size(); i++) {
-                    if (lectList.get(i).getYear() == year) {
-                        sbjStrArray.add(lectList.get(i).getSbjName());
-                    }
-                }
-            }
-            sbjAdapter.refreshListView(sbjStrArray);
-            setListViewHeight(sbjAdapter, sbjListView, true);
+            refresh(selectedYearStr);
         }
     };
 
@@ -122,6 +109,27 @@ public class RvSbjActivity extends ActionBarActivity {
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }
     };
+
+    public void refresh(String selectedYearStr) {
+        if (selectedYearStr.equals("전체")) {
+            for (int i = 0; i < lectList.size(); i++) {
+                if (lectList.get(i).getIsReview() == 0) {
+                    sbjStrArray.add(lectList.get(i).getSbjName());
+                }
+            }
+        } else {
+            sbjStrArray.clear();
+            int year = Integer.parseInt(selectedYearStr.substring(0, 4));
+            for (int i = 0; i < lectList.size(); i++) {
+                    if (lectList.get(i).getYear() == year
+                            && lectList.get(i).getIsReview()==0) {
+                        sbjStrArray.add(lectList.get(i).getSbjName());
+                    }
+            }
+        }
+        sbjAdapter.refreshListView(sbjStrArray);
+        setListViewHeight(sbjAdapter, sbjListView, true);
+    }
 
     public void setListViewHeight(SimeListViewAdapter adapter, ListView listView, boolean isBig) {
         int LIST_VIEW_MAX_HEIGHT = (int) PixelUtil.convertPixelsToDp(285, this);
@@ -176,7 +184,17 @@ public class RvSbjActivity extends ActionBarActivity {
             setListViewHeight(sbjAdapter, sbjListView, true);
             yearListView.setAdapter(yearAdapter);
             sbjListView.setAdapter(sbjAdapter);
+            if (!yearStr.equals("")) {
+                refresh(yearStr);
+            }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        yearStr = inputYear.getText().toString();
+        new StudentLecture().execute();
     }
 
     @Override

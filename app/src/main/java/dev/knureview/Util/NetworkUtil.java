@@ -17,9 +17,9 @@ import java.util.List;
 import dev.knureview.VO.AlarmVO;
 import dev.knureview.VO.CommentVO;
 import dev.knureview.VO.Cookie;
-import dev.knureview.VO.DepartmentVO;
 import dev.knureview.VO.LectureVO;
 import dev.knureview.VO.ProfVO;
+import dev.knureview.VO.ReviewVO;
 import dev.knureview.VO.StudentVO;
 import dev.knureview.VO.SubjectVO;
 import dev.knureview.VO.TalkVO;
@@ -235,6 +235,46 @@ public class NetworkUtil {
         return profList;
     }
 
+    public String insertReview(ReviewVO rVo, String sbjName, String profName) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertReview.jsp";
+        sbjName = sbjName.replace('&', '0');
+        query = "stdNo" + "=" + rVo.getStdNo()
+                + "&" + "difc" + "=" + rVo.getDifc()
+                + "&" + "asign" + "=" + rVo.getAsign()
+                + "&" + "atend" + "=" + rVo.getAtend()
+                + "&" + "grade" + "=" + rVo.getGrade()
+                + "&" + "achiv" + "=" + rVo.getAchiv()
+                + "&" + "sbjName" + "=" + sbjName
+                + "&" + "profName" + "=" + profName;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        return mainObject.get("result").toString();
+    }
+
+    public boolean insertReviewDetail(String description) throws Exception {
+        url = "http://kureview.cafe24.com/mobileInsertRvDetail.jsp";
+        query = "description" + "=" + URLEncoder.encode(description, "UTF-8");
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        if (mainObject.get("result").toString().equals("success")) {
+            return true;
+        }
+        return false;
+    }
+
+    public ReviewVO getOneReview(String stdNo, int sbjNo, int profNo) throws Exception{
+        ReviewVO vo = new ReviewVO();
+        url = "http://kureview.cafe24.com/mobileGetOneReview.jsp";
+        query = "stdNo" + "=" + stdNo
+                +"&" +"sbjNo" +"=" +sbjNo
+                +"&" +"profNo" +"=" +profNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONObject object =(JSONObject) mainObject.get("review");
+
+        return vo;
+    }
+
     //소곤소곤
 
     public ArrayList<TalkVO> getAllTalkList() throws Exception {
@@ -345,28 +385,28 @@ public class NetworkUtil {
 
     public boolean insertTalk(String stdNo, String pictureURL, String description) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertTalk.jsp";
-        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
-                + "&" + "description" + "=" + description;
+        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + URLEncoder.encode(pictureURL, "UTF-8")
+                + "&" + "description" + "=" + URLEncoder.encode(description, "UTF-8");
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         if (mainObject.get("result").toString().equals("success")) {
             return true;
-        } else {
-            return false;
         }
+        return false;
+
     }
 
     public boolean insertComment(String stdNo, String pictureURL, String description, int tNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertComment.jsp";
-        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + pictureURL
-                + "&" + "description" + "=" + description + "&" + "tNo" + "=" + tNo;
+        query = "stdNo" + "=" + stdNo + "&" + "pictureURL" + "=" + URLEncoder.encode(pictureURL, "UTF-8")
+                + "&" + "description" + "=" + URLEncoder.encode(description, "UTF-8") + "&" + "tNo" + "=" + tNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         if (mainObject.get("result").toString().equals("success")) {
             return true;
-        } else {
-            return false;
         }
+        return false;
+
     }
 
     public void deleteTalk(int tNo) throws Exception {

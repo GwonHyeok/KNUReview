@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,6 +29,7 @@ import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.PixelUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
 import dev.knureview.VO.ProfVO;
+import dev.knureview.VO.ReviewVO;
 
 /**
  * Created by DavidHa on 2016. 1. 7..
@@ -45,9 +47,10 @@ public class RvEditActivity extends ActionBarActivity {
 
     private SimeListViewAdapter profAdapter;
     private ArrayList<String> profStrArray;
-
+    private ReviewVO rVo;
     private String stdNo;
     private String sbjName;
+    private String profName;
     private int difcCnt;
     private int asignCnt;
     private int atendCnt;
@@ -84,7 +87,8 @@ public class RvEditActivity extends ActionBarActivity {
         //pref
         SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
         stdNo = pref.getPreferences("stdNo", "");
-
+        rVo = new ReviewVO();
+        rVo.setStdNo(Integer.parseInt(stdNo));
         //intent
         Intent intent = getIntent();
         sbjName = intent.getStringExtra("sbjName");
@@ -130,7 +134,9 @@ public class RvEditActivity extends ActionBarActivity {
     AdapterView.OnItemClickListener profItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            inputProf.setText(profAdapter.getItemList().get(position));
+            inputProf.setSelection(inputProf.getText().length());
+            setRefreshAdapter(profAdapter, profListView, "", true);
         }
     };
 
@@ -212,29 +218,31 @@ public class RvEditActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.review_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    private class InsertReview extends AsyncTask<Void, Void, String>{
+        @Override
+        protected String doInBackground(Void... params) {
+            try{
+                return new NetworkUtil().insertReview(rVo, sbjName, profName);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        } else if (item.getItemId() == R.id.complete) {
-            String profStr = inputProf.getText().toString().trim();
-            if (difcCnt > 0 && asignCnt > 0 && atendCnt > 0 && gradeCnt > 0 && achivCnt > 0 && !profStr.equals("")) {
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(result.equals("success")){
                 new MaterialDialog.Builder(RvEditActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))
-                        .content("수강리뷰를 작성해주셔서 감사합니다.\n해당 과목에 대한 강의평을 남기실 수 있습니다.\n지금 강의평을 작성하시겠습니까?")
+                        .content("강의평가를 작성해주셔서 감사합니다.\n해당 과목에 대한 리뷰를 남기실 수 있습니다.\n지금 리뷰를 작성하시겠습니까?")
                         .contentColor(getResources().getColor(R.color.text_lgray))
                         .positiveText("작성하기")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                                 Intent intent = new Intent(RvEditActivity.this, RvDetailActivity.class);
+                                intent.putExtra("sbjName", sbjName);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
                             }
@@ -249,10 +257,68 @@ public class RvEditActivity extends ActionBarActivity {
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .cancelable(false)
                         .show();
+            }else if(result.equals("false")){
+                new MaterialDialog.Builder(RvEditActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("강의평가를 서버에 올리는데 실패하였습니다.\n다시 시도하시겠습니까?")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                new InsertReview().execute();
+                            }
+                        })
+                        .negativeText("취소")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                finish();
+                            }
+                        })
+                        .show();
+            }else if(result.equals("noSbj")){
+                new MaterialDialog.Builder(RvEditActivity.this)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .title("해당 과목을 찾을수 없습니다.")
+                        .titleColor(getResources().getColor(R.color.black))
+                        .content("해당 과목이 아직 서버에 저장되지 않았습니다.\n관리자에게 알려주시면 빠른 시일 안에 해당 과목을 서버에 저장하겠습니다.")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .show();
+            }else if(result.equals("noProf")){
+                Toast.makeText(RvEditActivity.this,"NoProf",0).show();
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.review_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        } else if (item.getItemId() == R.id.complete) {
+            String profStr = inputProf.getText().toString().trim();
+            if (difcCnt > 0 && asignCnt > 0 && atendCnt > 0 && gradeCnt > 0 && achivCnt > 0 && !profStr.equals("")) {
+                rVo.setDifc(difcCnt);
+                rVo.setAsign(asignCnt);
+                rVo.setAtend(atendCnt);
+                rVo.setGrade(gradeCnt);
+                rVo.setAchiv(achivCnt);
+                profName = profStr;
+               new InsertReview().execute();
             } else {
                 new MaterialDialog.Builder(RvEditActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))
-                        .content("수강리뷰를 다 작성하시지 않았습니다.\n모든 항목을 작성하셔야 수강리뷰 등록이 됩니다.")
+                        .content("강의평가를 다 작성하시지 않았습니다.\n모든 항목을 작성하셔야 수강리뷰 등록이 됩니다.")
                         .contentColor(getResources().getColor(R.color.text_lgray))
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
@@ -261,6 +327,27 @@ public class RvEditActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        new MaterialDialog.Builder(RvEditActivity.this)
+                .backgroundColor(getResources().getColor(R.color.white))
+                .content("강의평가 작성을 취소하시겠습니까 ")
+                .contentColor(getResources().getColor(R.color.text_lgray))
+                .positiveText("확인")
+                .positiveColor(getResources().getColor(R.color.colorPrimary))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        finish();
+                    }
+                })
+                .negativeText("취소")
+                .cancelable(false)
+                .show();
+    }
+
+
 
     @Override
     public void finish() {
