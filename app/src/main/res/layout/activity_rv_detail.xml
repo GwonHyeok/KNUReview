@@ -12,17 +12,19 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="난이도: "
+                android:text="난이도"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
@@ -38,19 +40,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/rowColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="과제량: "
+                android:text="과제량"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
@@ -66,19 +68,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/rowColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="출석체크: "
+                android:text="출석체크"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
@@ -94,19 +96,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/rowColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="학점: "
+                android:text="학점"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
@@ -122,19 +124,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/rowColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="성취감: "
+                android:text="성취감"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
@@ -149,10 +151,10 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/inputEdit"
+        android:id="@+id/inputReview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="14dp"
+        android:layout_margin="16dp"
         android:background="@drawable/auto_edit_box"
         android:gravity="left"
         android:hint="이 강의는 어떠셨나요?\n(욕설과 비방이 담긴 글은 자제 부탁드립니다.)"

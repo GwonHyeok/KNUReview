@@ -1,5 +1,7 @@
 package dev.knureview.Activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,6 +26,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.knureview.Adapter.SimeListViewAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
@@ -35,16 +40,17 @@ import dev.knureview.VO.ReviewVO;
  * Created by DavidHa on 2016. 1. 7..
  */
 public class RvEditActivity extends ActionBarActivity {
+    public static Activity activity;
+    @Bind(R.id.inputSbj) EditText inputSbj;
+    @Bind(R.id.inputProf) EditText inputProf;
+    @Bind(R.id.difcRating) RatingBar difcRating;
+    @Bind(R.id.asignRating) RatingBar asignRating;
+    @Bind(R.id.atendRating) RatingBar atendRating;
+    @Bind(R.id.gradeRating) RatingBar gradeRating;
+    @Bind(R.id.achivRating) RatingBar achivRating;
+    @Bind(R.id.profList) ListView profListView;
 
-    private EditText inputSbj;
-    private EditText inputProf;
-    private RatingBar difcRating;
-    private RatingBar asignRating;
-    private RatingBar atendRating;
-    private RatingBar gradeRating;
-    private RatingBar achivRating;
-    private ListView profListView;
-
+    private MaterialDialog progressDialog;
     private SimeListViewAdapter profAdapter;
     private ArrayList<String> profStrArray;
     private ReviewVO rVo;
@@ -62,15 +68,8 @@ public class RvEditActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rv_edit);
 
-        inputSbj = (EditText) findViewById(R.id.inputSbj);
-        inputProf = (EditText) findViewById(R.id.inputProf);
-        difcRating = (RatingBar) findViewById(R.id.difcRating);
-        asignRating = (RatingBar) findViewById(R.id.asignRating);
-        atendRating = (RatingBar) findViewById(R.id.atendRating);
-        gradeRating = (RatingBar) findViewById(R.id.gradeRating);
-        achivRating = (RatingBar) findViewById(R.id.achivRating);
-
-        profListView = (ListView) findViewById(R.id.profList);
+        ButterKnife.bind(this);
+        //setOnListener
         profListView.setOnItemClickListener(profItemClickListener);
         inputProf.addTextChangedListener(profTextWatcher);
         difcRating.setOnRatingBarChangeListener(ratingListener);
@@ -93,6 +92,8 @@ public class RvEditActivity extends ActionBarActivity {
         Intent intent = getIntent();
         sbjName = intent.getStringExtra("sbjName");
         inputSbj.setText(sbjName);
+
+        activity = RvEditActivity.this;
         new ProfInfo().execute();
 
     }
@@ -134,6 +135,8 @@ public class RvEditActivity extends ActionBarActivity {
     AdapterView.OnItemClickListener profItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(inputProf.getWindowToken(),0);
             inputProf.setText(profAdapter.getItemList().get(position));
             inputProf.setSelection(inputProf.getText().length());
             setRefreshAdapter(profAdapter, profListView, "", true);
@@ -220,6 +223,18 @@ public class RvEditActivity extends ActionBarActivity {
 
     private class InsertReview extends AsyncTask<Void, Void, String>{
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new MaterialDialog.Builder(RvEditActivity.this)
+                    .backgroundColor(getResources().getColor(R.color.white))
+                    .content("잠시만 기다려주세요.")
+                    .contentColor(getResources().getColor(R.color.text_lgray))
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+        }
+
+        @Override
         protected String doInBackground(Void... params) {
             try{
                 return new NetworkUtil().insertReview(rVo, sbjName, profName);
@@ -232,6 +247,7 @@ public class RvEditActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            progressDialog.dismiss();
             if(result.equals("success")){
                 new MaterialDialog.Builder(RvEditActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))

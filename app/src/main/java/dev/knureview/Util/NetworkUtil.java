@@ -251,9 +251,10 @@ public class NetworkUtil {
         return mainObject.get("result").toString();
     }
 
-    public boolean insertReviewDetail(String description) throws Exception {
+    public boolean insertReviewDetail(String description, int rNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertRvDetail.jsp";
-        query = "description" + "=" + URLEncoder.encode(description, "UTF-8");
+        query = "description" + "=" + URLEncoder.encode(description, "UTF-8")
+                + "&" + "rNo" + "=" + rNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         if (mainObject.get("result").toString().equals("success")) {
@@ -262,17 +263,33 @@ public class NetworkUtil {
         return false;
     }
 
-    public ReviewVO getOneReview(String stdNo, int sbjNo, int profNo) throws Exception{
+    public ReviewVO getOneReview(String stdNo, String sbjName) throws Exception {
         ReviewVO vo = new ReviewVO();
         url = "http://kureview.cafe24.com/mobileGetOneReview.jsp";
+        sbjName = sbjName.replace('&', '0');
         query = "stdNo" + "=" + stdNo
-                +"&" +"sbjNo" +"=" +sbjNo
-                +"&" +"profNo" +"=" +profNo;
+                + "&" + "sbjName" + "=" + sbjName;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
-        JSONObject object =(JSONObject) mainObject.get("review");
-
+        JSONObject object = (JSONObject) mainObject.get("review");
+        vo.setrNo(Integer.parseInt(object.get("rNo").toString()));
+        vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+        vo.setDescription(object.get("description").toString());
+        vo.setDifc(Integer.parseInt(object.get("difc").toString()));
+        vo.setAsign(Integer.parseInt(object.get("asign").toString()));
+        vo.setAtend(Integer.parseInt(object.get("atend").toString()));
+        vo.setGrade(Integer.parseInt(object.get("grade").toString()));
+        vo.setAchiv(Integer.parseInt(object.get("achiv").toString()));
+        vo.setSbjNo(Integer.parseInt(object.get("sbjNo").toString()));
+        vo.setProfNo(Integer.parseInt(object.get("profNo").toString()));
         return vo;
+    }
+
+    public ArrayList<ReviewVO> getMyReviewList(String stdNo) throws Exception{
+        ArrayList<ReviewVO> reviewList = new ArrayList<>();
+        url = "http://kureview.cafe24.com/mobileReviewList.jsp";
+        query = "stdNo" + "=" + stdNo;
+        return reviewList;
     }
 
     //소곤소곤

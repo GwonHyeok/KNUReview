@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.knureview.Adapter.SimeListViewAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
@@ -29,12 +31,12 @@ import dev.knureview.VO.LectureVO;
  * Created by DavidHa on 2016. 1. 10..
  */
 public class RvSbjActivity extends ActionBarActivity {
-    private EditText inputYear;
-    private ImageView yearImage;
-    private ListView yearListView;
-    private ListView sbjListView;
-    private TextView termTxt;
-    private TextView alarmTxt;
+    @Bind(R.id.inputYear) EditText inputYear;
+    @Bind(R.id.yearImage) ImageView yearImage;
+    @Bind(R.id.yearList) ListView yearListView;
+    @Bind(R.id.sbjList) ListView sbjListView;
+    @Bind(R.id.termTxt) TextView termTxt;
+    @Bind(R.id.alarmTxt) TextView alarmTxt;
 
     private SimeListViewAdapter yearAdapter;
     private SimeListViewAdapter sbjAdapter;
@@ -50,13 +52,7 @@ public class RvSbjActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rv_subject);
 
-        inputYear = (EditText) findViewById(R.id.inputYear);
-        yearImage = (ImageView) findViewById(R.id.yearImage);
-        yearListView = (ListView) findViewById(R.id.yearList);
-        sbjListView = (ListView) findViewById(R.id.sbjList);
-        termTxt = (TextView) findViewById(R.id.termTxt);
-        alarmTxt = (TextView) findViewById(R.id.alarmTxt);
-
+        ButterKnife.bind(this);
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -186,6 +182,7 @@ public class RvSbjActivity extends ActionBarActivity {
             sbjListView.setAdapter(sbjAdapter);
             if (!yearStr.equals("")) {
                 refresh(yearStr);
+                alarmTxt.setVisibility(View.INVISIBLE);
             }
         }
     }
