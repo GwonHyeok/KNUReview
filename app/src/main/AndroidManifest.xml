@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,42 +27,65 @@
         </activity>
         <activity
             android:name=".Activity.LoginActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait"/>
+        <!--수강리뷰-->
         <activity
             android:name=".Activity.MainActivity"
-            android:label="수강리뷰" />
+            android:label="수강리뷰"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.RvSbjActivity"
-            android:label="과목선택"/>
+            android:label="과목선택"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.RvEditActivity"
-            android:label="강의평가"/>
-        <activity android:name=".Activity.ReviewActivity"/>
-        <activity android:name=".Activity.SearchActivity" />
+            android:label="강의평가"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ReviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.SearchActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.SubjectActivity"
-            android:label="과목검색"/>
-        <activity android:name=".Activity.RvDetailActivity"/>
+            android:label="과목검색"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.RvDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ProfileDetail.MyReviewActivity"
+            android:label="내강의평"
+            android:screenOrientation="portrait"/>
         <!-- 소곤소곤 -->
         <activity
             android:name=".Activity.MyProfileActivity"
-            android:label="내 프로필" />
+            android:label="내 프로필"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.ProfileDetail.VersionActivity"
-            android:label="버전정보" />
+            android:label="버전정보"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.StoryActivity"
-            android:label="소곤소곤" />
+            android:label="소곤소곤"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.AlarmActivity"
-            android:label="알림"/>
-        <activity android:name=".Activity.StDetailActivity" />
-        <activity android:name=".Activity.StEditActivity" />
-        <activity android:name=".Activity.StConfirmActivity" />
+            android:label="알림"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.StDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.StEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.StConfirmActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ProfileDetail.MyStoryActivity"
-            android:label="내이야기"/>
+            android:label="내이야기"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ProfileDetail.ContactActivity"
-            android:label="문의하기"/>
+            android:label="문의하기"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ProfileDetail.TicketActivity"
-            android:label="소곤소곤 티켓"/>
+            android:label="소곤소곤 티켓"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ProfileDetail.AlarmSetting"
-            android:label="알림 설정"/>
+            android:label="알림 설정"
+            android:screenOrientation="portrait"/>
 
         <!-- [START gcm_receiver] -->
         <receiver

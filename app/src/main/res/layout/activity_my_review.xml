@@ -6,11 +6,11 @@
 
     <include layout="@layout/layout_tool_bar" />
     <TextView
-        android:id="@+id/totalSubject"
+        android:id="@+id/totalReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="총 0개의 과목이 있습니다."
+        android:text="총 0개의 리뷰가 있습니다."
         android:background="@color/black_40"
         android:textSize="12dp"
         android:textColor="@color/black"

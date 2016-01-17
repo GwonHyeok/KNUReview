@@ -26,6 +26,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Random;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dev.knureview.R;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -35,18 +37,17 @@ import dev.knureview.Util.SharedPreferencesActivity;
  */
 public class StEditActivity extends Activity {
     public static Activity activity;
-    private EditText inputEdit;
     private String description;
-
     private boolean isComment = false;
     private int tNo;
-    private ImageView blurImage;
-    private ImageView cardImage;
     private Bitmap blurBitmap;
-    private CircleImageView preImg1;
-    private CircleImageView preImg2;
-    private CircleImageView preImg3;
-    private ImageView diceBtn;
+    @Bind(R.id.inputEdit) EditText inputEdit;
+    @Bind(R.id.blurImage) ImageView blurImage;
+    @Bind(R.id.cardImage) ImageView cardImage;
+    @Bind(R.id.preImg1) CircleImageView preImg1;
+    @Bind(R.id.preImg2) CircleImageView preImg2;
+    @Bind(R.id.preImg3) CircleImageView preImg3;
+    @Bind(R.id.diceBtn) ImageView diceBtn;
 
     private int[] randomArray;
     private int currentImage;
@@ -61,16 +62,9 @@ public class StEditActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_edit);
+        ButterKnife.bind(this);
 
         activity = StEditActivity.this;
-
-        inputEdit = (EditText) findViewById(R.id.inputEdit);
-        blurImage = (ImageView) findViewById(R.id.blurImage);
-        cardImage = (ImageView) findViewById(R.id.cardImage);
-        preImg1 = (CircleImageView) findViewById(R.id.preImg1);
-        preImg2 = (CircleImageView) findViewById(R.id.preImg2);
-        preImg3 = (CircleImageView) findViewById(R.id.preImg3);
-        diceBtn = (ImageView) findViewById(R.id.diceBtn);
 
         //intent
         Intent intent = getIntent();
@@ -82,7 +76,7 @@ public class StEditActivity extends Activity {
 
         //pref
         SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
-        pictureCnt =pref.getPreferences("pictureCnt",0);
+        pictureCnt = pref.getPreferences("pictureCnt", 0);
 
         //random
         randomArray = new int[3];
@@ -200,7 +194,7 @@ public class StEditActivity extends Activity {
 
     public void mOnClick(View view) {
         if (view.getId() == R.id.nextBtn) {
-            if (!inputEdit.getText().toString().equals("")) {
+            if (!inputEdit.getText().toString().trim().equals("")) {
                 Intent intent = new Intent(StEditActivity.this, StConfirmActivity.class);
                 intent.putExtra("pictureURL", "sample" + currentImage + ".jpg");
                 intent.putExtra("description", description);
@@ -255,7 +249,7 @@ public class StEditActivity extends Activity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            description = s.toString();
+            description = s.toString().trim();
         }
 
         @Override

@@ -285,12 +285,33 @@ public class NetworkUtil {
         return vo;
     }
 
-    public ArrayList<ReviewVO> getMyReviewList(String stdNo) throws Exception{
+    public ArrayList<ReviewVO> getReviewList(String stdNo) throws Exception{
         ArrayList<ReviewVO> reviewList = new ArrayList<>();
         url = "http://kureview.cafe24.com/mobileReviewList.jsp";
         query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray reviewArray = (JSONArray) mainObject.get("reviewList");
+        for(int i=0; i<reviewArray.size(); i++){
+            JSONObject object = (JSONObject)reviewArray.get(i);
+            ReviewVO vo = new ReviewVO();
+            vo.setrNo(Integer.parseInt(object.get("rNo").toString()));
+            vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+            vo.setDescription(object.get("description").toString());
+            vo.setDifc(Integer.parseInt(object.get("difc").toString()));
+            vo.setAsign(Integer.parseInt(object.get("asign").toString()));
+            vo.setAtend(Integer.parseInt(object.get("atend").toString()));
+            vo.setGrade(Integer.parseInt(object.get("grade").toString()));
+            vo.setAchiv(Integer.parseInt(object.get("achiv").toString()));
+            vo.setSbjNo(Integer.parseInt(object.get("sbjNo").toString()));
+            vo.setProfNo(Integer.parseInt(object.get("profNo").toString()));
+            vo.setSbjName(object.get("sbjName").toString());
+            vo.setProfName(object.get("profName").toString());
+            reviewList.add(vo);
+        }
         return reviewList;
     }
+
 
     //소곤소곤
 
@@ -540,6 +561,7 @@ public class NetworkUtil {
     }
 
     //login Update
+
     public void insertLoginState(String stdNo) throws Exception {
         url = "http://kureview.cafe24.com/mobileInsertLogin.jsp";
         query = "stdNo" + "=" + stdNo;

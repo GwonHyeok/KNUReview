@@ -475,7 +475,7 @@ public class LoginActivity extends Activity {
         pref.savePreferences("pictureCnt", pictureCnt);
 
         //Main 페이지 이동
-        Intent intent = new Intent(LoginActivity.this, StoryActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();

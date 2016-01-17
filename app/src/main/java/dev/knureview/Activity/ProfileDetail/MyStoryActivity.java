@@ -49,7 +49,6 @@ public class MyStoryActivity extends ActionBarActivity {
         //pref
         SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
         stdNo = pref.getPreferences("stdNo","");
-        new MyTalkList().execute();
 
     }
 
@@ -93,6 +92,12 @@ public class MyStoryActivity extends ActionBarActivity {
             adapter.notifyDataSetChanged();
             listView.setSelection(listPosition);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MyTalkList().execute();
     }
 
     @Override

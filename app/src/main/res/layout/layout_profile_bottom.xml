@@ -142,7 +142,7 @@
             android:background="@color/rowColor" />
 
         <LinearLayout
-            android:id="@+id/courseReviewLayout"
+            android:id="@+id/myReviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/row_selector"

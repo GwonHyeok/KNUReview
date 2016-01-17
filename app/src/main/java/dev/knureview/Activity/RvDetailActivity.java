@@ -31,17 +31,19 @@ import dev.knureview.VO.ReviewVO;
 public class RvDetailActivity extends ActionBarActivity {
     private static final int ACCEPT = 1;
     private static final int DENIAL = 0;
-    @Bind(R.id.difcRating)RatingBar difcRating;
-    @Bind(R.id.asignRating)RatingBar asignRating;
-    @Bind(R.id.atendRating)RatingBar atendRating;
-    @Bind(R.id.gradeRating)RatingBar gradeRating;
-    @Bind(R.id.achivRating)RatingBar achivRating;
-    @Bind(R.id.inputReview)EditText inputReview;
-    @Bind(R.id.confirmButton)CircularProgressButton confirmBtn;
+    @Bind(R.id.difcRating) RatingBar difcRating;
+    @Bind(R.id.asignRating) RatingBar asignRating;
+    @Bind(R.id.atendRating) RatingBar atendRating;
+    @Bind(R.id.gradeRating) RatingBar gradeRating;
+    @Bind(R.id.achivRating) RatingBar achivRating;
+    @Bind(R.id.inputReview) EditText inputReview;
+    @Bind(R.id.confirmButton)
+    CircularProgressButton confirmBtn;
     public static Activity activity;
     private String sbjName;
     private String stdNo;
     private String inputReviewStr;
+    private boolean isEdit = false;
     private ReviewVO vo;
 
 
@@ -57,6 +59,11 @@ public class RvDetailActivity extends ActionBarActivity {
         //intent
         Intent intent = getIntent();
         sbjName = intent.getStringExtra("sbjName");
+        if (intent.getStringExtra("edit") != null) {
+            isEdit = true;
+        } else {
+            isEdit = false;
+        }
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,13 +74,24 @@ public class RvDetailActivity extends ActionBarActivity {
         activity = RvDetailActivity.this;
         new ReviewDetail().execute();
     }
-    public void mOnClick(View view){
-        if(view.getId() == R.id.confirmButton){
-            if(confirmBtn.getProgress() == 0) {
-                inputReviewStr=inputReview.getText().toString();
-                if(!inputReviewStr.equals("")) {
+
+    public void mOnClick(View view) {
+        if (view.getId() == R.id.confirmButton) {
+            if (confirmBtn.getProgress() == 0) {
+                inputReviewStr = inputReview.getText().toString().trim();
+                if (!inputReviewStr.equals("")) {
                     new InsertReviewDetail().execute();
-                }else{
+                }else if(inputReviewStr.length()>120){
+                    confirmBtn.setProgress(-1);
+                    new MaterialDialog.Builder(RvDetailActivity.this)
+                            .backgroundColor(getResources().getColor(R.color.white))
+                            .content("수강리뷰를 120자이내로 작성해주시길 바랍니다.")
+                            .contentColor(getResources().getColor(R.color.text_lgray))
+                            .positiveText("확인")
+                            .positiveColor(getResources().getColor(R.color.colorPrimary))
+                            .show();
+                }
+                else {
                     confirmBtn.setProgress(-1);
                     new MaterialDialog.Builder(RvDetailActivity.this)
                             .backgroundColor(getResources().getColor(R.color.white))
@@ -83,7 +101,7 @@ public class RvDetailActivity extends ActionBarActivity {
                             .positiveColor(getResources().getColor(R.color.colorPrimary))
                             .show();
                 }
-            }else if(confirmBtn.getProgress() == -1){
+            } else if (confirmBtn.getProgress() == -1) {
                 confirmBtn.setProgress(0);
             }
         }
@@ -105,6 +123,9 @@ public class RvDetailActivity extends ActionBarActivity {
         protected void onPostExecute(ReviewVO result) {
             super.onPostExecute(result);
             vo = result;
+            if (!result.getDescription().trim().equals("")) {
+                inputReview.setText(result.getDescription());
+            }
             difcRating.setRating(result.getDifc());
             asignRating.setRating(result.getAsign());
             atendRating.setRating(result.getAtend());
@@ -113,7 +134,7 @@ public class RvDetailActivity extends ActionBarActivity {
         }
     }
 
-    private class InsertReviewDetail extends AsyncTask<Void, Void, Boolean>{
+    private class InsertReviewDetail extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -122,9 +143,9 @@ public class RvDetailActivity extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            try{
+            try {
                 return new NetworkUtil().insertReviewDetail(inputReviewStr, vo.getrNo());
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -133,19 +154,23 @@ public class RvDetailActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if(result) {
+            if (result) {
                 confirmBtn.setProgress(100);
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
-                        Intent intent = new Intent(RvDetailActivity.this, RvSbjActivity.class);
-                        startActivity(intent);
-                        RvDetailActivity.activity.finish();
-                        RvEditActivity.activity.finish();
+                        if (isEdit) {
+                            finish();
+                        } else {
+                            Intent intent = new Intent(RvDetailActivity.this, RvSbjActivity.class);
+                            startActivity(intent);
+                            RvDetailActivity.activity.finish();
+                            RvEditActivity.activity.finish();
+                        }
                     }
                 }.sendEmptyMessageDelayed(0, 800);
-            }else{
+            } else {
                 confirmBtn.setProgress(-1);
             }
         }
@@ -169,8 +194,12 @@ public class RvDetailActivity extends ActionBarActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        RvDetailActivity.activity.finish();
-                        RvEditActivity.activity.finish();
+                        if (isEdit) {
+                            finish();
+                        } else {
+                            RvDetailActivity.activity.finish();
+                            RvEditActivity.activity.finish();
+                        }
                     }
                 })
                 .negativeText("취소")

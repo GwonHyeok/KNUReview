@@ -13,7 +13,9 @@ public class ReviewVO {
     private int grade;
     private int achiv;
     private int sbjNo;
+    private String sbjName;
     private int profNo;
+    private String profName;
 
     public int getrNo() {
         return rNo;
@@ -93,5 +95,21 @@ public class ReviewVO {
 
     public void setProfNo(int profNo) {
         this.profNo = profNo;
+    }
+
+    public String getSbjName() {
+        return sbjName;
+    }
+
+    public void setSbjName(String sbjName) {
+        this.sbjName = sbjName;
+    }
+
+    public String getProfName() {
+        return profName;
+    }
+
+    public void setProfName(String profName) {
+        this.profName = profName;
     }
 }

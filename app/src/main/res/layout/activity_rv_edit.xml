@@ -8,84 +8,89 @@
     <include layout="@layout/layout_tool_bar" />
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="14dp">
+
         <RelativeLayout
+            android:id="@+id/sbjLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp">
+
+            <EditText
+                android:id="@+id/inputSbj"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/auto_edit_box"
+                android:editable="false"
+                android:paddingBottom="8dp"
+                android:paddingLeft="42dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:singleLine="true"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/sbj_ic" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/profLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sbjLayout"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="14dp">
+
+            <EditText
+                android:id="@+id/inputProf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/auto_edit_box"
+                android:hint="담당교수"
+                android:paddingBottom="8dp"
+                android:paddingLeft="42dp"
+                android:paddingRight="28dp"
+                android:paddingTop="8dp"
+                android:singleLine="true"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/prof_ic" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/expand_arrow_ic" />
+        </RelativeLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="14dp">
+            android:layout_below="@id/profLayout">
 
-            <RelativeLayout
-                android:id="@+id/sbjLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp">
-
-                <EditText
-                    android:id="@+id/inputSbj"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/auto_edit_box"
-                    android:editable="false"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="42dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/sbj_ic" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/profLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sbjLayout"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="14dp">
-
-                <EditText
-                    android:id="@+id/inputProf"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/auto_edit_box"
-                    android:hint="담당교수"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="42dp"
-                    android:paddingRight="28dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="true"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/prof_ic" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/expand_arrow_ic" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/scoreLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profLayout"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="14dp"
@@ -104,11 +109,11 @@
                     android:id="@+id/difcHelp"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
+                    android:layout_above="@+id/difcRating"
                     android:layout_alignBottom="@id/difcTxt"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/difcTxt"
-                    android:layout_above="@+id/difcRating"
                     android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
@@ -136,9 +141,9 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/asignTxt"
-                    android:layout_marginTop="2dp"
                     android:layout_below="@id/difcRating"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="2dp"
                     android:layout_toRightOf="@id/asignTxt"
                     android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
@@ -167,10 +172,10 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/atendTxt"
-                    android:layout_marginTop="2dp"
+                    android:layout_below="@id/asignRating"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="2dp"
                     android:layout_toRightOf="@id/atendTxt"
-                   android:layout_below="@id/asignRating"
                     android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
@@ -198,10 +203,10 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/gradeTxt"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@id/gradeTxt"
                     android:layout_below="@id/atendRating"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@id/gradeTxt"
                     android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
@@ -230,10 +235,10 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_alignBottom="@id/achivTxt"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@id/achivTxt"
                     android:layout_below="@id/gradeRating"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_toRightOf="@id/achivTxt"
                     android:onClick="mOnClick"
                     android:src="@drawable/help_ic" />
 
@@ -248,16 +253,17 @@
                     android:stepSize="1" />
 
             </RelativeLayout>
+        </ScrollView>
 
-            <ListView
-                android:id="@+id/profList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/profLayout"
-                android:layout_alignRight="@id/profLayout"
-                android:layout_below="@id/profLayout"
-                android:layout_marginLeft="42dp"
-                android:background="@color/white"
-                android:elevation="2dp" />
-        </RelativeLayout>
+        <ListView
+            android:id="@+id/profList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/profLayout"
+            android:layout_alignRight="@id/profLayout"
+            android:layout_below="@id/profLayout"
+            android:layout_marginLeft="42dp"
+            android:background="@color/white"
+            android:elevation="2dp" />
+    </RelativeLayout>
 </LinearLayout>

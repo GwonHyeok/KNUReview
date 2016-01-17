@@ -22,14 +22,16 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.knureview.Activity.ProfileDetail.AlarmSetting;
 import dev.knureview.Activity.ProfileDetail.ContactActivity;
+import dev.knureview.Activity.ProfileDetail.MyReviewActivity;
 import dev.knureview.Activity.ProfileDetail.MyStoryActivity;
 import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.ProfileDetail.VersionActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.R;
-import dev.knureview.Util.AES256Util;
 import dev.knureview.Util.BackPressCloseHandler;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -54,17 +56,16 @@ public class MyProfileActivity extends ActionBarActivity {
     private TextView headerTxt;
     private TextView bottomTxt;
 
-    private ImageView backgroundImg;
-
-    private TextView stdNoTxt;
-    private TextView belongTxt;
-    private TextView majorTxt;
-    private TextView reviewCntTxt;
-    private TextView reviewAuthTxt;
-    private TextView talkCntTxt;
-    private TextView talkWarningTxt;
-    private TextView talkTicketTxt;
-    private TextView pushAlarmTxt;
+    @Bind(R.id.cardImage) ImageView backgroundImg;
+    @Bind(R.id.stdNo) TextView stdNoTxt;
+    @Bind(R.id.belong) TextView belongTxt;
+    @Bind(R.id.major) TextView majorTxt;
+    @Bind(R.id.reviewCnt) TextView reviewCntTxt;
+    @Bind(R.id.reviewAuth) TextView reviewAuthTxt;
+    @Bind(R.id.talkCnt) TextView talkCntTxt;
+    @Bind(R.id.talkWarning) TextView talkWarningTxt;
+    @Bind(R.id.talkTicket) TextView talkTicketTxt;
+    @Bind(R.id.pushAlarmTxt) TextView pushAlarmTxt;
 
     private SharedPreferencesActivity pref;
     private String stdNo;
@@ -80,6 +81,8 @@ public class MyProfileActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ButterKnife.bind(this);
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -116,17 +119,6 @@ public class MyProfileActivity extends ActionBarActivity {
         belong = pref.getPreferences("belong", "");
         major = pref.getPreferences("major", "");
         getTicket = pref.getPreferences(EASTER_EGG, false);
-
-        backgroundImg = (ImageView) findViewById(R.id.cardImage);
-        stdNoTxt = (TextView) findViewById(R.id.stdNo);
-        belongTxt = (TextView) findViewById(R.id.belong);
-        majorTxt = (TextView) findViewById(R.id.major);
-        reviewCntTxt = (TextView) findViewById(R.id.reviewCnt);
-        reviewAuthTxt = (TextView) findViewById(R.id.reviewAuth);
-        talkCntTxt = (TextView) findViewById(R.id.talkCnt);
-        talkWarningTxt = (TextView) findViewById(R.id.talkWarning);
-        talkTicketTxt = (TextView) findViewById(R.id.talkTicket);
-        pushAlarmTxt = (TextView) findViewById(R.id.pushAlarmTxt);
 
         stdNoTxt.setText(stdNo);
         belongTxt.setText(belong);
@@ -188,8 +180,10 @@ public class MyProfileActivity extends ActionBarActivity {
             Intent intent = new Intent(this, AlarmSetting.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
-        } else if (view.getId() == R.id.courseReviewLayout) {
-
+        } else if (view.getId() == R.id.myReviewLayout) {
+            Intent intent = new Intent(this, MyReviewActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         } else if (view.getId() == R.id.myStoryLayout) {
             Intent intent = new Intent(MyProfileActivity.this, MyStoryActivity.class);
             startActivity(intent);
