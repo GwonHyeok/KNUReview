@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dev.knureview.Activity.RvDetailActivity;
-import dev.knureview.Adapter.RvPreviewAdapter;
+import dev.knureview.Adapter.ReviewAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -30,7 +30,7 @@ public class MyReviewActivity extends ActionBarActivity {
     @Bind(R.id.listView) ListView listView;
     @Bind(R.id.totalReview) TextView totalReviewTxt;
     private ArrayList<ReviewVO> rvList;
-    private RvPreviewAdapter adapter;
+    private ReviewAdapter adapter;
     private String stdNo;
 
     @Override
@@ -79,7 +79,7 @@ public class MyReviewActivity extends ActionBarActivity {
             super.onPostExecute(result);
             rvList = result;
             totalReviewTxt.setText("총 " + result.size() + "개의 리뷰가 있습니다.");
-            adapter = new RvPreviewAdapter(MyReviewActivity.this,
+            adapter = new ReviewAdapter(MyReviewActivity.this,
                     R.layout.layout_my_review_list_row, result);
             listView.setAdapter(adapter);
         }

@@ -33,9 +33,9 @@ public class NetworkUtil {
     private Cookie cookie;
 
     //학교 서버에서 쿠키값 가져오기
-    public Cookie loginSchoolServer(String id, String pw) {
+    public Cookie loginSchoolServer(String id, String pw) throws Exception{
         url = "https://m.kangnam.ac.kr/knusmart/c/c001.do?";
-        query = "user_id" + "=" + id + "&" + "user_pwd" + "=" + pw;
+        query = "user_id" + "=" + id + "&" + "user_pwd" + "=" + URLEncoder.encode(pw,"UTF-8");
         return getCookie(url, query);
     }
 
@@ -289,6 +289,33 @@ public class NetworkUtil {
         ArrayList<ReviewVO> reviewList = new ArrayList<>();
         url = "http://kureview.cafe24.com/mobileReviewList.jsp";
         query = "stdNo" + "=" + stdNo;
+        String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray reviewArray = (JSONArray) mainObject.get("reviewList");
+        for(int i=0; i<reviewArray.size(); i++){
+            JSONObject object = (JSONObject)reviewArray.get(i);
+            ReviewVO vo = new ReviewVO();
+            vo.setrNo(Integer.parseInt(object.get("rNo").toString()));
+            vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
+            vo.setDescription(object.get("description").toString());
+            vo.setDifc(Integer.parseInt(object.get("difc").toString()));
+            vo.setAsign(Integer.parseInt(object.get("asign").toString()));
+            vo.setAtend(Integer.parseInt(object.get("atend").toString()));
+            vo.setGrade(Integer.parseInt(object.get("grade").toString()));
+            vo.setAchiv(Integer.parseInt(object.get("achiv").toString()));
+            vo.setSbjNo(Integer.parseInt(object.get("sbjNo").toString()));
+            vo.setProfNo(Integer.parseInt(object.get("profNo").toString()));
+            vo.setSbjName(object.get("sbjName").toString());
+            vo.setProfName(object.get("profName").toString());
+            reviewList.add(vo);
+        }
+        return reviewList;
+    }
+
+    public ArrayList<ReviewVO> getReviewListFromSbj(int sbjNo) throws Exception{
+        ArrayList<ReviewVO> reviewList = new ArrayList<>();
+        url = "http://kureview.cafe24.com/mobileGetReviewFromSbj.jsp";
+        query = "sbjNo" + "=" + sbjNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         JSONArray reviewArray = (JSONArray) mainObject.get("reviewList");

@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import dev.knureview.Adapter.SimeListViewAdapter;
+import dev.knureview.Adapter.SimpleListViewAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.PixelUtil;
@@ -51,7 +50,7 @@ public class RvEditActivity extends ActionBarActivity {
     @Bind(R.id.profList) ListView profListView;
 
     private MaterialDialog progressDialog;
-    private SimeListViewAdapter profAdapter;
+    private SimpleListViewAdapter profAdapter;
     private ArrayList<String> profStrArray;
     private ReviewVO rVo;
     private String stdNo;
@@ -180,7 +179,7 @@ public class RvEditActivity extends ActionBarActivity {
     }
 
 
-    public void setRefreshAdapter(SimeListViewAdapter adapter, ListView listView, String str, boolean isAuto) {
+    public void setRefreshAdapter(SimpleListViewAdapter adapter, ListView listView, String str, boolean isAuto) {
         final int LIST_VIEW_MAX_HEIGHT = (int) PixelUtil.convertPixelsToDp(285, this);
         if (isAuto) {
             adapter.autoComplete(str);
@@ -215,7 +214,7 @@ public class RvEditActivity extends ActionBarActivity {
             for (int i = 0; i < result.size(); i++) {
                 profStrArray.add(result.get(i).getpName());
             }
-            profAdapter = new SimeListViewAdapter(RvEditActivity.this,
+            profAdapter = new SimpleListViewAdapter(RvEditActivity.this,
                     R.layout.layout_auto_list_row, profStrArray);
             profListView.setAdapter(profAdapter);
         }

@@ -18,7 +18,7 @@ import dev.knureview.VO.ReviewVO;
 /**
  * Created by DavidHa on 2016. 1. 17..
  */
-public class RvPreviewAdapter extends ArrayAdapter<ReviewVO> {
+public class ReviewAdapter extends ArrayAdapter<ReviewVO> {
 
     private Activity activity;
     private int layot;
@@ -41,7 +41,7 @@ public class RvPreviewAdapter extends ArrayAdapter<ReviewVO> {
 
     }
 
-    public RvPreviewAdapter(Activity activity, int layout, ArrayList<ReviewVO> list){
+    public ReviewAdapter(Activity activity, int layout, ArrayList<ReviewVO> list){
         super(activity, layout, list);
         this.activity = activity;
         this.layot = layout;

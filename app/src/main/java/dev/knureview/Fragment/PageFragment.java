@@ -42,30 +42,32 @@ public class PageFragment extends android.support.v4.app.Fragment {
         final TreeNode root = TreeNode.root();
 
         TreeNode cNode1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "교양선택")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "인문대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "국제학대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode4 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "중국학대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode5 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사범대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode6 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회과학대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode7 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회복지대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode8 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "경영대학")).setViewHolder(new CollegeHolder(getActivity()));
-        TreeNode cNode9 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "공과대학")).setViewHolder(new CollegeHolder(getActivity()));
-        //TreeNode cNode10 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "예·체능대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "부총장직속학부")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "인문대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode4 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "국제학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode5 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "중국학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode6 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사범대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode7 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회과학대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode8 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "사회복지대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode9 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "경영대학")).setViewHolder(new CollegeHolder(getActivity()));
+        TreeNode cNode10 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "공과대학")).setViewHolder(new CollegeHolder(getActivity()));
+        //TreeNode cNode11 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "예·체능대학")).setViewHolder(new CollegeHolder(getActivity()));
 
         addCollegeOfCulture(cNode1);
-        addCollegeOfHumanities(cNode2);
-        addCollegeOfInternationalStudies(cNode3);
-        addCollegeOfSinology(cNode4);
-        addCollegeOfEducation(cNode5);
-        addCollegeOfSocialScience(cNode6);
-        addCollegeOfSocialWelfare(cNode7);
-        addCollegeOfManagement(cNode8);
-        addCollegeOfTech(cNode9);
-        //addCollegeOfArtsAndPhysical(cNode10);
+        addCollegeOfViceChancellor(cNode2);
+        addCollegeOfHumanities(cNode3);
+        addCollegeOfInternationalStudies(cNode4);
+        addCollegeOfSinology(cNode5);
+        addCollegeOfEducation(cNode6);
+        addCollegeOfSocialScience(cNode7);
+        addCollegeOfSocialWelfare(cNode8);
+        addCollegeOfManagement(cNode9);
+        addCollegeOfTech(cNode10);
+        //addCollegeOfArtsAndPhysical(cNode11);
 
 
-        root.addChildren(cNode1, cNode2, cNode3, cNode4, cNode5,
-                cNode6, cNode7, cNode8, cNode9);
+        root.addChildren(cNode1, cNode2, cNode3, cNode4, cNode5, cNode6,
+                cNode7, cNode8, cNode9, cNode10);
 
         tView = new AndroidTreeView(getActivity(), root);
         tView.setDefaultAnimation(true);
@@ -91,6 +93,27 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DepartmentHolder(getActivity()));
         addCultureData(childNode1);
         addFirstGradeCultureData(childNode2);
+        parentNode.addChildren(childNode1, childNode2);
+    }
+
+    //부총장직속학부
+    private void addCollegeOfViceChancellor(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark, "실버산업학부"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        addDetailOfSilverIndustry(childNode1);
+        parentNode.addChildren(childNode1);
+    }
+
+    private void addDetailOfSilverIndustry(TreeNode parentNode) {
+        TreeNode childNode1 = new TreeNode(new DetailViewHolder.DetailViewItem("1학년", "(실버산업학부)"))
+                .setViewHolder(new DetailViewHolder(getActivity()));
+
+        TreeNode childNode2 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "실버산업학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+
+        addGradeData(childNode2, "(실버산업학전공)", 1);
         parentNode.addChildren(childNode1, childNode2);
     }
 
@@ -167,11 +190,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "초등특수교육"))
+                .IconTreeItem(R.string.ic_bookmark_outline, "초등특수교육과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         TreeNode childNode4 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "중등특수교육"))
+                .IconTreeItem(R.string.ic_bookmark_outline, "중등특수교육과"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         addGradeData(childNode1, "(교육학과)");
@@ -248,7 +271,7 @@ public class PageFragment extends android.support.v4.app.Fragment {
     private void addCollegeOfManagement(TreeNode parentNode) {
 
         TreeNode childNode1 = new TreeNode(new IconTreeItemHolder
-                .IconTreeItem(R.string.ic_bookmark_outline, "경영학부"))
+                .IconTreeItem(R.string.ic_bookmark, "경영학부"))
                 .setViewHolder(new DepartmentHolder(getActivity()));
 
         addDetailOfManagement(childNode1);
@@ -261,8 +284,11 @@ public class PageFragment extends android.support.v4.app.Fragment {
                 .setViewHolder(new DetailViewHolder(getActivity()));
         TreeNode childNode2 = new TreeNode(new DetailViewHolder.DetailViewItem("2학년", "(경영학부)"))
                 .setViewHolder(new DetailViewHolder(getActivity()));
-        parentNode.addChildren(childNode1, childNode2);
-        addGradeData(parentNode, "(경영학전공)", 2);
+        TreeNode childNode3 = new TreeNode(new IconTreeItemHolder
+                .IconTreeItem(R.string.ic_bookmark_outline, "경영학전공"))
+                .setViewHolder(new DepartmentHolder(getActivity()));
+        addGradeData(childNode3, "(경영학전공)", 2);
+        parentNode.addChildren(childNode1, childNode2, childNode3);
     }
 
     //공과대학
@@ -432,10 +458,10 @@ public class PageFragment extends android.support.v4.app.Fragment {
                     intent.putExtra("term", selectedTerm);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
-                }else{
+                } else {
                     new MaterialDialog.Builder(getContext())
                             .backgroundColor(getResources().getColor(R.color.white))
-                            .content("현재 "+selectedTerm+"학기의 수강리뷰를 조회하실 수 없습니다.")
+                            .content("현재 " + selectedTerm + "학기의 수강리뷰를 조회하실 수 없습니다.")
                             .contentColor(getResources().getColor(R.color.text_lgray))
                             .positiveText("확인")
                             .positiveColor(getResources().getColor(R.color.colorPrimary))

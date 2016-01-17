@@ -18,7 +18,7 @@ import dev.knureview.VO.LectureVO;
 /**
  * Created by DavidHa on 2016. 1. 9..
  */
-public class SimeListViewAdapter extends BaseAdapter {
+public class SimpleListViewAdapter extends BaseAdapter {
     private Activity activity;
     private int layout;
     private ArrayList<LectureVO> lectList;
@@ -29,7 +29,7 @@ public class SimeListViewAdapter extends BaseAdapter {
         private TextView rowTxt;
     }
 
-    public SimeListViewAdapter(Activity activity, int layout, ArrayList<String> list) {
+    public SimpleListViewAdapter(Activity activity, int layout, ArrayList<String> list) {
         this.activity = activity;
         this.layout = layout;
         this.list = list;

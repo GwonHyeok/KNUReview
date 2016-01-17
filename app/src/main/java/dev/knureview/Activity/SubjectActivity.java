@@ -72,7 +72,7 @@ public class SubjectActivity extends ActionBarActivity {
             }else{
                 new MaterialDialog.Builder(SubjectActivity.this)
                         .backgroundColor(getResources().getColor(R.color.white))
-                        .content("수강리뷰를 볼 수 있는 권한이 없습니다.\n수강리뷰를 5개 이상 등록하셔야만 수강리뷰를 볼 수 있습니다.\n정식 오픈은 1월 19일부터 시작됩니다.")
+                        .content("수강리뷰를 볼 수 있는 권한이 없습니다.\n수강리뷰를 5개 이상 등록하셔야만 수강리뷰를 볼 수 있습니다.")
                         .contentColor(getResources().getColor(R.color.text_lgray))
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))

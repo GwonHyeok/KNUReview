@@ -51,12 +51,19 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
         gradePosition[0] = 0;
         int cnt = 1;
         int position = 0;
-        if (deptName.contains("전공")) {
+        if (deptName.contains("전공") &&(!deptName.equals("실버산업학전공"))) {
+            //3학년부터 시작
             dPositionHashMap.put(0, "3학년");
             cnt = 3;
             position = -1;
-        } else if (deptName.contains("학과") || deptName.contains("학부")) {
+        } else if (deptName.contains("과") || deptName.contains("학부")) {
+            //1학년부터 시작
             dPositionHashMap.put(0, "1학년");
+        }else if(deptName.equals("실버산업학전공")){
+            dPositionHashMap.put(0, "2학년");
+            //2학년부터 시작
+            cnt=2;
+            position = -1;
         }
 
         for (int i = 0; i < sbjList.size() - 1; i++) {
@@ -66,6 +73,7 @@ public class SubjectAdapter extends ArrayAdapter<SubjectVO> {
                 dPositionHashMap.put(i + 1, cnt + "학년");
             }
         }
+        gradePosition[1] += position;
         gradePosition[2] += position;
 
 

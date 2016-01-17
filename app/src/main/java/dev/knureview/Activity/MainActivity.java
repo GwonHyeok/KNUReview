@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.support.v4.view.ViewPager;
@@ -31,6 +32,9 @@ import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
+import dev.knureview.Util.NetworkUtil;
+import dev.knureview.Util.SharedPreferencesActivity;
+import dev.knureview.VO.StudentVO;
 
 public class MainActivity extends ActionBarActivity {
     private static final int CUR_POSITION = 0;
@@ -42,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
     private Typeface nanumFont;
     private TextView headerTxt;
     private TextView bottomTxt;
+    private String stdNo;
+    private SharedPreferencesActivity pref;
     private BackPressCloseHandler backPressCloseHandler;
 
     @Override
@@ -53,6 +59,10 @@ public class MainActivity extends ActionBarActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //pref
+        pref = new SharedPreferencesActivity(this);
+        stdNo = pref.getPreferences("stdNo","");
 
 
         //toggle
@@ -122,6 +132,31 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MemberInfo().execute();
+    }
+
+    private class MemberInfo extends AsyncTask<Void, Void, StudentVO> {
+        @Override
+        protected StudentVO doInBackground(Void... params) {
+            try {
+                return new NetworkUtil().getExistMemberInfo(stdNo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StudentVO vo) {
+            super.onPostExecute(vo);
+            // initialize reviewAuth
+            pref.savePreferences("reviewAuth", vo.getReviewAuth());
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

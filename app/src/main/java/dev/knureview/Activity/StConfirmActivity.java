@@ -33,11 +33,12 @@ import dev.knureview.Util.TalkTextUtil;
 public class StConfirmActivity extends Activity {
     private static final int ACCEPT = 1;
     private static final int DENIAL = 0;
+    private static final String TAG="StConfirmActivity";
     public static Activity activity;
 
     private boolean isComment=false;
     private int tNo;
-    private String stdNo;
+    private static String stdNo;
     private int talkAuth;
     private String pictureURL;
     private String description;

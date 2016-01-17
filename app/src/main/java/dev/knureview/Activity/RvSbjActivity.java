@@ -14,13 +14,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import dev.knureview.Adapter.SimeListViewAdapter;
+import dev.knureview.Adapter.SimpleListViewAdapter;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.PixelUtil;
@@ -38,8 +37,8 @@ public class RvSbjActivity extends ActionBarActivity {
     @Bind(R.id.termTxt) TextView termTxt;
     @Bind(R.id.alarmTxt) TextView alarmTxt;
 
-    private SimeListViewAdapter yearAdapter;
-    private SimeListViewAdapter sbjAdapter;
+    private SimpleListViewAdapter yearAdapter;
+    private SimpleListViewAdapter sbjAdapter;
     private ArrayList<LectureVO> lectList;
     private ArrayList<String> yearStrArray;
     private ArrayList<String> sbjStrArray;
@@ -127,7 +126,7 @@ public class RvSbjActivity extends ActionBarActivity {
         setListViewHeight(sbjAdapter, sbjListView, true);
     }
 
-    public void setListViewHeight(SimeListViewAdapter adapter, ListView listView, boolean isBig) {
+    public void setListViewHeight(SimpleListViewAdapter adapter, ListView listView, boolean isBig) {
         int LIST_VIEW_MAX_HEIGHT = (int) PixelUtil.convertPixelsToDp(285, this);
         if (isBig) {
             LIST_VIEW_MAX_HEIGHT = (int) PixelUtil.convertPixelsToDp(455, this);
@@ -172,8 +171,8 @@ public class RvSbjActivity extends ActionBarActivity {
                     sbjStrArray.add(result.get(i).getSbjName());
                 }
             }
-            yearAdapter = new SimeListViewAdapter(RvSbjActivity.this, R.layout.layout_auto_list_row, yearStrArray);
-            sbjAdapter = new SimeListViewAdapter(RvSbjActivity.this, R.layout.layout_rv_sbj_list_row, sbjStrArray);
+            yearAdapter = new SimpleListViewAdapter(RvSbjActivity.this, R.layout.layout_auto_list_row, yearStrArray);
+            sbjAdapter = new SimpleListViewAdapter(RvSbjActivity.this, R.layout.layout_rv_sbj_list_row, sbjStrArray);
             yearAdapter.setYearListView();
 
             setListViewHeight(yearAdapter, yearListView, false);
