@@ -19,6 +19,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import java.net.URLDecoder;
 
 import dev.knureview.Activity.AlarmActivity;
+import dev.knureview.Activity.MainActivity;
 import dev.knureview.Activity.MyProfileActivity;
 import dev.knureview.Activity.ProfileDetail.TicketActivity;
 import dev.knureview.Activity.StoryActivity;
@@ -70,8 +71,12 @@ public class MyGcmListenerService extends GcmListenerService {
         } else if (message.contains("누군가")) {
             intent = new Intent(this, StoryActivity.class);
             intent.putExtra("push", "msgAlarm");
-        } else {
-            intent = new Intent(this, StoryActivity.class);
+        }else if(message.equals("지금부터 수강리뷰를 열람하실 수 있습니다.")){
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra("push", "getReviewAuth");
+        }
+        else {
+            intent = new Intent(this, MainActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,

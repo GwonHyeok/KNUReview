@@ -27,6 +27,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 
+import butterknife.ButterKnife;
 import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
 import dev.knureview.Fragment.PageFragment;
@@ -54,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -100,6 +103,26 @@ public class MainActivity extends ActionBarActivity {
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
 
+        //intent
+        Intent intent = getIntent();
+        String pushStr = intent.getStringExtra("push");
+        if(pushStr!=null){
+            if(pushStr.equals("getReviewAuth")){
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("수강리뷰 열람 가능")
+                        .titleColor(getResources().getColor(R.color.black))
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .content("축하합니다. 수강리뷰 5개 이상 등록하셔서 열람권한을 획득하셨습니다\n지금부터 수강리뷰를 열람하실 수 있습니다.")
+                        .contentColor(getResources().getColor(R.color.text_lgray))
+                        .positiveText("확인")
+                        .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .cancelable(false)
+                        .iconRes(R.drawable.verified_ic)
+                        .maxIconSize(96)
+                        .show();
+            }
+        }
+
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
@@ -137,6 +160,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         new MemberInfo().execute();
+
     }
 
     private class MemberInfo extends AsyncTask<Void, Void, StudentVO> {
@@ -154,14 +178,33 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(StudentVO vo) {
             super.onPostExecute(vo);
             // initialize reviewAuth
-            pref.savePreferences("reviewAuth", vo.getReviewAuth());
+            if(vo.getReviewAuth()==0 && vo.getReviewCnt() >=5){
+               new UpdateReviewAuth().execute();
+            }
+        }
+    }
+    private class UpdateReviewAuth extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                new NetworkUtil().setReviewAuth(stdNo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void s) {
+            super.onPostExecute(s);
+            pref.savePreferences("reviewAuth", 1);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-     //   inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu, menu);
         return true;
     }
 

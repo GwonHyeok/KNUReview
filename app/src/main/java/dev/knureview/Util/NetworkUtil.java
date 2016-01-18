@@ -33,9 +33,9 @@ public class NetworkUtil {
     private Cookie cookie;
 
     //학교 서버에서 쿠키값 가져오기
-    public Cookie loginSchoolServer(String id, String pw) throws Exception{
+    public Cookie loginSchoolServer(String id, String pw) throws Exception {
         url = "https://m.kangnam.ac.kr/knusmart/c/c001.do?";
-        query = "user_id" + "=" + id + "&" + "user_pwd" + "=" + URLEncoder.encode(pw,"UTF-8");
+        query = "user_id" + "=" + id + "&" + "user_pwd" + "=" + URLEncoder.encode(pw, "UTF-8");
         return getCookie(url, query);
     }
 
@@ -163,6 +163,12 @@ public class NetworkUtil {
         }
     }
 
+    public void setReviewAuth(String stdNo) throws Exception {
+        url = "http://kureview.cafe24.com/mobileUpdateReviewAuth.jsp";
+        query = "stdNo" + "=" + stdNo;
+        sendQuery(url, query);
+    }
+
 
     //수강리뷰
     public ArrayList<SubjectVO> getSubjectList(String dName) throws Exception {
@@ -170,6 +176,26 @@ public class NetworkUtil {
         url = "http://kureview.cafe24.com/mobileGetSubject.jsp";
         query = "dName" + "=" + dName;
         String data = getJSON(url, query);
+        JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
+        JSONArray sbjArray = (JSONArray) mainObject.get("subject");
+        for (int i = 0; i < sbjArray.size(); i++) {
+            JSONObject object = (JSONObject) sbjArray.get(i);
+            SubjectVO vo = new SubjectVO();
+            vo.setsNo(Integer.parseInt(object.get("sNo").toString()));
+            vo.setGrade(Integer.parseInt(object.get("grade").toString()));
+            vo.setTerm(Integer.parseInt(object.get("term").toString()));
+            vo.setsName(object.get("sName").toString());
+            vo.setdNo(Integer.parseInt(object.get("dNo").toString()));
+            vo.setCredit(Integer.parseInt(object.get("credit").toString()));
+            vo.setTime(Integer.parseInt(object.get("time").toString()));
+            sbjList.add(vo);
+        }
+        return sbjList;
+    }
+    public ArrayList<SubjectVO> getAllSubjectList() throws Exception{
+        ArrayList<SubjectVO> sbjList = new ArrayList<SubjectVO>();
+        url = "http://kureview.cafe24.com/mobileGetAllSubjectList.jsp";
+        String data = getJSON(url, null);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         JSONArray sbjArray = (JSONArray) mainObject.get("subject");
         for (int i = 0; i < sbjArray.size(); i++) {
@@ -285,15 +311,15 @@ public class NetworkUtil {
         return vo;
     }
 
-    public ArrayList<ReviewVO> getReviewList(String stdNo) throws Exception{
+    public ArrayList<ReviewVO> getReviewList(String stdNo) throws Exception {
         ArrayList<ReviewVO> reviewList = new ArrayList<>();
         url = "http://kureview.cafe24.com/mobileReviewList.jsp";
         query = "stdNo" + "=" + stdNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         JSONArray reviewArray = (JSONArray) mainObject.get("reviewList");
-        for(int i=0; i<reviewArray.size(); i++){
-            JSONObject object = (JSONObject)reviewArray.get(i);
+        for (int i = 0; i < reviewArray.size(); i++) {
+            JSONObject object = (JSONObject) reviewArray.get(i);
             ReviewVO vo = new ReviewVO();
             vo.setrNo(Integer.parseInt(object.get("rNo").toString()));
             vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));
@@ -312,15 +338,15 @@ public class NetworkUtil {
         return reviewList;
     }
 
-    public ArrayList<ReviewVO> getReviewListFromSbj(int sbjNo) throws Exception{
+    public ArrayList<ReviewVO> getReviewListFromSbj(int sbjNo) throws Exception {
         ArrayList<ReviewVO> reviewList = new ArrayList<>();
         url = "http://kureview.cafe24.com/mobileGetReviewFromSbj.jsp";
         query = "sbjNo" + "=" + sbjNo;
         String data = getJSON(url, query);
         JSONObject mainObject = (JSONObject) new JSONParser().parse(data);
         JSONArray reviewArray = (JSONArray) mainObject.get("reviewList");
-        for(int i=0; i<reviewArray.size(); i++){
-            JSONObject object = (JSONObject)reviewArray.get(i);
+        for (int i = 0; i < reviewArray.size(); i++) {
+            JSONObject object = (JSONObject) reviewArray.get(i);
             ReviewVO vo = new ReviewVO();
             vo.setrNo(Integer.parseInt(object.get("rNo").toString()));
             vo.setStdNo(Integer.parseInt(object.get("stdNo").toString()));

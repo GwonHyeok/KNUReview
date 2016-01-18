@@ -71,11 +71,16 @@ public class SubjectActivity extends ActionBarActivity {
                 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
             }else{
                 new MaterialDialog.Builder(SubjectActivity.this)
+                        .title("수강리뷰 열람 불가능")
+                        .titleColor(getResources().getColor(R.color.black))
                         .backgroundColor(getResources().getColor(R.color.white))
                         .content("수강리뷰를 볼 수 있는 권한이 없습니다.\n수강리뷰를 5개 이상 등록하셔야만 수강리뷰를 볼 수 있습니다.")
                         .contentColor(getResources().getColor(R.color.text_lgray))
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
+                        .cancelable(false)
+                        .iconRes(R.drawable.not_verified_ic)
+                        .maxIconSize(96)
                         .show();
             }
         }

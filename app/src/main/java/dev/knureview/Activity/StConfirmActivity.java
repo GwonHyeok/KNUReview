@@ -22,6 +22,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dd.CircularProgressButton;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.knureview.R;
 import dev.knureview.Util.NetworkUtil;
 import dev.knureview.Util.SharedPreferencesActivity;
@@ -33,21 +35,22 @@ import dev.knureview.Util.TalkTextUtil;
 public class StConfirmActivity extends Activity {
     private static final int ACCEPT = 1;
     private static final int DENIAL = 0;
-    private static final String TAG="StConfirmActivity";
+    private static final String TAG = "StConfirmActivity";
     public static Activity activity;
 
-    private boolean isComment=false;
+    private boolean isComment = false;
     private int tNo;
     private static String stdNo;
     private int talkAuth;
     private String pictureURL;
     private String description;
-    private ImageView cardImage;
-    private ImageView blurImage;
+    @Bind(R.id.cardImage) ImageView cardImage;
+    @Bind(R.id.blurImage) ImageView blurImage;
     private Bitmap blurBitmap;
-    private LinearLayout dynamicArea;
+    @Bind(R.id.dynamicArea) LinearLayout dynamicArea;
     private TalkTextUtil talkTextUtil;
-    private CircularProgressButton confirmBtn;
+    @Bind(R.id.confirmButton) CircularProgressButton confirmBtn;
+    private SharedPreferencesActivity pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +58,11 @@ public class StConfirmActivity extends Activity {
         setContentView(R.layout.activity_story_confirm);
 
         activity = StConfirmActivity.this;
-        cardImage = (ImageView) findViewById(R.id.cardImage);
-        blurImage = (ImageView) findViewById(R.id.blurImage);
-        dynamicArea = (LinearLayout) findViewById(R.id.dynamicArea);
-        confirmBtn = (CircularProgressButton) findViewById(R.id.confirmButton);
+        ButterKnife.bind(this);
         confirmBtn.setProgress(0);
 
         //pref
-        SharedPreferencesActivity pref = new SharedPreferencesActivity(this);
+        pref = new SharedPreferencesActivity(this);
         stdNo = pref.getPreferences("stdNo", "");
         talkAuth = pref.getPreferences("talkAuth", 0);
 
@@ -76,9 +76,9 @@ public class StConfirmActivity extends Activity {
         pictureURL = intent.getStringExtra("pictureURL");
         description = intent.getStringExtra("description");
         String toDo = intent.getStringExtra("toDo");
-        if(toDo!=null){
+        if (toDo != null) {
             isComment = true;
-            tNo = intent.getIntExtra("tNo",0);
+            tNo = intent.getIntExtra("tNo", 0);
         }
 
 
@@ -115,9 +115,10 @@ public class StConfirmActivity extends Activity {
         } else if (view.getId() == R.id.confirmButton) {
             if (confirmBtn.getProgress() == 0
                     && talkAuth == ACCEPT) {
-                if(isComment){
+                stdNo = pref.getPreferences("stdNo", "");
+                if (isComment) {
                     new Comment().execute();
-                }else {
+                } else {
                     new Talk().execute();
                 }
             } else if (confirmBtn.getProgress() == -1) {
