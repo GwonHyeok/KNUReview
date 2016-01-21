@@ -86,6 +86,10 @@
         <activity android:name=".Activity.ProfileDetail.AlarmSetting"
             android:label="알림 설정"
             android:screenOrientation="portrait"/>
+        <!-- 학사일정-->
+        <activity android:name=".Activity.SchoolEventActivity"
+            android:label="학사일정"
+            android:screenOrientation="portrait" />
 
         <!-- [START gcm_receiver] -->
         <receiver

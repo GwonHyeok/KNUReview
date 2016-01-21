@@ -14,7 +14,6 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -73,7 +72,7 @@ public class SplashActivity extends Activity {
         stdNo = pref.getPreferences("stdNo", "");
         String term = "1학기";
         TimeUtil timeUtil = new TimeUtil();
-        if(timeUtil.getMonth()>=7 && timeUtil.getMonth() <=12){
+        if(timeUtil.getCurMonth()>=7 && timeUtil.getCurMonth() <=12){
             term = "2학기";
         }
         pref.savePreferences("term",term);

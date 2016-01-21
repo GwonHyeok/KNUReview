@@ -45,7 +45,7 @@ public class MyProfileActivity extends ActionBarActivity {
     private static final String LOGIN_RESULT = "loginResult";
     private static final String EASTER_EGG = "easterEgg";
     private static final String DEV_ID = "2013013070";
-    private static final int CUR_POSITION = 2;
+    private static final int CUR_POSITION = 4;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private ListView drawer;
@@ -140,19 +140,28 @@ public class MyProfileActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             drawerAdapter.setSelectedIndex(position);
 
+
             if (id == 0) {
+                //Main
                 Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
             } else if (id == 1) {
+                //Story
                 Intent intent = new Intent(MyProfileActivity.this, StoryActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
+
             } else if (id == 2) {
-                //MyProfileActivity
-            }else if(id==3){
+                //SchoolEvent
+                Intent intent = new Intent(MyProfileActivity.this, SchoolEventActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+                finish();
+            }else if(id == 3){
+                //TimeTable
                 new MaterialDialog.Builder(MyProfileActivity.this)
                         .title("시간표 기능 업데이트 알림")
                         .backgroundColor(getResources().getColor(R.color.white))
@@ -161,6 +170,10 @@ public class MyProfileActivity extends ActionBarActivity {
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .show();
+
+            }else if(id==4){
+                //MyProfile
+
             }
         }
     };

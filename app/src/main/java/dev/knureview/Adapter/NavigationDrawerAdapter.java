@@ -11,19 +11,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dev.knureview.R;
+import dev.knureview.Util.TimeUtil;
 
 /**
  * Created by DavidHa on 2015. 11. 22..
  */
 public class NavigationDrawerAdapter extends BaseAdapter {
 
-    private String mTitles[] = {"수강리뷰", "소곤소곤", "내프로필", "시간표"};
-    private int mIcons[] = {R.drawable.review, R.drawable.my_story, R.drawable.my_profile, R.drawable.timetable};
+    private String mTitles[] = {"수강리뷰", "소곤소곤", "학사일정", "시간표", "내프로필"};
+    private int mIcons[] = {R.drawable.review, R.drawable.my_story, R.drawable.day_1, R.drawable.timetable, R.drawable.my_profile,};
     private Activity activity;
     private int resource;
     private Typeface font;
     private int selectedIndex;
     private int unSelectedColor;
+    private int curDay;
+    int resID;
 
     static class ViewHolder {
         private LinearLayout rowLayout;
@@ -39,10 +42,14 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         unSelectedColor = activity.getResources()
                 .getColor(R.color.colorPrimaryLight);
         selectedIndex = currentPosition;
+        curDay = new TimeUtil().getCurDay();
+        resID = activity.getResources()
+                .getIdentifier("day_" + curDay, "drawable", activity.getPackageName());
+        mIcons[2] = resID;
     }
 
     public void setSelectedIndex(int index) {
-        selectedIndex = index-1;
+        selectedIndex = index - 1;
         notifyDataSetChanged();
     }
 

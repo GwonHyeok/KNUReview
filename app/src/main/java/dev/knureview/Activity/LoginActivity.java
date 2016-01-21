@@ -243,7 +243,7 @@ public class LoginActivity extends Activity {
             String year = stdNo.substring(0, 4);
             TimeUtil timeUtil = new TimeUtil();
 
-            if (year.equals(timeUtil.getYear())) {
+            if (year.equals(timeUtil.getCurYear())) {
                 //신입생 일 경우
                 isFreshMan = true;
             } else {

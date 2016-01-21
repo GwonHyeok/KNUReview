@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/layout_tool_bar"/>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="14dp">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_arrowColor="?attr/colorPrimary"
+                app:mcv_leftArrowMask="@drawable/ic_navigation_arrow_back"
+                app:mcv_rightArrowMask="@drawable/ic_navigation_arrow_forward"
+                app:mcv_selectionColor="@color/colorAccent"
+                />
+            <TextView
+                android:layout_below="@id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/layout_navigation_drawer" />
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

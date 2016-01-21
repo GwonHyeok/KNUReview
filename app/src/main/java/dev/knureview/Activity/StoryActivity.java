@@ -178,18 +178,22 @@ public class StoryActivity extends ActionBarActivity {
             drawerAdapter.setSelectedIndex(position);
 
             if (id == 0) {
+                //Main
                 Intent intent = new Intent(StoryActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
             } else if (id == 1) {
-                //StoryActivity
+                //Story
+
             } else if (id == 2) {
-                Intent intent = new Intent(StoryActivity.this, MyProfileActivity.class);
+                //SchoolEvent
+                Intent intent = new Intent(StoryActivity.this, SchoolEventActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
-            }else if(id==3){
+            }else if(id == 3){
+                //TimeTable
                 new MaterialDialog.Builder(StoryActivity.this)
                         .title("시간표 기능 업데이트 알림")
                         .backgroundColor(getResources().getColor(R.color.white))
@@ -198,6 +202,13 @@ public class StoryActivity extends ActionBarActivity {
                         .positiveText("확인")
                         .positiveColor(getResources().getColor(R.color.colorPrimary))
                         .show();
+
+            }else if(id==4){
+                //MyProfile
+                Intent intent = new Intent(StoryActivity.this, MyProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+                finish();
             }
         }
     };

@@ -587,6 +587,8 @@ public class NetworkUtil {
         query = "stdNo" + "=" + stdNo;
         sendQuery(url, query);
     }
+    //시간표
+   
 
     //alarm
     public ArrayList<AlarmVO> getAlarmList(String stdNo) throws Exception {

@@ -21,5 +21,8 @@
         <item name="android:divider">@android:drawable/divider_horizontal_bright</item>
     </style>
 
-
+    <style name="CustomDayTextAppearance"
+        parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+    </style>
 </resources>

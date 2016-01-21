@@ -196,7 +196,7 @@ public class RvSbjActivity extends ActionBarActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                int year = Integer.parseInt(new TimeUtil().getYear()) + 1;
+                int year = Integer.parseInt(new TimeUtil().getCurYear()) + 1;
                 new MaterialDialog.Builder(RvSbjActivity.this)
                         .title("수강리뷰 평가 불가능")
                         .titleColor(getResources().getColor(R.color.black))

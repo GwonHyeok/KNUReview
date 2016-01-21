@@ -6,15 +6,12 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.support.v4.view.ViewPager;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,23 +19,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import dev.knureview.Activity.ProfileDetail.ContactActivity;
 import dev.knureview.Adapter.NavigationDrawerAdapter;
-import dev.knureview.Fragment.PageFragment;
 import dev.knureview.R;
 import dev.knureview.Util.BackPressCloseHandler;
-import dev.knureview.Util.NetworkUtil;
-import dev.knureview.Util.SharedPreferencesActivity;
-import dev.knureview.VO.StudentVO;
+import dev.knureview.VO.SchoolEvVO;
 
-public class MainActivity extends ActionBarActivity {
-    private static final int CUR_POSITION = 0;
+/**
+ * Created by DavidHa on 2016. 1. 19..
+ */
+public class SchoolEventActivity extends ActionBarActivity  implements OnDateSelectedListener {
+    private static final int CUR_POSITION = 2;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private ListView drawer;
@@ -47,26 +46,23 @@ public class MainActivity extends ActionBarActivity {
     private Typeface nanumFont;
     private TextView headerTxt;
     private TextView bottomTxt;
-    private String stdNo;
-    private SharedPreferencesActivity pref;
     private BackPressCloseHandler backPressCloseHandler;
+
+    @Bind(R.id.calendarView) MaterialCalendarView widget;
+    private ArrayList<SchoolEvVO> schEvList;
+    private ArrayList<CalendarDay> calendarDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_school_event);
         ButterKnife.bind(this);
+        calendarInitialization();
 
         //toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //pref
-        pref = new SharedPreferencesActivity(this);
-        stdNo = pref.getPreferences("stdNo","");
-
 
         //toggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -90,40 +86,8 @@ public class MainActivity extends ActionBarActivity {
         headerTxt.setTypeface(nanumFont);
         bottomTxt.setTypeface(nanumFont);
 
-        //fragment
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("1학기", PageFragment.class)
-                .add("2학기", PageFragment.class)
-                .create());
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(adapter);
-
-        SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-        viewPagerTab.setViewPager(viewPager);
-
-        //intent
-        Intent intent = getIntent();
-        String pushStr = intent.getStringExtra("push");
-        if(pushStr!=null){
-            if(pushStr.equals("getReviewAuth")){
-                new MaterialDialog.Builder(MainActivity.this)
-                        .title("수강리뷰 열람 가능")
-                        .titleColor(getResources().getColor(R.color.black))
-                        .backgroundColor(getResources().getColor(R.color.white))
-                        .content("축하합니다. 수강리뷰 5개 이상 등록하셔서 열람권한을 획득하셨습니다\n지금부터 수강리뷰를 열람하실 수 있습니다.")
-                        .contentColor(getResources().getColor(R.color.text_lgray))
-                        .positiveText("확인")
-                        .positiveColor(getResources().getColor(R.color.colorPrimary))
-                        .cancelable(false)
-                        .iconRes(R.drawable.verified_ic)
-                        .maxIconSize(96)
-                        .show();
-            }
-        }
-
         backPressCloseHandler = new BackPressCloseHandler(this);
+
     }
 
     AdapterView.OnItemClickListener drawerListener = new AdapterView.OnItemClickListener() {
@@ -133,21 +97,22 @@ public class MainActivity extends ActionBarActivity {
 
             if (id == 0) {
                 //Main
+                Intent intent = new Intent(SchoolEventActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
+                finish();
             } else if (id == 1) {
                 //Story
-                Intent intent = new Intent(MainActivity.this, StoryActivity.class);
+                Intent intent = new Intent(SchoolEventActivity.this, StoryActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
             } else if (id == 2) {
                 //SchoolEvent
-                Intent intent = new Intent(MainActivity.this, SchoolEventActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
-                finish();
+
             }else if(id == 3){
                 //TimeTable
-                new MaterialDialog.Builder(MainActivity.this)
+                new MaterialDialog.Builder(SchoolEventActivity.this)
                         .title("시간표 기능 업데이트 알림")
                         .backgroundColor(getResources().getColor(R.color.white))
                         .content("시간표 기능은 단순히 시간표만 보여주는 기능 뿐만 아니라 같이 수업듣는 학우들끼리 서로 정보를 공유하는 기능을 제공할 예정입니다.\n2월 27일에 업데이트 될 예정이오니 많이 기대해주세요~")
@@ -158,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
 
             }else if(id==4){
                 //MyProfile
-                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
+                Intent intent = new Intent(SchoolEventActivity.this, MyProfileActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fast_fade_in, R.anim.fast_fade_out);
                 finish();
@@ -166,38 +131,34 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        new MemberInfo().execute();
+        //new GetSchoolEvent().execute();
+    }
+
+    private void calendarInitialization(){
+        widget.setOnDateChangedListener(this);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        Calendar calendar = Calendar.getInstance();
+        widget.setSelectedDate(calendar.getTime());
+        calendar.set(calendar.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        widget.setMinimumDate(calendar.getTime());
+        calendar.set(calendar.get(Calendar.YEAR), Calendar.DECEMBER, 31);
+        widget.setMaximumDate(calendar.getTime());
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
     }
 
-    private class MemberInfo extends AsyncTask<Void, Void, StudentVO> {
+    private class GetSchoolEvent extends AsyncTask<Void, Void, ArrayList<SchoolEvVO>>{
         @Override
-        protected StudentVO doInBackground(Void... params) {
-            try {
-                return new NetworkUtil().getExistMemberInfo(stdNo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(StudentVO vo) {
-            super.onPostExecute(vo);
-            // initialize reviewAuth
-            if(vo.getReviewAuth()==0 && vo.getReviewCnt() >=5){
-               new UpdateReviewAuth().execute();
-            }
-        }
-    }
-    private class UpdateReviewAuth extends AsyncTask<Void, Void, Void>{
-        @Override
-        protected Void doInBackground(Void... params) {
+        protected ArrayList<SchoolEvVO> doInBackground(Void... params) {
             try{
-                new NetworkUtil().setReviewAuth(stdNo);
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -205,28 +166,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(Void s) {
-            super.onPostExecute(s);
-            pref.savePreferences("reviewAuth", 1);
-        }
-    }
+        protected void onPostExecute(ArrayList<SchoolEvVO> result) {
+            super.onPostExecute(result);
+            schEvList = result;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    public void mOnClick(View view){
-        if(view.getId() == R.id.devContactLayout){
-            Intent intent = new Intent(MainActivity.this, ContactActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
-        }else if(view.getId() == R.id.fab){
-            Intent intent = new Intent(MainActivity.this, RvSbjActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
         }
     }
 
@@ -236,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         } else if (item.getItemId() == R.id.search) {
-            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            Intent intent = new Intent(SchoolEventActivity.this, SearchActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
 

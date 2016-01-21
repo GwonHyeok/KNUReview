@@ -9,52 +9,72 @@ import java.util.Date;
  */
 public class TimeUtil {
     private Date now;
-    private SimpleDateFormat CurWeekFormat;
-    private SimpleDateFormat CurYearFormat;
-    private SimpleDateFormat CurMonthFormat;
-    private SimpleDateFormat CurDayFormat;
-    private SimpleDateFormat CurHourFormat;
-    private SimpleDateFormat CurMinuteFormat;
-    private SimpleDateFormat CurSecondFormat;
+    private SimpleDateFormat yearMDFormat;
+    private SimpleDateFormat yearFormat;
+    private SimpleDateFormat monthFormat;
+    private SimpleDateFormat dayFormat;
+    private SimpleDateFormat hourFormat;
+    private SimpleDateFormat minuteFormat;
+    private SimpleDateFormat secondFormat;
 
 
     public TimeUtil() {
         now = new Date();
-        CurWeekFormat = new SimpleDateFormat("yyyy-MM-dd");
-        CurYearFormat = new SimpleDateFormat("yyyy");
-        CurMonthFormat = new SimpleDateFormat("MM");
-        CurDayFormat = new SimpleDateFormat("dd");
-        CurHourFormat = new SimpleDateFormat("HH");
-        CurMinuteFormat = new SimpleDateFormat("mm");
-        CurSecondFormat = new SimpleDateFormat("ss");
+        yearMDFormat = new SimpleDateFormat("yyyy-MM-dd");
+        yearFormat = new SimpleDateFormat("yyyy");
+        monthFormat = new SimpleDateFormat("MM");
+        dayFormat = new SimpleDateFormat("dd");
+        hourFormat = new SimpleDateFormat("HH");
+        minuteFormat = new SimpleDateFormat("mm");
+        secondFormat = new SimpleDateFormat("ss");
     }
 
-    public String getYear() {
-        return CurYearFormat.format(now);
+    public String getCurYear() {
+        return yearFormat.format(now);
     }
 
-    public int getMonth() {
-        return Integer.parseInt(CurMonthFormat.format(now));
+    public int getCurMonth() {
+        return Integer.parseInt(monthFormat.format(now));
     }
+    public int getMonth(Date date){ return Integer.parseInt(monthFormat.format(date));}
 
-    public int getDay() {
-        return Integer.parseInt(CurDayFormat.format(now));
+    public int getCurDay() {
+        return Integer.parseInt(dayFormat.format(now));
     }
-
-    public int getDateDay() {
+    public int getDay(Date date){ return Integer.parseInt(dayFormat.format(date));}
+    public int getCurDateDay() {
         Calendar cal = Calendar.getInstance();
         return cal.get(Calendar.DAY_OF_WEEK);
     }
 
-    public int getHour() {
-        return Integer.parseInt(CurHourFormat.format(now));
+    public int getCurHour() {
+        return Integer.parseInt(hourFormat.format(now));
     }
 
-    public int getMinute() {
-        return Integer.parseInt(CurMinuteFormat.format(now));
+    public int getCurMinute() {
+        return Integer.parseInt(minuteFormat.format(now));
     }
 
-    public int getSecond() {
-        return Integer.parseInt(CurSecondFormat.format(now));
+    public int getCurSecond() {
+        return Integer.parseInt(secondFormat.format(now));
+    }
+
+    public Date changeStrToDate(String str){
+        Date date=null;
+        try {
+             date = yearMDFormat.parse(str);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return date;
+    }
+    public String changeDateToStr(Date date){
+        String str = null;
+        try{
+            str = yearMDFormat.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return str;
     }
 }
